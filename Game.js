@@ -65,6 +65,18 @@ var Update = function()
 	}
 }
 
+var OnKeyDown = function()
+{
+	switch (e.keycode)
+	{
+		// W,w
+		case 87:
+		case 119:
+			//Fazer cenas
+			break;
+	}
+}
+
 var GameLoop = function()
 {
 	requestAnimationFrame(GameLoop);
@@ -89,6 +101,8 @@ var Init = function() {
 
 	//Resize window on demand
 	window.addEventListener( "resize", OnResize);
+	//Receive input from player
+	window.addEventListener( "keydown", OnKeyDown);
 
 	//Start game loop
 	GameLoop();
