@@ -77,6 +77,18 @@ var OnKeyDown = function()
 	}
 }
 
+var OnKeyUp = function()
+{
+	switch (e.keycode)
+	{
+		// W,w
+		case 87:
+		case 119:
+			//Fazer outras cenas
+			break;
+	}
+}
+
 var GameLoop = function()
 {
 	requestAnimationFrame(GameLoop);
@@ -96,13 +108,14 @@ var Init = function() {
 
 	//Populates the scene with all the objects
 	BuildObjects();
-	//Notifies all objets to start 
+	//Notifies all objets that the scene has started
 	StartObjects();
 
 	//Resize window on demand
 	window.addEventListener( "resize", OnResize);
 	//Receive input from player
 	window.addEventListener( "keydown", OnKeyDown);
+	window.addEventListener( "keyup", OnKeyUp);
 
 	//Start game loop
 	GameLoop();
