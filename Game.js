@@ -9,8 +9,7 @@ var gameObjects = [];
 
 
 
-var OnResize = function()
-{
+function OnResize() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	if (window.innerHeight > 0 && window.innerWidth > 0) {
 		camera.aspect = renderer.getSize().width / renderer.getSize().height;
@@ -18,37 +17,34 @@ var OnResize = function()
 	}
 }
 
-var CreateScene = function()
-{
+function CreateScene() {
 	scene = new THREE.Scene();
 }
 
-var CreateCamera = function()
-{
+function CreateCamera() {
 	camera = new THREE.PerspectiveCamera(/*FOV*/75, /*Aspect Ratio*/window.innerWidth / window.innerHeight, /*Near*/0.1, /*Far*/1000);
 	camera.position.z = 3;
 }
 
-var CreateRenderer = function()
-{
+function CreateRenderer() {
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 }
 
-var Render = function()
-{
+function Render() {
 	renderer.render(scene, camera);
 }
 
-var BuildObjects = function()
-{
+function BuildObjects() {
 	var cubo1 = new Cubo();
+	var sky = new Skybox();
+
 	gameObjects.push(cubo1);
+	//gameObjects.push(sky);
 }
 
-var StartObjects = function()
-{
+function StartObjects() {
 	var i;
 	for (i=0; i < gameObjects.length; i++) {
 		//Notifies each object to start setup
@@ -56,8 +52,7 @@ var StartObjects = function()
 	}
 }
 
-var Update = function()
-{
+function Update() {
 	var i;
 	for (i=0; i < gameObjects.length; i++) {
 		//Calls Update on each object, and passes the DeltaTime
@@ -65,8 +60,7 @@ var Update = function()
 	}
 }
 
-var OnKeyDown = function()
-{
+function OnKeyDown(e) {
 	switch (e.keycode)
 	{
 		// W,w
@@ -77,8 +71,7 @@ var OnKeyDown = function()
 	}
 }
 
-var OnKeyUp = function()
-{
+function OnKeyUp(e) {
 	switch (e.keycode)
 	{
 		// W,w
@@ -89,15 +82,14 @@ var OnKeyUp = function()
 	}
 }
 
-var GameLoop = function()
-{
+function GameLoop() {
 	requestAnimationFrame(GameLoop);
 
 	Update();
 	Render();
 }
 
-var Init = function() {
+function Init() {
 
 	CreateScene();
 	CreateCamera();

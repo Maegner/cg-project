@@ -1,7 +1,6 @@
 class Cubo
 {
-	constructor()
-	{
+	constructor() 	{
 		//Declarar variáveis aqui (porque é assim que o JS funciona...)
 		this.geometry;
 		this.material;
@@ -9,16 +8,14 @@ class Cubo
 		this.speed = 1;
 	}
 
-	Start()
-	{
+	Start() 	{
 		this.geometry = new THREE.BoxGeometry( 1, 1, 1 );
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
 		this.cube = new THREE.Mesh(this.geometry, this.material);
 		scene.add(this.cube);
 	}
 
-	Update(delta)
-	{
+	Update(delta) 	{
 		this.cube.rotation.x += this.speed * delta;
 	}
 }
