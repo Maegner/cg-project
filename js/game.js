@@ -37,9 +37,12 @@ function Render() {
 }
 
 function BuildObjects() {
-	var cubo1 = new Cubo();
 
-	//gameObjects.push(cubo1);
+	var cubo1 = new Cubo();
+	
+	var trackLine =  new Track([[0,0,0],[0.1,0,0],[0.2,0,0],[0.3,0,0],[0.3,0,0],[0.1,0.3,0],[4,0,0],[0,2,0]]);
+
+	gameObjects.push(trackLine);
 }
 
 function StartObjects() {
