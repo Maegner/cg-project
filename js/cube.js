@@ -1,4 +1,4 @@
-class Cubo
+class Cube
 {
 	constructor() 	{
 		//Declarar variáveis aqui (porque é assim que o JS funciona...)
