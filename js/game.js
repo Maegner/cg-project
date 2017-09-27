@@ -39,17 +39,13 @@ function Render() {
 function BuildObjects() {
 
 	var cubo1 = new Cubo();
-<<<<<<< HEAD
-	
 	var trackLine =  new Track([[0,0,0],[0.1,0,0],[0.2,0,0],[0.3,0,0],[0.3,0,0],[0.1,0.3,0],[4,0,0],[0,2,0]]);
 
 	gameObjects.push(trackLine);
-=======
 	carro1 = new Carro();
 
 	gameObjects.push(cubo1);
 	gameObjects.push(carro1);
->>>>>>> 0d7694f38509acf08b8c1022889498b21c783e3d
 }
 
 function StartObjects() {

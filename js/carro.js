@@ -50,7 +50,7 @@ class Carro
 		var velocitySign = Math.sign(this.velocity.x);
 		var throttleSign = Math.sign(throttle);	
 		//Check if car hasn't hit full speed, if it did, don't update velocity
-		if (velocitySign == 0 || (this.velocity.x < (this.maxSpeed * velocitySign) || velocitySign == throttleSign)) {
+		if (velocitySign == 0 || (Math.abs(this.velocity.x) < this.maxSpeed || velocitySign == throttleSign)) {
 			this.velocity.x += throttle;
 		}
 
