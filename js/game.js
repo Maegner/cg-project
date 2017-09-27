@@ -2,7 +2,7 @@
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 */
 
-var camera, scene, renderer, time;
+var camera, scene, renderer, time, carro1;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
@@ -39,10 +39,17 @@ function Render() {
 function BuildObjects() {
 
 	var cubo1 = new Cubo();
+<<<<<<< HEAD
 	
 	var trackLine =  new Track([[0,0,0],[0.1,0,0],[0.2,0,0],[0.3,0,0],[0.3,0,0],[0.1,0.3,0],[4,0,0],[0,2,0]]);
 
 	gameObjects.push(trackLine);
+=======
+	carro1 = new Carro();
+
+	gameObjects.push(cubo1);
+	gameObjects.push(carro1);
+>>>>>>> 0d7694f38509acf08b8c1022889498b21c783e3d
 }
 
 function StartObjects() {
@@ -61,24 +68,37 @@ function Update() {
 	}
 }
 
-function OnKeyDown(e) {
-	switch (e.keycode)
+function onKeyDown(e) {
+
+	switch (e.keyCode)
 	{
 		// W,w
 		case 87:
 		case 119:
-			//Fazer cenas
+			carro1.OnThrust();
+			break;
+
+		//S, s
+		case 83:
+		case 115:
+			carro1.OnBrake();
 			break;
 	}
 }
 
-function OnKeyUp(e) {
-	switch (e.keycode)
+function onKeyUp(e) {
+	switch (e.keyCode)
 	{
 		// W,w
 		case 87:
 		case 119:
-			//Fazer outras cenas
+			carro1.OnUnthrust();
+			break;
+
+		//S, s
+		case 83:
+		case 115:
+			carro1.OnUnbrake();
 			break;
 	}
 }
@@ -107,8 +127,8 @@ function Init() {
 	//Resize window on demand
 	window.addEventListener( "resize", OnResize);
 	//Receive input from player
-	window.addEventListener( "keydown", OnKeyDown);
-	window.addEventListener( "keyup", OnKeyUp);
+	window.addEventListener( "keydown", onKeyDown, false);
+	window.addEventListener( "keyup", onKeyUp, false);
 
 	//Start game loop
 	GameLoop();
