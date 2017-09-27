@@ -38,10 +38,8 @@ function Render() {
 
 function BuildObjects() {
 	var cubo1 = new Cubo();
-	var sky = new Skybox();
 
-	gameObjects.push(cubo1);
-	//gameObjects.push(sky);
+	//gameObjects.push(cubo1);
 }
 
 function StartObjects() {
