@@ -37,9 +37,7 @@ function Render() {
 }
 
 function BuildObjects() {
-	var cubo1 = new Cubo();
-
-	//gameObjects.push(cubo1);
+	gameObjects.push(new Car());
 }
 
 function StartObjects() {
