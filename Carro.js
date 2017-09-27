@@ -1,11 +1,14 @@
 class Carro
 {
 	constructor() 	{
-		//Declarar variáveis aqui (porque é assim que o JS funciona...)
+		//Manel
 		this.geometry;
 		this.material;
 		this.cube;
 		this.speed = 1;
+
+		//Goncalo
+		this.acceleration = 1;
 	}
 
 	Start() 	{
@@ -16,6 +19,6 @@ class Carro
 	}
 
 	Update(delta) 	{
-		
+
 	}
 }
