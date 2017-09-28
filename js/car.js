@@ -68,9 +68,9 @@ class Carro
 				if (Math.abs(this.throttle) == 1) {
 					this.velocity.x += thrust*this.acceleration;
 				}
-				//If the car is being applied drag, don't multiply by acceleration (smooth drag)
+				//Apply smoother drag than when accelerating
 				else {
-					this.velocity.x += thrust;
+					this.velocity.x += thrust*(this.acceleration / 2);
 				}
 			}
 
@@ -81,19 +81,25 @@ class Carro
 			}
 
 		//Turning
-			var turning = (this.turn * this.steeringSensitivity) * delta;
-			var steerSign = Math.sign(this.velocity.z);
-			var turnSign = Math.sign(this.turn);
+			var velSign = Math.sign(this.velocity.x);
+			//Only handle turning if the car's velocity isn't 0
+			if (velSign != 0) {
+				this.turn *= velSign;
 
-			//Check if car hasn't hit full steering, if it did, don't update Z velocity
-			if (Math.abs(this.velocity.z) < this.maxSteering || (turnSign != steerSign)) {
-				this.velocity.z += turning;
-			}
+				var turning = (this.turn * this.steeringSensitivity) * delta;
+				var steerSign = Math.sign(this.velocity.z);
+				var turnSign = Math.sign(this.turn);
 
-			//When turning is nearly 0, and the player isn't turning, center the steering of the car
-			if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.0005) {
-				this.velocity.z = 0;
-				this.turn = 0;
+				//Check if car hasn't hit full steering, if it did, don't update Z velocity
+				if (Math.abs(this.velocity.z) < this.maxSteering || (turnSign != steerSign)) {
+					this.velocity.z += turning;
+				}
+
+				//When turning is nearly 0, and the player isn't turning, center the steering of the car
+				if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.0005) {
+					this.velocity.z = 0;
+					this.turn = 0;
+				}
 			}
 
 		this.ApplyVelocity();
