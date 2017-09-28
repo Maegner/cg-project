@@ -10,15 +10,16 @@ class Carro
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
-		this.maxSpeed = 0.1;
 		this.speed = 100;
+		this.maxVelocity = 0.1;
 		this.acceleration = 1.6;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
 		//Makes the car slow to a halt
 		this.speedDrag = 0.6;
 
-		this.steeringSensitivity = 20;
+		this.steeringSensitivity = 40;
+		this.maxSteering = 1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
 		//Makes the car turn to the center
@@ -58,28 +59,36 @@ class Carro
 
 		//Acceleration
 			var thrust = (this.throttle * this.speed) * delta;
-			var velocitySign = Math.sign(this.velocity.x);
+			var speedSign = Math.sign(this.velocity.x);
 			var throttleSign = Math.sign(this.throttle);
 
-			//Check if car hasn't hit full speed, if it did, don't update velocity
-			if (Math.abs(this.velocity.x) < this.maxSpeed || (throttleSign != velocitySign)) {
+			//Check if car hasn't hit full speed, if it did, don't update X velocity
+			if (Math.abs(this.velocity.x) < this.maxVelocity || (throttleSign != speedSign)) {
+
 				if (Math.abs(this.throttle) == 1) {
 					this.velocity.x += thrust*this.acceleration;
 				}
+				//If the car is being applied drag, don't multiply by acceleration (smooth drag)
 				else {
 					this.velocity.x += thrust;
 				}
 			}
 
 			//When velocity is nearly 0, and the car isn't at full throttle, halt the car
-			if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.0005) {
+			if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.005) {
 				this.velocity.x = 0;
 				this.throttle = 0;
 			}
 
 		//Turning
 			var turning = (this.turn * this.steeringSensitivity) * delta;
-			this.velocity.z += turning;
+			var steerSign = Math.sign(this.velocity.z);
+			var turnSign = Math.sign(this.turn);
+
+			//Check if car hasn't hit full steering, if it did, don't update Z velocity
+			if (Math.abs(this.velocity.z) < this.maxSteering || (turnSign != steerSign)) {
+				this.velocity.z += turning;
+			}
 
 			//When turning is nearly 0, and the player isn't turning, center the steering of the car
 			if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.0005) {
@@ -101,7 +110,9 @@ class Carro
 	}
 
 	ApplyVelocity() {
-		//this.car.position += this.velocity;
+		//this.car.position.x += this.velocity.x;
+		//this.car.rotation.z += this.velocity.z;
+
 	}
 
 	CreateScreenText() {
@@ -141,7 +152,6 @@ class Carro
 		this.turnText.style.top = 110 + 'px';
 		this.turnText.style.left = 100 + 'px';
 		document.body.appendChild(this.turnText);
-
 	}
 
 	OnAccelerate() {
@@ -217,7 +227,7 @@ class Carro
 	OnUnleft() {
 		this.leftPressed = false;
 
-		this.turn -= 1;
+		this.turn += 1;
 
 		//If the car's speed is not 0 and the player is applying no thrust, apply drag
 		if (this.velocity.length != 0 && this.turn == 0) {
@@ -225,10 +235,10 @@ class Carro
 		}
 
 		//Make sure thrust doesn't have and absolute value greater than 1
-		this.turn = this.turn > 1 ? 1 : this.turn;
+		this.turn = this.turn < -1 ? -1 : this.turn;
 
 		//Make sure the player uses turns right fully
-		this.turn = this.brakePressed && this.turn != 1 ? 1 : this.turn;
+		this.turn = this.rightPressed && this.turn != 1 ? 1 : this.turn;
 	}
 
 	OnRight() {
@@ -245,9 +255,9 @@ class Carro
 	}
 
 	OnUnright() {
-		this.leftPressed = false;
+		this.rightPressed = false;
 
-		this.turn += 1;
+		this.turn -= 1;
 
 		//If the car's speed is not 0 and the player is applying no thrust, apply drag
 		if (this.velocity.length != 0 && this.turn == 0) {
@@ -258,7 +268,7 @@ class Carro
 		this.turn = this.turn < -1 ? -1 : this.turn;
 
 		//Make sure the player uses turns left fully
-		this.turn = this.brakePressed && this.turn != -1 ? -1 : this.turn;
+		this.turn = this.leftPressed && this.turn != -1 ? -1 : this.turn;
 	}
 
 	CreateMiddlePart(x,y,z){
