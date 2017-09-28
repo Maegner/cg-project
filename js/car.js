@@ -47,6 +47,10 @@ class Carro
 		this.CreateWheel(0.1,-0.2,-5);
 		this.CreateRoof(0.5,0.75,0.5);
 		this.CreateWheelSupport(0.75,0.5,0.5);
+		var eixo = new THREE.AxisHelper(3);
+		eixo.rotation.y = -.5;
+		eixo.rotation.x = .5;
+		scene.add(eixo);
 		scene.add(this.car);
 	}
 
@@ -128,20 +132,21 @@ class Carro
 		this.car.add(mesh);
 	}
 	CreateFrontPart(x,y,z){
-		var bico = new THREE.CylinderGeometry(0,0.5,0.5,4,false); 
+		var bico = new THREE.CylinderGeometry(0,0.35,0.5,4,5,0); 
 		var mesh = new THREE.Mesh(bico, this.material);
 		mesh.position.set(x,y,z);
-		bico.rotateX(Math.PI / 2);
+		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
+		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
 		this.car.add(mesh);
 	}
 	CreateWheel(x,y,z){
-		var wheel = new THREE.TorusGeometry( 0.5, 0.5, 0.5, 10 );
+		var wheel = new THREE.TorusGeometry( 0.5, 0.5, 0.5, 5 );
 		var mesh = new THREE.Mesh(wheel, this.material);
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
 	CreateRoof(x,y,z){
-		var ball = new THREE.SphereGeometry( 0.25, 40, 10,0, Math.PI);
+		var ball = new THREE.SphereGeometry( 0.25, 5, 5,0, Math.PI);
 		var mesh = new THREE.Mesh( ball, this.material );
 		mesh.position.set(x,y,z);
 		ball.rotateX(3 * Math.PI / 2);
@@ -159,8 +164,10 @@ class Carro
 
 		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
 		triangle.computeFaceNormals();
+
+		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(3 * Math.PI / 4);
-		triangle.rotateX(Math.PI);
+		triangle.rotateY(3 * Math.PI / 2);
 		var mesh = new THREE.Mesh( triangle, this.material );
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
