@@ -40,7 +40,7 @@ function BuildObjects() {
 	//var cubo1 = new Cubo();
 	var trackLine =  new Track([[0,0,0],[0.1,0,0],[0.2,0,0],[0.3,0,0],[0.3,0,0],[0.1,0.3,0],[4,0,0],[0,2,0]]);
 
-	gameObjects.push(trackLine);
+	//gameObjects.push(trackLine);
 	carro1 = new Carro();
 
 	//gameObjects.push(cubo1);

@@ -132,7 +132,7 @@ class Carro
 		this.car.add(mesh);
 	}
 	CreateFrontPart(x,y,z){
-		var bico = new THREE.CylinderGeometry(0,0.35,0.5,4,5,0); 
+		var bico = new THREE.CylinderGeometry(0,0.35,0.5,4,0,0); 
 		var mesh = new THREE.Mesh(bico, this.material);
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
@@ -155,7 +155,7 @@ class Carro
 	CreateWheelSupport(x,y,z){
 		var triangle = new THREE.Geometry();
 		var v1 = new THREE.Vector3(0,0,0);
-		var v2 = new THREE.Vector3(0.2,0,0);
+		var v2 = new THREE.Vector3(-0.2,0.2,0);
 		var v3 = new THREE.Vector3(0.2,0.2,0);
 
 		triangle.vertices.push(v1);
