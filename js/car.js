@@ -9,37 +9,23 @@ class Carro
 		this.material = new THREE.MeshBasicMaterial( {color: 0x00FF00, wireframe: true} );
 
 		this.velocity = new THREE.Vector3(0,0,0);
-		this.maxSpeed = 0.2;
+		this.maxSpeed = 0.02;
 		this.acceleration = 100;
 		//Translates player's input
 		this.thrust = 0;
 		//Makes the car slow to a halt
 		this.drag = 0.6;
+
+		//Texto de debug
 		this.VelXText;
 		this.ThrustText;
+		this.VelSign;
+		this.ThrSign;
 	}
 
 	Start() {
 
-		this.VelXText = document.createElement('div');
-		this.VelXText.style.position = 'absolute';
-		this.VelXText.style.width = 100;
-		this.VelXText.style.height = 100;
-		this.VelXText.style.backgroundColor = "white";
-		this.VelXText.innerHTML = "hi there!";
-		this.VelXText.style.top = 50 + 'px';
-		this.VelXText.style.left = 100 + 'px';
-		document.body.appendChild(this.VelXText);
-
-		this.ThrustText = document.createElement('div');
-		this.ThrustText.style.position = 'absolute';
-		this.ThrustText.style.width = 100;
-		this.ThrustText.style.height = 100;
-		this.ThrustText.style.backgroundColor = "white";
-		this.ThrustText.innerHTML = "hi there!";
-		this.ThrustText.style.top = 70 + 'px';
-		this.ThrustText.style.left = 100 + 'px';
-		document.body.appendChild(this.ThrustText);
+		this.CreateScreenText();
 
 		this.car = new THREE.Object3D();
 		this.CreateMiddlePart(0.5,0.5,0.5);
@@ -54,22 +40,26 @@ class Carro
 
 		var throttle = (this.thrust * this.acceleration) * delta;
 		var velocitySign = Math.sign(this.velocity.x);
-		var throttleSign = Math.sign(throttle);	
+		var throttleSign = Math.sign(this.thrust);
+
 		//Check if car hasn't hit full speed, if it did, don't update velocity
-		if (velocitySign == 0 || (Math.abs(this.velocity.x) < this.maxSpeed || velocitySign == throttleSign)) {
+		if (Math.abs(this.velocity.x) < this.maxSpeed || throttleSign != velocitySign) {
 			this.velocity.x += throttle;
 		}
 
 		//When velocity is nearly 0, halt the car
-		if (this.thrust == 0 && Math.abs(this.velocity.x) < 0.00005) {
+		if (Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.0005) {
 			this.velocity = new THREE.Vector3(0,0,0);
 			this.thrust = 0;
 		}
+
 		this.ApplyVelocity();
 
 		//Update text
 		this.VelXText.innerHTML = this.velocity.x;
 		this.ThrustText.innerHTML = this.thrust;
+		this.VelSign.innerHTML = velocitySign;
+		this.ThrSign.innerHTML = throttleSign;
 
 		this.car.rotation.y += 0.005;
 		this.car.rotation.x += 0.005;
@@ -78,6 +68,45 @@ class Carro
 
 	ApplyVelocity() {
 		//car.position += this.velocity;
+	}
+
+	CreateScreenText() {
+		this.VelXText = document.createElement('div');
+		this.VelXText.style.position = 'absolute';
+		this.VelXText.style.width = 100;
+		this.VelXText.style.height = 100;
+		this.VelXText.style.backgroundColor = "white";
+		this.VelXText.innerHTML = "hi there!";
+		this.VelXText.style.top = 50 + 'px';
+		this.VelXText.style.left = 100 + 'px';
+		document.body.appendChild(this.VelXText);
+		this.ThrustText = document.createElement('div');
+		this.ThrustText.style.position = 'absolute';
+		this.ThrustText.style.width = 100;
+		this.ThrustText.style.height = 100;
+		this.ThrustText.style.backgroundColor = "white";
+		this.ThrustText.innerHTML = "hi there!";
+		this.ThrustText.style.top = 70 + 'px';
+		this.ThrustText.style.left = 100 + 'px';
+		document.body.appendChild(this.ThrustText);
+		this.VelSign = document.createElement('div');
+		this.VelSign.style.position = 'absolute';
+		this.VelSign.style.width = 100;
+		this.VelSign.style.height = 100;
+		this.VelSign.style.backgroundColor = "white";
+		this.VelSign.innerHTML = "hi there!";
+		this.VelSign.style.top = 90 + 'px';
+		this.VelSign.style.left = 100 + 'px';
+		document.body.appendChild(this.VelSign);
+		this.ThrSign = document.createElement('div');
+		this.ThrSign.style.position = 'absolute';
+		this.ThrSign.style.width = 100;
+		this.ThrSign.style.height = 100;
+		this.ThrSign.style.backgroundColor = "white";
+		this.ThrSign.innerHTML = "hi there!";
+		this.ThrSign.style.top = 110 + 'px';
+		this.ThrSign.style.left = 100 + 'px';
+		document.body.appendChild(this.ThrSign);
 	}
 
 	OnThrust() {
