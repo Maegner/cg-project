@@ -47,7 +47,7 @@ function BuildObjects() {
 	carro1 = new Carro();
 
 	//gameObjects.push(cubo1);
-	//gameObjects.push(carro1);
+	gameObjects.push(carro1);
 
 }
 
