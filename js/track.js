@@ -14,7 +14,7 @@ class Track
 	addTire(x,y,z){
 		'use strict'
 
-		var geometry = new THREE.TorusGeometry( 0.1, 0.01, 13, 50 );
+		var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 50 );
 		var tire = new THREE.Mesh(geometry,this.material);
 		tire.position.set(x,y,z);
 
@@ -60,9 +60,7 @@ class Track
 		this.track = new THREE.Object3D();
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
 
-		this.defaultTrackGenerate();
-
-		//this.tirePositions = [[0,0,0]];
+		//this.defaultTrackGenerate();
 
 		this.createOutline();
 
