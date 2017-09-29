@@ -6,24 +6,25 @@ class Carro
 		this.speed = 1;
 
 		/*Goncalo*/
-		this.material = new THREE.MeshBasicMaterial( {color: 0x00FF00, wireframe: true} );
+		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
+		this.materialL = new THREE.MeshLambertMaterial( {color: 0xFFFFFF, wireframe: true} );
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
-		this.speed = 100;
-		this.maxVelocity = 0.1;
-		this.acceleration = 1.6;
+		this.speed = 0.2;
+		this.maxVelocity = 20;
+		this.acceleration = 5;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
 		//Makes the car slow to a halt
 		this.speedDrag = 0.6;
 
-		this.steeringSensitivity = 40;
-		this.maxSteering = 1;
+		this.steeringSensitivity = 0.1;
+		this.maxSteering = 0.1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
 		//Makes the car turn to the center
-		this.turnDrag = 0.8;
+		this.turnDrag = 0.6;
 
 		//Tracks the key's pressed state
 		this.throttlePressed = false;
@@ -43,65 +44,37 @@ class Carro
 		this.CreateScreenText();
 
 		this.car = new THREE.Object3D();
-		this.CreateMiddlePart(0.5,0.5,0.5);
-		this.CreateFrontPart(0.5,0.5,1.5);
-		this.CreateWheel(0.1,-0.2,-5);
-		this.CreateRoof(0.5,0.75,0.5);
-		this.CreateWheelSupport(0.75,0.5,0.5);
+		//this.CreateMiddlePart(0.5,0.5,0.5);
+		this.CreateMiddlePart(0.5,1,-0.5);
+		this.CreateFrontPart(0.55,1,0.875);
+		this.CreateFrontWing(0.35,1,1.4);
+		this.CreateAleronTriangle(1,1.4,-1);
+		this.CreateAleronTriangle(1,0.6,-1);
+		this.CreateAleronBar(1,1,-1.25);
+		this.CreateFrontWheelSupport(0.35,1.7,0.4);
+		this.CreateFrontWheelSupport2(0.35,0.3,0.4);
+		this.CreateBackWheelSupport(0.35,1.625,-1);
+		this.CreateBackWheelSupport(0.35,0.375,-1);
+		this.CreateWheel(0.35,1.625,-1);
+		this.CreateWheel(0.35,0.375,-1);
+		this.CreateTip(0.55,1,1.6);
+		this.CreateWheel(0.35,1.625,0.9);
+		this.CreateWheel(0.35,0.375,0.9);
+		this.CreateRoof(0.75,1,-0.25);
+		//this.CreateWheelSupport(0.75,0.5,0.5);
 		var eixo = new THREE.AxisHelper(3);
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
 		scene.add(eixo);
 		scene.add(this.car);
+
+		eixo.rotateX(1);
 	}
 
 	Update(delta) {
 
-		//Acceleration
-			var thrust = (this.throttle * this.speed) * delta;
-			var speedSign = Math.sign(this.velocity.x);
-			var throttleSign = Math.sign(this.throttle);
-
-			//Check if car hasn't hit full speed, if it did, don't update X velocity
-			if (Math.abs(this.velocity.x) < this.maxVelocity || (throttleSign != speedSign)) {
-
-				if (Math.abs(this.throttle) == 1) {
-					this.velocity.x += thrust*this.acceleration;
-				}
-				//Apply smoother drag than when accelerating
-				else {
-					this.velocity.x += thrust*(this.acceleration / 2);
-				}
-			}
-
-			//When velocity is nearly 0, and the car isn't at full throttle, halt the car
-			if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.005) {
-				this.velocity.x = 0;
-				this.throttle = 0;
-			}
-
-		//Turning
-			var velSign = Math.sign(this.velocity.x);
-			//Only handle turning if the car's velocity isn't 0
-			if (velSign != 0) {
-				this.turn *= velSign;
-
-				var turning = (this.turn * this.steeringSensitivity) * delta;
-				var steerSign = Math.sign(this.velocity.z);
-				var turnSign = Math.sign(this.turn);
-
-				//Check if car hasn't hit full steering, if it did, don't update Z velocity
-				if (Math.abs(this.velocity.z) < this.maxSteering || (turnSign != steerSign)) {
-					this.velocity.z += turning;
-				}
-
-				//When turning is nearly 0, and the player isn't turning, center the steering of the car
-				if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.0005) {
-					this.velocity.z = 0;
-					this.turn = 0;
-				}
-			}
-
+		this.HandleAcceleration(delta);
+		this.HandleTurning(delta);
 		this.ApplyVelocity();
 
 		//Update text
@@ -110,15 +83,66 @@ class Carro
 		this.throttleText.innerHTML = this.throttle;
 		this.turnText.innerHTML = this.turn;
 
-		//this.car.rotation.y += 0.005;
-		//this.car.rotation.x += 0.005;
-		//this.car.rotation.z += 0.005;
+		this.car.rotation.y += 0.005;
+		this.car.rotation.x += 0.005;
+		this.car.rotation.z += 0.005;
 	}
 
 	ApplyVelocity() {
 		//this.car.position.x += this.velocity.x;
 		//this.car.rotation.z += this.velocity.z;
 
+	}
+
+	HandleAcceleration(delta) {
+		var thrust = (this.throttle * this.speed * 10) * delta;
+		var speedSign = Math.sign(this.velocity.x);
+		var throttleSign = Math.sign(this.throttle);
+
+		//Check if car hasn't hit full speed, if it did, don't update X velocity
+		if (Math.abs(this.velocity.x) < this.maxVelocity || (throttleSign != speedSign)) {
+
+			if (Math.abs(this.throttle) == 1) {
+				//Make sure the added speed doesn't surpass maxVelocity
+				var addedVel = this.velocity.x + thrust*this.acceleration;
+				this.velocity.x = Math.abs(addedVel) > this.maxVelocity ? Math.sign(addedVel)*this.maxVelocity : addedVel;
+			}
+			//Apply smoother deacceleration when dragging
+			else {
+				/*
+				var draggedVelocity = this.velocity.x + thrust*(this.acceleration / 2);
+				this.velocity.x = Math.sign(this.velocity.x) != Math.sign(draggedVelocity) ? 0 : addedVel;
+				*/
+				this.velocity.x += thrust*(this.acceleration / 2);
+			}
+		}
+		//When velocity is nearly 0, and the car isn't at full throttle, halt the car
+		if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.05) {
+			this.velocity.x = 0;
+			this.throttle = 0;
+		}
+	}
+
+	HandleTurning(delta) {
+		var vel = this.velocity.x;
+		var clampVel = THREE.Math.clamp(vel, -1, 1);
+		var turning = (this.turn * this.steeringSensitivity * 10) * delta/* * clampVel*/;
+		var steerSign = Math.sign(this.velocity.z);
+		var turnSign = Math.sign(this.turn);
+
+		//Check if car hasn't hit full steering, if it did, don't update Z velocity
+		if (Math.abs(this.velocity.z) < this.maxSteering || (turnSign != steerSign)) {
+			//Make sure the added steering doesn't surpass maxSteering
+			var addedTurning = this.velocity.z + turning;
+			this.velocity.z = Math.abs(addedTurning) > this.maxSteering ? Math.sign(addedTurning)*this.maxSteering : addedTurning;
+			//Multiply by clamped velocity, to invert turning when speed changes direction
+			this.velocity.z *= clampVel;
+		}
+		//When turning is nearly 0, and the player isn't turning, center the steering of the car
+		if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.005) {
+			this.velocity.z = 0;
+			this.turn = 0;
+		}
 	}
 
 	CreateScreenText() {
@@ -235,8 +259,8 @@ class Carro
 
 		this.turn += 1;
 
-		//If the car's speed is not 0 and the player is applying no thrust, apply drag
-		if (this.velocity.length != 0 && this.turn == 0) {
+		//If the car's turning is 0, apply drag
+		if (this.turn == 0) {
 			this.turn -= (this.turnDrag) * Math.sign(this.velocity.z);
 		}
 
@@ -265,8 +289,8 @@ class Carro
 
 		this.turn -= 1;
 
-		//If the car's speed is not 0 and the player is applying no thrust, apply drag
-		if (this.velocity.length != 0 && this.turn == 0) {
+		//If the car's turning is 0, apply drag
+		if (this.turn == 0) {
 			this.turn -= (this.turnDrag) * Math.sign(this.velocity.z);
 		}
 
@@ -278,38 +302,88 @@ class Carro
 	}
 
 	CreateMiddlePart(x,y,z){
-		var cubo = new THREE.BoxGeometry( 0.5, 0.5, 1.5);
+		var cubo = new THREE.BoxGeometry( 0.5, 1, 1.5);
 		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, this.material);
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
-	CreateFrontPart(x,y,z){
-		var bico = new THREE.CylinderGeometry(0,0.35,0.5,4,5,0); 
+	CreateTip(x,y,z){
+		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
 		var mesh = new THREE.Mesh(bico, this.material);
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
 		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
 		this.car.add(mesh);
 	}
+	CreateFrontWing(x,y,z){
+		var cubo = new THREE.BoxGeometry( .2, .02, 1.25);
+		//cubo.x = (Math.PI/180);
+		var mesh = new THREE.Mesh(cubo, this.material);
+		mesh.position.set(x,y,z);
+		cubo.rotateZ(Math.PI / 2); 
+		cubo.rotateX(2*Math.PI/4); 
+
+		this.car.add(mesh);
+	}
+	CreateFrontPart(x,y,z){
+		var cubo = new THREE.BoxGeometry( 1.25, .4, .4);
+		//cubo.x = (Math.PI/180);
+		var mesh = new THREE.Mesh(cubo, this.material);
+		mesh.position.set(x,y,z);
+		cubo.rotateY(2*Math.PI/4); 
+
+		this.car.add(mesh);
+	}
 	CreateWheel(x,y,z){
-		var wheel = new THREE.TorusGeometry( 0.5, 0.5, 0.5, 5 );
+		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 10, 20 );
 		var mesh = new THREE.Mesh(wheel, this.material);
 		mesh.position.set(x,y,z);
+		wheel.rotateX(Math.PI / 2); 
 		this.car.add(mesh);
 	}
+
 	CreateRoof(x,y,z){
-		var ball = new THREE.SphereGeometry( 0.25, 5, 5,0, Math.PI);
+		var ball = new THREE.SphereGeometry( 0.2, 5, 5,0, Math.PI);
 		var mesh = new THREE.Mesh( ball, this.material );
 		mesh.position.set(x,y,z);
-		ball.rotateX(3 * Math.PI / 2);
+		ball.rotateY(Math.PI / 2);
 		this.car.add(mesh);
 	}
-	CreateWheelSupport(x,y,z){
+	CreateAleronTriangle(x,y,z){
 		var triangle = new THREE.Geometry();
-		var v1 = new THREE.Vector3(0,0,0);
-		var v2 = new THREE.Vector3(0.2,0,0);
-		var v3 = new THREE.Vector3(0.2,0.2,0);
+		var v1 = new THREE.Vector3(-0.25,0,0);
+		var v2 = new THREE.Vector3(-0.25,0.25,0);
+		var v3 = new THREE.Vector3(0.05,0.25,0);
+		triangle.vertices.push(v1);
+		triangle.vertices.push(v2);
+		triangle.vertices.push(v3);
+
+		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
+		triangle.computeFaceNormals();
+
+		triangle.rotateZ(Math.PI / 2); 
+		triangle.rotateX(2*Math.PI/4); 
+
+		var mesh = new THREE.Mesh( triangle, this.material );
+		mesh.position.set(x,y,z);
+		this.car.add(mesh);
+	}
+	CreateAleronBar(x,y,z){
+		var cubo = new THREE.BoxGeometry( .2, .01, 1.2);
+		//cubo.x = (Math.PI/180);
+		var mesh = new THREE.Mesh(cubo, this.material);
+		mesh.position.set(x,y,z);
+		cubo.rotateZ(Math.PI / 2); 
+		cubo.rotateX(2*Math.PI/4); 
+
+		this.car.add(mesh);
+	}
+	CreateFrontWheelSupport(x,y,z){
+		var triangle = new THREE.Geometry();
+		var v1 = new THREE.Vector3(-0.5,0,0);
+		var v2 = new THREE.Vector3(-0.5,-0.5,0);
+		var v3 = new THREE.Vector3(0,-0.5,0);
 
 		triangle.vertices.push(v1);
 		triangle.vertices.push(v2);
@@ -319,10 +393,41 @@ class Carro
 		triangle.computeFaceNormals();
 
 		triangle.rotateX(-Math.PI / 2);
-		triangle.rotateZ(3 * Math.PI / 4);
-		triangle.rotateY(3 * Math.PI / 2);
+		triangle.rotateZ(Math.PI / 2); 
+		//triangle.rotateX(2*Math.PI/4); 
 		var mesh = new THREE.Mesh( triangle, this.material );
 		mesh.position.set(x,y,z);
+		this.car.add(mesh);
+	}
+	CreateFrontWheelSupport2(x,y,z){
+		var triangle = new THREE.Geometry();
+		var v1 = new THREE.Vector3(-0.5,0,0);
+		var v2 = new THREE.Vector3(-0.5,-0.5,0);
+		var v3 = new THREE.Vector3(0,-0.5,0);
+
+		triangle.vertices.push(v1);
+		triangle.vertices.push(v2);
+		triangle.vertices.push(v3);
+
+		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
+		triangle.computeFaceNormals();
+
+		triangle.rotateX(-Math.PI / 2);
+		triangle.rotateZ(Math.PI / 2);
+		triangle.rotateZ(Math.PI); 
+		var mesh = new THREE.Mesh( triangle, this.material );
+		mesh.position.set(x,y,z);
+		this.car.add(mesh);
+	}
+	CreateBackWheelSupport(x,y,z){
+		//var cubo = new THREE.BoxGeometry( .075, .05, 0.2);
+		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
+		//cubo.x = (Math.PI/180);
+		var mesh = new THREE.Mesh(cubo, this.material);
+		mesh.position.set(x,y,z);
+		cubo.rotateZ(Math.PI); 
+		cubo.rotateX(Math.PI); 
+
 		this.car.add(mesh);
 	}
 }
