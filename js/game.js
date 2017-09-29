@@ -71,28 +71,34 @@ function onKeyDown(e) {
 
 	switch (e.keyCode)
 	{
-		// W,w
-		case 87:
-		case 119:
+		// Up
+		case 38:
 			carro1.OnAccelerate();
 			break;
 
-		//S, s
-		case 83:
-		case 115:
+		//Down
+		case 40:
 			carro1.OnBrake();
+			break;
+
+		// Left
+		case 37:
+			carro1.OnLeft();
+			break;
+
+		// Right
+		case 39:
+			carro1.OnRight();
 			break;
 
 		// A, a
 		case 65:
 		case 97:
-			carro1.OnLeft();
-			break;
-
-		// D, d
-		case 68:
-		case 100:
-			carro1.OnRight();
+			scene.traverse(function(node) {
+				if(node instanceof THREE.Mesh){
+					node.material.wireframe = !node.material.wireframe;
+				}
+			});
 			break;
 	}
 }
@@ -100,32 +106,23 @@ function onKeyDown(e) {
 function onKeyUp(e) {
 	switch (e.keyCode)
 	{
-		// W,w
-		case 87:
-		case 119:
+		// Up
+		case 38:
 			carro1.OnUnaccelerate();
 			break;
 
-		//S, s
-		case 83:
-		case 115:
+		//Down
+		case 40:
 			carro1.OnUnbrake();
 			break;
 
-		// A, a
-		case 65:
-		case 97:
-			//carro1.OnUnleft();
-			scene.traverse(function(node) {
-				if(node instanceof THREE.Mesh){
-					node.material.wireframe = !node.material.wireframe;
-				}
-			});
+		//Left
+		case 37:
+			carro1.OnUnleft();
 			break;
 
-		// D, d
-		case 68:
-		case 100:
+		// Right
+		case 39:
 			carro1.OnUnright();
 			break;
 	}
@@ -156,8 +153,8 @@ function Init() {
 	window.addEventListener( "resize", OnResize);
 	//Receive input from player
 
-	window.addEventListener( "keydown", onKeyDown, false);
-	window.addEventListener( "keyup", onKeyUp, false);
+	window.addEventListener( "keydown", onKeyDown);
+	window.addEventListener( "keyup", onKeyUp);
 
 	//Start game loop
 	GameLoop();
