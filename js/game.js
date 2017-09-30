@@ -43,10 +43,6 @@ function BuildObjects() {
 	var trackLine =  new Track([],tirePostions,[],[]);
 
 	gameObjects.push(trackLine);
-	carro1 = new Carro();
-
-	//gameObjects.push(cubo1);
-	//gameObjects.push(carro1);
 
 }
 
