@@ -69,13 +69,13 @@ class Carro
 		this.CreateWheel(0.35,1.625,0.9);
 		this.CreateWheel(0.35,0.375,0.9);
 		this.CreateRoof(0.75,1,-0.25);
-		//this.CreateWheelSupport(0.75,0.5,0.5);
 		var eixo = new THREE.AxisHelper(3);
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
 		scene.add(eixo);
 		scene.add(this.car);
 		eixo.rotateX(1);
+		this.car.scale.set(10, 10, 10); // change car's scale
 	}
 
 	Update(delta) {
