@@ -11,6 +11,9 @@ class Carro
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
+		/*
+		ACCELERATION
+		*/
 		this.speed = 0.2;
 		this.maxVelocity = 20;
 		this.acceleration = 5;
@@ -18,7 +21,12 @@ class Carro
 		this.throttle = 0;
 		//Makes the car slow to a halt
 		this.speedDrag = 0.6;
+		//Velocity clamped between -1 and 1
+		this.clampVel = 0;
 
+		/*
+		STEERING
+		*/
 		this.steeringSensitivity = 0.1;
 		this.maxSteering = 0.1;
 		//Translates player's turn input (1 = right, -1 = left)
@@ -71,7 +79,6 @@ class Carro
 	}
 
 	Update(delta) {
-
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
@@ -85,12 +92,6 @@ class Carro
 		this.car.rotation.y += 0.005;
 		this.car.rotation.x += 0.005;
 		this.car.rotation.z += 0.005;
-	}
-
-	ApplyVelocity() {
-		//this.car.position.x += this.velocity.x;
-		//this.car.rotation.z += this.velocity.z;
-
 	}
 
 	HandleAcceleration(delta) {
@@ -108,10 +109,6 @@ class Carro
 			}
 			//Apply smoother deacceleration when dragging
 			else {
-				/*
-				var draggedVelocity = this.velocity.x + thrust*(this.acceleration / 2);
-				this.velocity.x = Math.sign(this.velocity.x) != Math.sign(draggedVelocity) ? 0 : addedVel;
-				*/
 				this.velocity.x += thrust*(this.acceleration / 2);
 			}
 		}
@@ -123,9 +120,11 @@ class Carro
 	}
 
 	HandleTurning(delta) {
+
 		var vel = this.velocity.x;
-		var clampVel = THREE.Math.clamp(vel, -1, 1);
-		var turning = (this.turn * this.steeringSensitivity * 10) * delta/* * clampVel*/;
+		this.clampVel = THREE.Math.clamp(vel, -1, 1);
+		
+		var turning = (this.turn * this.steeringSensitivity * 10) * delta;
 		var steerSign = Math.sign(this.velocity.z);
 		var turnSign = Math.sign(this.turn);
 
@@ -134,14 +133,20 @@ class Carro
 			//Make sure the added steering doesn't surpass maxSteering
 			var addedTurning = this.velocity.z + turning;
 			this.velocity.z = Math.abs(addedTurning) > this.maxSteering ? Math.sign(addedTurning)*this.maxSteering : addedTurning;
-			//Multiply by clamped velocity, to invert turning when speed changes direction
-			this.velocity.z *= clampVel;
 		}
+
 		//When turning is nearly 0, and the player isn't turning, center the steering of the car
 		if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.005) {
 			this.velocity.z = 0;
 			this.turn = 0;
 		}
+	}
+
+	ApplyVelocity() {
+		//this.car.position.x += this.velocity.x;
+		//Multiply by clamped velocity, to invert turning when speed changes direction
+		//this.car.rotation.z += this.clampVel * this.velocity.z;
+
 	}
 
 	CreateScreenText() {

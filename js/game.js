@@ -22,7 +22,7 @@ function CreateScene() {
 }
 
 function CreateCamera() {
-	camera = new THREE.PerspectiveCamera(/*FOV*/75, /*Aspect Ratio*/window.innerWidth / window.innerHeight, /*Near*/0.1, /*Far*/1000);
+	camera = new THREE.OrthographicCamera(/*LeftPane*/-window.innerWidth/2, /*RightPane*/window.innerWidth/2,/*TopPane*/window.innerHeight/2,/*BottomPane*/-window.innerHeight/2 ,/*Near*/0.1, /*Far*/10);
 	camera.position.z = 3;
 }
 
@@ -37,17 +37,13 @@ function Render() {
 }
 
 function BuildObjects() {
-	//var cubo1 = new Cubo();
+	carro1 = new Carro();
+	gameObjects.push(carro1);
 
-	var tirePostions = [[0,0,0],[0.3,0,0],[0.6,0,0],[0.9,0,0],[1.2,0,0]];
-
+	var tirePostions = TRACK_1;
 	var trackLine =  new Track([],tirePostions,[],[]);
 
-	//gameObjects.push(trackLine);
-	carro1 = new Carro();
-
-	//gameObjects.push(cubo1);
-	gameObjects.push(carro1);
+	gameObjects.push(trackLine);
 
 }
 
