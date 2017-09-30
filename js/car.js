@@ -80,8 +80,6 @@ class Carro
 	}
 
 	Update(delta) {
-
-
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
@@ -112,10 +110,6 @@ class Carro
 			}
 			//Apply smoother deacceleration when dragging
 			else {
-				/*
-				var draggedVelocity = this.velocity.x + thrust*(this.acceleration / 2);
-				this.velocity.x = Math.sign(this.velocity.x) != Math.sign(draggedVelocity) ? 0 : addedVel;
-				*/
 				this.velocity.x += thrust*(this.acceleration / 2);
 			}
 		}
@@ -141,8 +135,6 @@ class Carro
 			var addedTurning = this.velocity.z + turning;
 			this.velocity.z = Math.abs(addedTurning) > this.maxSteering ? Math.sign(addedTurning)*this.maxSteering : addedTurning;
 		}
-		//Multiply by clamped velocity, to invert turning when speed changes direction
-		//this.velocity.z *= thisclampVel;
 
 		//When turning is nearly 0, and the player isn't turning, center the steering of the car
 		if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.005) {
@@ -153,6 +145,7 @@ class Carro
 
 	ApplyVelocity() {
 		//this.car.position.x += this.velocity.x;
+		//Multiply by clamped velocity, to invert turning when speed changes direction
 		//this.car.rotation.z += this.clampVel * this.velocity.z;
 
 	}

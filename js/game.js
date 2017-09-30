@@ -37,7 +37,8 @@ function Render() {
 }
 
 function BuildObjects() {
-	//var cubo1 = new Cubo();
+	carro1 = new Carro();
+	gameObjects.push(carro1);
 
 	var tirePostions = TRACK_1;
 	var trackLine =  new Track([],tirePostions,[],[]);
