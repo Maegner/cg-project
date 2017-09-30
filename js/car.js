@@ -67,7 +67,6 @@ class Carro
 		eixo.rotation.x = .5;
 		scene.add(eixo);
 		scene.add(this.car);
-
 		eixo.rotateX(1);
 	}
 
