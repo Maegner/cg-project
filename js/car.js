@@ -15,6 +15,7 @@ class Carro
 		ACCELERATION
 		*/
 		this.speed = 0.2;
+		this.speedScale = 5;
 		this.maxVelocity = 20;
 		this.acceleration = 5;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
@@ -27,8 +28,9 @@ class Carro
 		/*
 		STEERING
 		*/
-		this.steeringSensitivity = 0.1;
-		this.maxSteering = 0.1;
+		this.steeringSensitivity = 1;
+		this.steeringScale = 1;
+		this.maxSteering = 1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
 		//Makes the car turn to the center
@@ -143,10 +145,10 @@ class Carro
 	}
 
 	ApplyVelocity() {
-		//this.car.position.x += this.velocity.x;
-		//Multiply by clamped velocity, to invert turning when speed changes direction
-		//this.car.rotation.z += this.clampVel * this.velocity.z;
+		//this.car.position.x += (this.velocity.x * this.speedScale) * this.car.getWorldDirection();
 
+		//Multiply by clamped velocity, to invert turning when speed changes direction
+		//this.car.rotateZ(this.velocity.z * this.clampVel * this.steeringScale);
 	}
 
 	CreateScreenText() {
