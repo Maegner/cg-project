@@ -15,9 +15,9 @@ class Carro
 		ACCELERATION
 		*/
 		this.speed = 0.2;
-		this.speedScale = 5;
+		this.speedScale = 0.1;
 		this.maxVelocity = 20;
-		this.acceleration = 5;
+		this.acceleration = 10;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
 		//Makes the car slow to a halt
@@ -34,7 +34,7 @@ class Carro
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
 		//Makes the car turn to the center
-		this.turnDrag = 0.6;
+		this.turnDrag = 0.9;
 
 		//Tracks the key's pressed state
 		this.throttlePressed = false;
@@ -74,10 +74,14 @@ class Carro
 		var eixo = new THREE.AxisHelper(3);
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
+		eixo.scale.set(10, 10, 10);
 		scene.add(eixo);
 		scene.add(this.car);
 		eixo.rotateX(1);
-		this.car.scale.set(10, 10, 10); // change car's scale
+
+		this.car.scale.set(50, 50, 50); // change car's scale
+		this.car.rotation.y = 1;
+		this.car.position.z = 50;
 	}
 
 	Update(delta) {
@@ -88,34 +92,24 @@ class Carro
 		//Update text
 		this.VelXText.innerHTML = this.velocity.x;
 		this.VelZText.innerHTML = this.velocity.z;
-		this.throttleText.innerHTML = this.throttle;
 		this.turnText.innerHTML = this.turn;
-
-		this.car.rotation.y += 0.005;
-		this.car.rotation.x += 0.005;
-		this.car.rotation.z += 0.005;
 	}
 
 	HandleAcceleration(delta) {
-		var thrust = (this.throttle * this.speed * 10) * delta;
 		var speedSign = Math.sign(this.velocity.x);
 		var throttleSign = Math.sign(this.throttle);
+		var thrust = (this.throttle * this.speed * 10) * delta * (1 + (Math.abs(speedSign - throttleSign) / 2));
 
 		//Check if car hasn't hit full speed, if it did, don't update X velocity
 		if (Math.abs(this.velocity.x) < this.maxVelocity || (throttleSign != speedSign)) {
 
-			if (Math.abs(this.throttle) == 1) {
-				//Make sure the added speed doesn't surpass maxVelocity
-				var addedVel = this.velocity.x + thrust*this.acceleration;
-				this.velocity.x = Math.abs(addedVel) > this.maxVelocity ? Math.sign(addedVel)*this.maxVelocity : addedVel;
-			}
-			//Apply smoother deacceleration when dragging
-			else {
-				this.velocity.x += thrust*(this.acceleration / 2);
-			}
+			//Make sure the added speed doesn't surpass maxVelocity
+			var addedVel = (this.velocity.x + thrust*this.acceleration);
+			this.throttleText.innerHTML = addedVel;
+			this.velocity.x = Math.abs(addedVel) > this.maxVelocity ? Math.sign(addedVel)*this.maxVelocity : addedVel;
 		}
 		//When velocity is nearly 0, and the car isn't at full throttle, halt the car
-		if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.05) {
+		if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.5) {
 			this.velocity.x = 0;
 			this.throttle = 0;
 		}
@@ -138,17 +132,17 @@ class Carro
 		}
 
 		//When turning is nearly 0, and the player isn't turning, center the steering of the car
-		if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.005) {
+		if (this.velocity.z != 0 && Math.abs(this.turn) != 1 && Math.abs(this.velocity.z) < 0.1) {
 			this.velocity.z = 0;
 			this.turn = 0;
 		}
 	}
 
 	ApplyVelocity() {
-		//this.car.position.x += (this.velocity.x * this.speedScale) * this.car.getWorldDirection();
+		this.car.position.x += (this.velocity.x * this.speedScale)/* * this.car.getWorldDirection()*/;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
-		//this.car.rotateZ(this.velocity.z * this.clampVel * this.steeringScale);
+		this.car.rotateX(this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
 	}
 
 	CreateScreenText() {
