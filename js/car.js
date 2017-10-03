@@ -15,9 +15,9 @@ class Carro
 		ACCELERATION
 		*/
 		this.speed = 0.2;
-		this.speedScale = 0.1;
-		this.maxVelocity = 20;
-		this.acceleration = 10;
+		this.speedScale = 0.5;
+		this.maxVelocity = 15;
+		this.acceleration = 5;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
 		//Makes the car slow to a halt
@@ -28,8 +28,8 @@ class Carro
 		/*
 		STEERING
 		*/
-		this.steeringSensitivity = 1;
-		this.steeringScale = 1;
+		this.steeringSensitivity = 0.8;
+		this.steeringScale = 0.2;
 		this.maxSteering = 1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
@@ -47,6 +47,7 @@ class Carro
 		this.VelZText;
 		this.throttleText;
 		this.turnText;
+		this.testText;
 	}
 
 	Start() {
@@ -139,7 +140,10 @@ class Carro
 	}
 
 	ApplyVelocity() {
-		this.car.position.x += (this.velocity.x * this.speedScale)/* * this.car.getWorldDirection()*/;
+		var forward = this.car.getWorldDirection();
+		this.testText.innerHTML = forward.x.toString() + " : " + forward.y.toString() + " : " + forward.z.toString();
+		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
+		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
@@ -182,6 +186,15 @@ class Carro
 		this.turnText.style.top = 110 + 'px';
 		this.turnText.style.left = 100 + 'px';
 		document.body.appendChild(this.turnText);
+		this.testText = document.createElement('div');
+		this.testText.style.position = 'absolute';
+		this.testText.style.width = 100;
+		this.testText.style.height = 100;
+		this.testText.style.backgroundColor = "white";
+		this.testText.innerHTML = "hi there!";
+		this.testText.style.top = 130 + 'px';
+		this.testText.style.left = 100 + 'px';
+		document.body.appendChild(this.testText);
 	}
 
 	OnAccelerate() {
