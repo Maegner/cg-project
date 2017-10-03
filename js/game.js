@@ -2,7 +2,7 @@
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 */
 
-var camera, scene, renderer, time, carro1;
+var camera, scene, renderer, time, carro1 ,frustumSize;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
@@ -10,11 +10,16 @@ var gameObjects = [];
 
 
 function OnResize() {
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	if (window.innerHeight > 0 && window.innerWidth > 0) {
-		camera.aspect = renderer.getSize().width / renderer.getSize().height;
-		camera.updateProjectionMatrix();		
-	}
+
+		var aspect = window.innerWidth / window.innerHeight;
+
+		camera.left = -frustumSize * aspect/2;
+		camera.right = frustumSize * aspect/2;
+		camera.top = frustumSize/2;
+		camera.bottom = -frustumSize/2;
+
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight);
 }
 
 function CreateScene() {
@@ -22,7 +27,9 @@ function CreateScene() {
 }
 
 function CreateCamera() {
-	camera = new THREE.OrthographicCamera(/*LeftPane*/-window.innerWidth/2, /*RightPane*/window.innerWidth/2,/*TopPane*/window.innerHeight/2,/*BottomPane*/-window.innerHeight/2 ,/*Near*/0.1, /*Far*/1000);
+	frustumSize = window.innerHeight;
+	var aspect = window.innerWidth/window.innerHeight
+	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize*aspect/2, /*RightPane*/frustumSize*aspect/2,/*TopPane*/frustumSize/2,/*BottomPane*/-frustumSize/2 ,/*Near*/0.1, /*Far*/1000);
 	camera.position.z = 100;
 }
 

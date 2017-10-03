@@ -21,11 +21,20 @@ class Track
 		this.track.add(tire);
 	}
 
+	addTabletop(){
+		var geometry = new THREE.BoxGeometry(window.innerWidth,window.innerHeight,2);
+		var material = new THREE.MeshBasicMaterial({color: 0x808080, wireframe:true })
+		var tabletop = new THREE.Mesh(geometry,material);
+		tabletop.position.set(0,0,-1);
+
+		this.track.add(tabletop)
+	}
+
 	createTrack(){
 		
 		var nmber = 0;
+		this.addTabletop();
 		while(nmber < this.tirePositions.length){
-
 			this.addTire(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
 			nmber++;
 		}
