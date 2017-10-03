@@ -22,8 +22,8 @@ function CreateScene() {
 }
 
 function CreateCamera() {
-	camera = new THREE.OrthographicCamera(/*LeftPane*/-window.innerWidth/2, /*RightPane*/window.innerWidth/2,/*TopPane*/window.innerHeight/2,/*BottomPane*/-window.innerHeight/2 ,/*Near*/0.1, /*Far*/10);
-	camera.position.z = 3;
+	camera = new THREE.OrthographicCamera(/*LeftPane*/-window.innerWidth/2, /*RightPane*/window.innerWidth/2,/*TopPane*/window.innerHeight/2,/*BottomPane*/-window.innerHeight/2 ,/*Near*/0.1, /*Far*/1000);
+	camera.position.z = 100;
 }
 
 function CreateRenderer() {
