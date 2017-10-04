@@ -11,12 +11,15 @@ class Carro
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
+		this.carScale = 20;
+		this.offset = -0.75;
+
 		/*
 		ACCELERATION
 		*/
-		this.speed = 0.1;
+		this.speed = 0.05;
 		this.speedScale = 0.8;
-		this.maxVelocity = 10;
+		this.maxVelocity = 5;
 		this.acceleration = 8;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
@@ -34,7 +37,7 @@ class Carro
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
 		//Makes the car turn to the center
-		this.turnDrag = 0.9;
+		this.turnDrag = 0.99;
 
 		//Tracks the key's pressed state
 		this.throttlePressed = false;
@@ -55,22 +58,22 @@ class Carro
 
 		this.car = new THREE.Object3D();
 		//this.CreateMiddlePart(0.5,0.5,0.5);
-		this.CreateMiddlePart(0.5,1,-0.5);
-		this.CreateFrontPart(0.55,1,0.875);
-		this.CreateFrontWing(0.35,1,1.4);
-		this.CreateAleronTriangle(1,1.4,-1);
-		this.CreateAleronTriangle(1,0.6,-1);
-		this.CreateAleronBar(1,1,-1.25);
-		this.CreateFrontWheelSupport(0.35,1.7,0.4);
-		this.CreateFrontWheelSupport2(0.35,0.3,0.4);
-		this.CreateBackWheelSupport(0.35,1.625,-1);
-		this.CreateBackWheelSupport(0.35,0.375,-1);
-		this.CreateWheel(0.35,1.625,-1);
-		this.CreateWheel(0.35,0.375,-1);
-		this.CreateTip(0.55,1,1.6);
-		this.CreateWheel(0.35,1.625,0.9);
-		this.CreateWheel(0.35,0.375,0.9);
-		this.CreateRoof(0.75,1,-0.25);
+		this.CreateMiddlePart(0.5,1 + this.offset,-0.5);
+		this.CreateFrontPart(0.55,1 + this.offset,0.875);
+		this.CreateFrontWing(0.35,1 + this.offset,1.4);
+		this.CreateAleronTriangle(1,1.4 + this.offset,-1);
+		this.CreateAleronTriangle(1,0.6 + this.offset,-1);
+		this.CreateAleronBar(1,1 + this.offset,-1.25);
+		this.CreateFrontWheelSupport(0.35,1.7 + this.offset,0.4);
+		this.CreateFrontWheelSupport2(0.35,0.3 + this.offset,0.4);
+		this.CreateBackWheelSupport(0.35,1.625 + this.offset,-1);
+		this.CreateBackWheelSupport(0.35,0.375 + this.offset,-1);
+		this.CreateWheel(0.35,1.625 + this.offset,-1);
+		this.CreateWheel(0.35,0.375 + this.offset,-1);
+		this.CreateTip(0.55,1 + this.offset,1.6);
+		this.CreateWheel(0.35,1.625 + this.offset,0.9);
+		this.CreateWheel(0.35,0.375 + this.offset,0.9);
+		this.CreateRoof(0.75,1 + this.offset,-0.25);
 		var eixo = new THREE.AxisHelper(3);
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
@@ -79,7 +82,7 @@ class Carro
 		scene.add(this.car);
 		eixo.rotateX(1);
 
-		this.car.scale.set(30, 30, 30); // change car's scale
+		this.car.scale.set(this.carScale, this.carScale, this.carScale); // change car's scale
 		this.car.rotation.y = 1;
 		this.car.position.z = 50;
 	}
@@ -304,7 +307,7 @@ class Carro
 	}
 
 	CreateMiddlePart(x,y,z){
-		var cubo = new THREE.BoxGeometry( 0.5, 1, 1.5);
+		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
 		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, this.material);
 		mesh.position.set(x,y,z);
