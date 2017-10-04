@@ -29,8 +29,16 @@ function CreateScene() {
 function CreateCamera() {
 	frustumSize = window.innerHeight;
 	var aspect = window.innerWidth/window.innerHeight
-	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize*aspect/2, /*RightPane*/frustumSize*aspect/2,/*TopPane*/frustumSize/2,/*BottomPane*/-frustumSize/2 ,/*Near*/0.1, /*Far*/1000);
-	camera.position.z = 100;
+	//camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize*aspect/2, /*RightPane*/frustumSize*aspect/2,/*TopPane*/frustumSize/2,/*BottomPane*/-frustumSize/2 ,/*Near*/0.1, /*Far*/1000);
+	camera = new THREE.PerspectiveCamera(80, aspect, 0.1, 1000);
+	camera.position.z = 250;
+	//camera.position.y = -100;
+	camera.position.x = 400;
+	camera.rotation.z = Math.PI/2;
+	camera.rotation.y = Math.PI/5;
+	//camera.rotation.x = Math.PI/2;
+	//camera.zoom = 1.3;
+	//camera.updateProjectionMatrix();
 }
 
 function CreateRenderer() {

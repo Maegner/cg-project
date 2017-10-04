@@ -11,20 +11,21 @@ class Carro
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
-		this.carScale = 20;
-		this.offset = -0.75;
+		this.carScale = 5;
+		this.Yoffset = -0.75;
+		this.Xoffset = -9;
 
 		/*
 		ACCELERATION
 		*/
 		this.speed = 0.05;
 		this.speedScale = 0.8;
-		this.maxVelocity = 5;
-		this.acceleration = 8;
+		this.maxVelocity = 3;
+		this.acceleration = 5;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
 		this.throttle = 0;
 		//Makes the car slow to a halt
-		this.speedDrag = 0.6;
+		this.speedDrag = 0.3;
 		//Velocity clamped between -1 and 1
 		this.clampVel = 0;
 
@@ -32,7 +33,7 @@ class Carro
 		STEERING
 		*/
 		this.steeringSensitivity = 0.8;
-		this.steeringScale = 0.1;
+		this.steeringScale = 0.08;
 		this.maxSteering = 1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
@@ -58,22 +59,22 @@ class Carro
 
 		this.car = new THREE.Object3D();
 		//this.CreateMiddlePart(0.5,0.5,0.5);
-		this.CreateMiddlePart(0.5,1 + this.offset,-0.5);
-		this.CreateFrontPart(0.55,1 + this.offset,0.875);
-		this.CreateFrontWing(0.35,1 + this.offset,1.4);
-		this.CreateAleronTriangle(1,1.4 + this.offset,-1);
-		this.CreateAleronTriangle(1,0.6 + this.offset,-1);
-		this.CreateAleronBar(1,1 + this.offset,-1.25);
-		this.CreateFrontWheelSupport(0.35,1.7 + this.offset,0.4);
-		this.CreateFrontWheelSupport2(0.35,0.3 + this.offset,0.4);
-		this.CreateBackWheelSupport(0.35,1.625 + this.offset,-1);
-		this.CreateBackWheelSupport(0.35,0.375 + this.offset,-1);
-		this.CreateWheel(0.35,1.625 + this.offset,-1);
-		this.CreateWheel(0.35,0.375 + this.offset,-1);
-		this.CreateTip(0.55,1 + this.offset,1.6);
-		this.CreateWheel(0.35,1.625 + this.offset,0.9);
-		this.CreateWheel(0.35,0.375 + this.offset,0.9);
-		this.CreateRoof(0.75,1 + this.offset,-0.25);
+		this.CreateMiddlePart(0.5 + this.Xoffset,1 + this.Yoffset,-0.5);
+		this.CreateFrontPart(0.55 + this.Xoffset,1 + this.Yoffset,0.875);
+		this.CreateFrontWing(0.35 + this.Xoffset,1 + this.Yoffset,1.4);
+		this.CreateAleronTriangle(1 + this.Xoffset,1.4 + this.Yoffset,-1);
+		this.CreateAleronTriangle(1 + this.Xoffset,0.6 + this.Yoffset,-1);
+		this.CreateAleronBar(1 + this.Xoffset,1 + this.Yoffset,-1.25);
+		this.CreateFrontWheelSupport(0.35 + this.Xoffset,1.7 + this.Yoffset,0.4);
+		this.CreateFrontWheelSupport2(0.35 + this.Xoffset,0.3 + this.Yoffset,0.4);
+		this.CreateBackWheelSupport(0.35 + this.Xoffset,1.625 + this.Yoffset,-1);
+		this.CreateBackWheelSupport(0.35 + this.Xoffset,0.375 + this.Yoffset,-1);
+		this.CreateWheel(0.35 + this.Xoffset,1.625 + this.Yoffset,-1);
+		this.CreateWheel(0.35 + this.Xoffset,0.375 + this.Yoffset,-1);
+		this.CreateTip(0.55 + this.Xoffset,1 + this.Yoffset,1.6);
+		this.CreateWheel(0.35 + this.Xoffset,1.625 + this.Yoffset,0.9);
+		this.CreateWheel(0.35 + this.Xoffset,0.375 + this.Yoffset,0.9);
+		this.CreateRoof(0.75 + this.Xoffset,1 + this.Yoffset,-0.25);
 		var eixo = new THREE.AxisHelper(3);
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
@@ -83,7 +84,7 @@ class Carro
 		eixo.rotateX(1);
 
 		this.car.scale.set(this.carScale, this.carScale, this.carScale); // change car's scale
-		this.car.rotation.y = 1;
+		this.car.rotation.y = -Math.PI/2;
 		this.car.position.z = 50;
 	}
 
@@ -147,7 +148,7 @@ class Carro
 		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
-		this.car.rotateX(this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
+		this.car.rotateX(-this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
 	}
 
 	CreateScreenText() {
