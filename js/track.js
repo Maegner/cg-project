@@ -4,10 +4,25 @@ class Track
 	constructor(outLine,trackPath,butterPositions,orangePositions){ 
 
 		this.tirePositions = trackPath;
+		this.orangePositions = orangePositions;
 		this.material;
 		this.track;
 		this.outLine = outLine;
+
 	}
+
+	//--------------------------------------------------TABLETOP CREATION START---------------------------------------
+
+	addTabletop(){
+		var geometry = new THREE.BoxGeometry(window.innerWidth,window.innerHeight,2);
+		var material = new THREE.MeshBasicMaterial({color: 0x808080, wireframe:true })
+		var tabletop = new THREE.Mesh(geometry,material);
+		tabletop.position.set(0,0,-1);
+
+		this.track.add(tabletop)
+	}
+
+	//--------------------------------------------------TABLETOP CREATION END---------------------------------------
 
 	// -----------------------------------TRACK PATH CREATION START---------------------------------------------------
 	
@@ -21,59 +36,55 @@ class Track
 		this.track.add(tire);
 	}
 
-	addTabletop(){
-		var geometry = new THREE.BoxGeometry(window.innerWidth,window.innerHeight,2);
-		var material = new THREE.MeshBasicMaterial({color: 0x808080, wireframe:true })
-		var tabletop = new THREE.Mesh(geometry,material);
-		tabletop.position.set(0,0,-1);
-
-		this.track.add(tabletop)
-	}
 
 	createTrack(){
 		
 		var nmber = 0;
 		this.addTabletop();
-		while(nmber < this.tirePositions.length){
+		
+		while(nmber < this.tirePositions.length){ //adding the tires
 			this.addTire(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
 			nmber++;
 		}
+
+
+		nmber = 0;
+
+		while(nmber < this.orangePositions.length){
+			this.addTire(this.orangePositions[nmber][0],this.orangePositions[nmber][1],this.orangePositions[nmber][2]);
+			nmber++;
+		}
+
 	}
 
 	// -----------------------------------TRACK PATH CREATION END---------------------------------------------------
 
+	//------------------------------------ORANGES CREATION AND POSITIONING START--------------------------------------
 
-	// -----------------------------------TRACK OUTLINE CREATION START----------------------------------------------
-	addOutlineCube(x,y,z){
-		'use strict'
+	addOrange(x,y,z){
+		var geometry = new THREE.SphereGeometry(50,32,32);
+		var material = new THREE.MeshBasicMaterial({color: 0xFFA500, wireframe: true});
+		var orage = new THREE.Mesh(geometry,material);
+		orage.position.set(x,y,z);
 
-		var geometry = new THREE.BoxGeometry(0.1,0.1,0.1);
-		var cube = new THREE.Mesh(geometry,this.material);
-		cube.position.set(x,y,z);
-
-		this.track.add(cube)
+		this.track.add(orage);
 	}
 
-	createOutline(){
-		var n = 0;
+	addAllOranges(positionsArray){
 
-		while(n < this.outLine.length){
-			this.addOutlineCube(this.outLine[n][0],this.outLine[n][1],this.outLine[n][2]);
-			n++;
-		}
 	}
 
-	// -----------------------------------TRACK OUTLINE CREATION END----------------------------------------------
+	//----------------------------------ORANGES CREATION AND POSITIONING END-----------------------------------------
 
 	Start(){
 		this.track = new THREE.Object3D();
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
 
-		//this.defaultTrackGenerate();
-
-		this.createOutline();
-
 		this.createTrack();
+
+		this.addOrange(-450,0,2);
+		this.addOrange(250,-200,2);
+		this.addOrange(0,0,2);
 
 		scene.add(this.track);
 	}
