@@ -3,7 +3,6 @@ class Carro
 	constructor() {
 		//Manel
 		this.geometry;
-		this.speed = 1;
 
 		/*Goncalo*/
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
@@ -11,29 +10,33 @@ class Carro
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
-		this.carScale = 5;
 		this.Yoffset = -0.75;
 		this.Xoffset = -9;
 
+		this.carScale = 5;
 		/*
 		ACCELERATION
 		*/
-		this.speed = 0.05;
-		this.speedScale = 0.8;
-		this.maxVelocity = 3;
+		//Mexer
+		this.speedScale = 2.4;
+		this.maxVelocity = 1;
 		this.acceleration = 5;
-		//Translates player's throttle input (1 = accelerate, -1 = brake)
-		this.throttle = 0;
 		//Makes the car slow to a halt
 		this.speedDrag = 0.3;
+		//Nao mexer
+		this.speed = 0.02;
+		//Translates player's throttle input (1 = accelerate, -1 = brake)
+		this.throttle = 0;
 		//Velocity clamped between -1 and 1
 		this.clampVel = 0;
 
 		/*
 		STEERING
 		*/
+		//Mexer
+		this.steeringScale = 0.03;
+		//Nao mexer
 		this.steeringSensitivity = 0.8;
-		this.steeringScale = 0.08;
 		this.maxSteering = 1;
 		//Translates player's turn input (1 = right, -1 = left)
 		this.turn = 0;
@@ -45,17 +48,9 @@ class Carro
 		this.brakePressed = false;
 		this.leftPressed = false;
 		this.rightPressed = false;
-
-		//Debug Text
-		this.VelXText;
-		this.VelZText;
-		this.throttleText;
-		this.turnText;
 	}
 
 	Start() {
-
-		this.CreateScreenText();
 
 		this.car = new THREE.Object3D();
 		this.CreateMiddlePart(0.5 + this.Xoffset,1 + this.Yoffset,-0.5);
@@ -93,11 +88,6 @@ class Carro
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
-
-		//Update text
-		this.VelXText.innerHTML = this.velocity.x;
-		this.VelZText.innerHTML = this.velocity.z;
-		this.turnText.innerHTML = this.turn;
 	}
 
 	HandleAcceleration(delta) {
@@ -110,11 +100,10 @@ class Carro
 
 			//Make sure the added speed doesn't surpass maxVelocity
 			var addedVel = (this.velocity.x + thrust*this.acceleration);
-			this.throttleText.innerHTML = addedVel;
 			this.velocity.x = Math.abs(addedVel) > this.maxVelocity ? Math.sign(addedVel)*this.maxVelocity : addedVel;
 		}
 		//When velocity is nearly 0, and the car isn't at full throttle, halt the car
-		if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.5) {
+		if (this.velocity.x != 0 && Math.abs(this.throttle) != 1 && Math.abs(this.velocity.x) < 0.05) {
 			this.velocity.x = 0;
 			this.throttle = 0;
 		}
@@ -150,45 +139,6 @@ class Carro
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
-	}
-
-	CreateScreenText() {
-		this.VelXText = document.createElement('div');
-		this.VelXText.style.position = 'absolute';
-		this.VelXText.style.width = 100;
-		this.VelXText.style.height = 100;
-		this.VelXText.style.backgroundColor = "white";
-		this.VelXText.innerHTML = "hi there!";
-		this.VelXText.style.top = 50 + 'px';
-		this.VelXText.style.left = 100 + 'px';
-		document.body.appendChild(this.VelXText);
-		this.VelZText = document.createElement('div');
-		this.VelZText.style.position = 'absolute';
-		this.VelZText.style.width = 100;
-		this.VelZText.style.height = 100;
-		this.VelZText.style.backgroundColor = "white";
-		this.VelZText.innerHTML = "hi there!";
-		this.VelZText.style.top = 70 + 'px';
-		this.VelZText.style.left = 100 + 'px';
-		document.body.appendChild(this.VelZText);
-		this.throttleText = document.createElement('div');
-		this.throttleText.style.position = 'absolute';
-		this.throttleText.style.width = 100;
-		this.throttleText.style.height = 100;
-		this.throttleText.style.backgroundColor = "white";
-		this.throttleText.innerHTML = "hi there!";
-		this.throttleText.style.top = 90 + 'px';
-		this.throttleText.style.left = 100 + 'px';
-		document.body.appendChild(this.throttleText);
-		this.turnText = document.createElement('div');
-		this.turnText.style.position = 'absolute';
-		this.turnText.style.width = 100;
-		this.turnText.style.height = 100;
-		this.turnText.style.backgroundColor = "white";
-		this.turnText.innerHTML = "hi there!";
-		this.turnText.style.top = 110 + 'px';
-		this.turnText.style.left = 100 + 'px';
-		document.body.appendChild(this.turnText);
 	}
 
 	OnAccelerate() {
