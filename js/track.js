@@ -50,8 +50,8 @@ class Track
 
 		nmber = 0;
 
-		while(nmber < this.orangePositions.length){
-			this.addTire(this.orangePositions[nmber][0],this.orangePositions[nmber][1],this.orangePositions[nmber][2]);
+		while(nmber < this.orangePositions.length){//adding the oranges
+			this.addOrange(this.orangePositions[nmber][0],this.orangePositions[nmber][1],this.orangePositions[nmber][2]);
 			nmber++;
 		}
 
@@ -59,7 +59,7 @@ class Track
 
 	// -----------------------------------TRACK PATH CREATION END---------------------------------------------------
 
-	//------------------------------------ORANGES CREATION AND POSITIONING START--------------------------------------
+	//------------------------------------ORANGE CREATION AND POSITIONING START--------------------------------------
 
 	addOrange(x,y,z){
 		var geometry = new THREE.SphereGeometry(50,32,32);
@@ -70,21 +70,39 @@ class Track
 		this.track.add(orage);
 	}
 
-	addAllOranges(positionsArray){
+	//----------------------------------ORANGE CREATION AND POSITIONING END-----------------------------------------
 
+
+	//----------------------------------BUTTER CREATION AND POSITIONING START---------------------------------------
+
+	addButter(){
+		var CompleteButter = new THREE.Object3D();
+
+		var plateGeometry = new THREE.BoxGeometry(120,50,3);
+		var plateMaterial = new THREE.MeshBasicMaterial({color:0xFFFFFF,wireframe: true});
+		var plate = new THREE.Mesh(plateGeometry,plateMaterial);
+		plate.position.set(0,0,0);
+
+		var butterGeometry = new THREE.BoxGeometry(100,30,20);
+		var butterMaterial = new THREE.MeshBasicMaterial({color:0xFFA500,wireframe:true});
+		var butter = new THREE.Mesh(butterGeometry,butterGeometry);
+		butter.position.set(0,0,5);
+
+		CompleteButter.add(plate);
+		CompleteButter.add(butter);
+		CompleteButter.position.set(-200,0,5);
+
+		this.track.add(CompleteButter);
 	}
 
-	//----------------------------------ORANGES CREATION AND POSITIONING END-----------------------------------------
+	//---------------------------------BUTTER CREATION AND POSITIONING END----------------------------------------------
 
 	Start(){
 		this.track = new THREE.Object3D();
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
 
 		this.createTrack();
-
-		this.addOrange(-450,0,2);
-		this.addOrange(250,-200,2);
-		this.addOrange(0,0,2);
+		this.addButter();
 
 		scene.add(this.track);
 	}
