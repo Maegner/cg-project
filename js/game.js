@@ -99,6 +99,7 @@ function onKeyDown(e) {
 		// A, a
 		case 65:
 		case 97:
+		alert(1);
 			scene.traverse(function(node) {
 				if(node instanceof THREE.Mesh){
 					node.material.wireframe = !node.material.wireframe;

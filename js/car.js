@@ -58,7 +58,6 @@ class Carro
 		this.CreateScreenText();
 
 		this.car = new THREE.Object3D();
-		//this.CreateMiddlePart(0.5,0.5,0.5);
 		this.CreateMiddlePart(0.5 + this.Xoffset,1 + this.Yoffset,-0.5);
 		this.CreateFrontPart(0.55 + this.Xoffset,1 + this.Yoffset,0.875);
 		this.CreateFrontWing(0.35 + this.Xoffset,1 + this.Yoffset,1.4);
@@ -75,7 +74,7 @@ class Carro
 		this.CreateWheel(0.35 + this.Xoffset,1.625 + this.Yoffset,0.9);
 		this.CreateWheel(0.35 + this.Xoffset,0.375 + this.Yoffset,0.9);
 		this.CreateRoof(0.75 + this.Xoffset,1 + this.Yoffset,-0.25);
-		var eixo = new THREE.AxisHelper(3);
+		//var eixo = new THREE.AxisHelper(10); //ativar referencial catersiano eixos
 		eixo.rotation.y = -.5;
 		eixo.rotation.x = .5;
 		eixo.scale.set(10, 10, 10);
