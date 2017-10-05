@@ -50,7 +50,7 @@ function BuildObjects() {
 	gameObjects.push(carro1);
 
 	var tirePostions = TRACK_2;
-	var trackLine =  new Track([],tirePostions,[],[[250,-200,50],[-420,0,50],[0,0,50]]);
+	var trackLine =  new Track([],tirePostions,[],[[250,-200,50],[-450,0,50],[0,0,50]]);
 
 	gameObjects.push(trackLine);
 
