@@ -179,9 +179,13 @@ def main():
 	start = "["
 	end = "]"
 
-	bottomBottomHorizontalLine = HorizontalStraightLine(-370,145,-200)
-	topBottomHorizontalLine = HorizontalStraightLine(-370,145,-200)
+	bottomBottomHorizontalLine = HorizontalStraightLine(-370,0,-200)
+	topBottomHorizontalLine = HorizontalStraightLine(-370,0,-200)
 	s = lineOnXX(50,bottomBottomHorizontalLine,topBottomHorizontalLine,15)
+
+	bBottomHorizontalLine = HorizontalStraightLine(100,145,-200)
+	tBottomHorizontalLine = HorizontalStraightLine(100,145,-200)
+	s += lineOnXX(50,bBottomHorizontalLine,tBottomHorizontalLine,15)
 
 	t,leftBottom,rightBottom,x,distance = curvesOnXX(50,150,420,15,40,1/40,160,30)
 	s += t

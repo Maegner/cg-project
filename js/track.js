@@ -5,6 +5,7 @@ class Track
 
 		this.tirePositions = trackPath;
 		this.orangePositions = orangePositions;
+		this.butterPositions = butterPositions;
 		this.material;
 		this.track;
 		this.outLine = outLine;
@@ -55,6 +56,12 @@ class Track
 			nmber++;
 		}
 
+		nmber = 0;
+
+		while(nmber < this.butterPositions.length){//adding the butter
+			this.addButter(this.butterPositions[nmber][0],this.butterPositions[nmber][1],this.butterPositions[nmber][2]);
+			nmber++;
+		}
 	}
 
 	// -----------------------------------TRACK PATH CREATION END---------------------------------------------------
@@ -75,7 +82,7 @@ class Track
 
 	//----------------------------------BUTTER CREATION AND POSITIONING START---------------------------------------
 
-	addButter(){
+	addButter(x,y,z){
 		var CompleteButter = new THREE.Object3D();
 
 		var plateGeometry = new THREE.BoxGeometry(120,50,3);
@@ -90,7 +97,7 @@ class Track
 
 		CompleteButter.add(plate);
 		CompleteButter.add(butter);
-		CompleteButter.position.set(-200,0,5);
+		CompleteButter.position.set(x,y,z);
 
 		this.track.add(CompleteButter);
 	}
