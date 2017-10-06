@@ -1,8 +1,15 @@
-class Solid
-{
+class SolidFactory {
 	constructor() {
 
 	}
+	getSolid(s){
+		if(s == "cube"){
+
+		} else if(s == "triangle"){
+
+		}
+	}
+
 /*
 	getCube(x,y,z){
 		var cubo = new THREE.BoxGeometry( 0.5, 0.5, 1.5);

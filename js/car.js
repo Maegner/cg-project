@@ -6,7 +6,6 @@ class Carro
 
 		/*Goncalo*/
 		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
-		this.materialL = new THREE.MeshLambertMaterial( {color: 0xFFFFFF, wireframe: true} );
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
@@ -48,6 +47,9 @@ class Carro
 		this.brakePressed = false;
 		this.leftPressed = false;
 		this.rightPressed = false;
+	}
+	ChangeWireframe(b){
+		this.material.wireframe = !this.material.wireframe;
 	}
 
 	Start() {
@@ -261,13 +263,13 @@ class Carro
 	CreateMiddlePart(x,y,z){
 		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, this.material);
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
 	CreateTip(x,y,z){
 		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
-		var mesh = new THREE.Mesh(bico, this.material);
+		var mesh = new THREE.Mesh(bico, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
 		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
@@ -276,7 +278,7 @@ class Carro
 	CreateFrontWing(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .02, 1.25);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, this.material);
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
@@ -286,7 +288,7 @@ class Carro
 	CreateFrontPart(x,y,z){
 		var cubo = new THREE.BoxGeometry( 1.25, .4, .4);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, this.material);
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateY(2*Math.PI/4); 
 
@@ -294,7 +296,7 @@ class Carro
 	}
 	CreateWheel(x,y,z){
 		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 10, 20 );
-		var mesh = new THREE.Mesh(wheel, this.material);
+		var mesh = new THREE.Mesh(wheel, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		wheel.rotateX(Math.PI / 2); 
 		this.car.add(mesh);
@@ -302,7 +304,7 @@ class Carro
 
 	CreateRoof(x,y,z){
 		var ball = new THREE.SphereGeometry( 0.2, 5, 5,0, Math.PI);
-		var mesh = new THREE.Mesh( ball, this.material );
+		var mesh = new THREE.Mesh( ball, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		ball.rotateY(Math.PI / 2);
 		this.car.add(mesh);
@@ -322,14 +324,14 @@ class Carro
 		triangle.rotateZ(Math.PI / 2); 
 		triangle.rotateX(2*Math.PI/4); 
 
-		var mesh = new THREE.Mesh( triangle, this.material );
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
 	CreateAleronBar(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .01, 1.2);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, this.material);
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
@@ -352,7 +354,7 @@ class Carro
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2); 
 		//triangle.rotateX(2*Math.PI/4); 
-		var mesh = new THREE.Mesh( triangle, this.material );
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}) );
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
@@ -372,7 +374,7 @@ class Carro
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2);
 		triangle.rotateZ(Math.PI); 
-		var mesh = new THREE.Mesh( triangle, this.material );
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
@@ -380,7 +382,7 @@ class Carro
 		//var cubo = new THREE.BoxGeometry( .075, .05, 0.2);
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, this.material);
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
 		cubo.rotateX(Math.PI); 
