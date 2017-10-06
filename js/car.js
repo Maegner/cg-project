@@ -5,7 +5,6 @@ class Carro
 		this.geometry;
 
 		/*Goncalo*/
-		this.material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
@@ -48,10 +47,6 @@ class Carro
 		this.leftPressed = false;
 		this.rightPressed = false;
 	}
-	ChangeWireframe(b){
-		this.material.wireframe = !this.material.wireframe;
-	}
-
 	Start() {
 
 		this.car = new THREE.Object3D();

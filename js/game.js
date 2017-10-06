@@ -50,9 +50,7 @@ function BuildObjects() {
 	gameObjects.push(carro1);
 
 	var tirePostions = TRACK_2;
-	var orangePositions = [[250,-200,50],[-450,0,50],[0,0,50]];
-	var butterPositions = [[-200,0,5]]
-	var trackLine =  new Track([],tirePostions,butterPositions,orangePositions);
+	var trackLine =  new Track([],tirePostions,[],[[250,-200,50],[-450,0,50],[0,0,50]]);
 
 	gameObjects.push(trackLine);
 
@@ -101,15 +99,12 @@ function onKeyDown(e) {
 		// A, a
 		case 65:
 		case 97:
-		//alert(1);
-			//carro1.ChangeWireframe();
 			scene.traverse(function(node) {
 				if(node instanceof THREE.Mesh){
 					node.material.wireframe = !node.material.wireframe;
 				}
 			});
 			break;
-		//p
 		case 112:
 		case 80:
 			camera = new THREE.PerspectiveCamera(80, aspect, 0.1, 1000);
