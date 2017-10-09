@@ -2,37 +2,37 @@
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 */
 
-var camera, scene, renderer, time, carro1 ,frustumSize;
+var camera, scene, renderer, time, carro1, frustumSizeH, frustumSizeW;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
 
-
-
-function OnResize() {
-
-		var aspect = window.innerWidth / window.innerHeight;
-
-		camera.left = -frustumSize * aspect/2;
-		camera.right = frustumSize * aspect/2;
-		camera.top = frustumSize/2;
-		camera.bottom = -frustumSize/2;
-
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight);
-}
 
 function CreateScene() {
 	scene = new THREE.Scene();
 }
 
 function CreateCamera() {
-	frustumSize = window.innerHeight;
+	frustumSizeH = 900;
+	frustumSizeW = 1600;
 	var aspect = window.innerWidth/window.innerHeight
-	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize*aspect/2, /*RightPane*/frustumSize*aspect/2,/*TopPane*/frustumSize/2,/*BottomPane*/-frustumSize/2 ,/*Near*/0.1, /*Far*/1000);
+	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSizeW/2, /*RightPane*/frustumSizeW/2,/*TopPane*/frustumSizeW * (1/aspect)/2,/*BottomPane*/-frustumSizeW * (1/aspect)/2 ,/*Near*/0.1, /*Far*/1000);
 	camera.position.z = 250;
 	camera.zoom = 1.25;
 	camera.updateProjectionMatrix();
+}
+
+function OnResize() {
+
+		var aspect = window.innerWidth / window.innerHeight;
+
+		camera.left = Math.min(-frustumSizeW /2, -frustumSizeH * aspect /2);
+		camera.right = Math.max(frustumSizeW /2, frustumSizeH * aspect /2);
+		camera.top = Math.max(frustumSizeW * (1/aspect) /2, frustumSizeH /2);
+		camera.bottom = Math.min(-frustumSizeW * (1/aspect) /2, -frustumSizeH /2);
+
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight);
 }
 
 function CreateRenderer() {
