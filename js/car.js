@@ -47,6 +47,7 @@ class Carro
 		this.leftPressed = false;
 		this.rightPressed = false;
 	}
+
 	Start() {
 
 		this.car = new THREE.Object3D();
@@ -56,8 +57,8 @@ class Carro
 		this.CreateAleronTriangle(1 + this.Xoffset,1.4 + this.Yoffset,-1);
 		this.CreateAleronTriangle(1 + this.Xoffset,0.6 + this.Yoffset,-1);
 		this.CreateAleronBar(1 + this.Xoffset,1 + this.Yoffset,-1.25);
-		this.CreateFrontWheelSupport(0.35 + this.Xoffset,1.7 + this.Yoffset,0.4);
-		this.CreateFrontWheelSupport2(0.35 + this.Xoffset,0.3 + this.Yoffset,0.4);
+		this.CreateFrontWheelSupportLeft(0.35 + this.Xoffset,1.7 + this.Yoffset,0.4);
+		this.CreateFrontWheelSupportRight(0.35 + this.Xoffset,0.3 + this.Yoffset,0.4);
 		this.CreateBackWheelSupport(0.35 + this.Xoffset,1.625 + this.Yoffset,-1);
 		this.CreateBackWheelSupport(0.35 + this.Xoffset,0.375 + this.Yoffset,-1);
 		this.CreateWheel(0.35 + this.Xoffset,1.625 + this.Yoffset,-1);
@@ -257,7 +258,6 @@ class Carro
 
 	CreateMiddlePart(x,y,z){
 		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
-		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
@@ -272,7 +272,6 @@ class Carro
 	}
 	CreateFrontWing(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .02, 1.25);
-		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
@@ -325,7 +324,6 @@ class Carro
 	}
 	CreateAleronBar(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .01, 1.2);
-		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
@@ -333,7 +331,7 @@ class Carro
 
 		this.car.add(mesh);
 	}
-	CreateFrontWheelSupport(x,y,z){
+	CreateFrontWheelSupportLeft(x,y,z){
 		var triangle = new THREE.Geometry();
 		var v1 = new THREE.Vector3(-0.5,0,0);
 		var v2 = new THREE.Vector3(-0.5,-0.5,0);
@@ -348,12 +346,12 @@ class Carro
 
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2); 
-		//triangle.rotateX(2*Math.PI/4); 
+
 		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}) );
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
-	CreateFrontWheelSupport2(x,y,z){
+	CreateFrontWheelSupportRight(x,y,z){
 		var triangle = new THREE.Geometry();
 		var v1 = new THREE.Vector3(-0.5,0,0);
 		var v2 = new THREE.Vector3(-0.5,-0.5,0);
@@ -374,9 +372,7 @@ class Carro
 		this.car.add(mesh);
 	}
 	CreateBackWheelSupport(x,y,z){
-		//var cubo = new THREE.BoxGeometry( .075, .05, 0.2);
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
-		//cubo.x = (Math.PI/180);
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
