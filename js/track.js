@@ -1,21 +1,20 @@
 class Track
 {
 	//recieves int with number of tires and an array of vectors with the tirePostitions
-	constructor(outLine,trackPath,butterPositions,orangePositions){ 
+	constructor(trackPath,butterPositions,orangePositions){ 
 
 		this.tirePositions = trackPath;
 		this.orangePositions = orangePositions;
 		this.butterPositions = butterPositions;
 		this.material;
 		this.track;
-		this.outLine = outLine;
 
 	}
 
 	//--------------------------------------------------TABLETOP CREATION START---------------------------------------
 
 	addTabletop(){
-		var geometry = new THREE.BoxGeometry(window.innerWidth,window.innerHeight,2);
+		var geometry = new THREE.BoxGeometry(1050,550,2);
 		var material = new THREE.MeshBasicMaterial({color: 0x808080, wireframe:true })
 		var tabletop = new THREE.Mesh(geometry,material);
 		tabletop.position.set(0,0,-1);
@@ -90,13 +89,7 @@ class Track
 		var plate = new THREE.Mesh(plateGeometry,plateMaterial);
 		plate.position.set(0,0,0);
 
-		var butterGeometry = new THREE.BoxGeometry(100,30,20);
-		var butterMaterial = new THREE.MeshBasicMaterial({color:0xFFA500,wireframe:true});
-		var butter = new THREE.Mesh(butterGeometry,butterGeometry);
-		butter.position.set(0,0,5);
-
 		CompleteButter.add(plate);
-		CompleteButter.add(butter);
 		CompleteButter.position.set(x,y,z);
 
 		this.track.add(CompleteButter);
@@ -116,27 +109,5 @@ class Track
 
 	Update(){
 
-	}
-
-	defaultTrackGenerate(){
-		var z = -4;
-
-		var result = [];
-		while(z<4){
-
-			var y = -2;
-
-			while(y < 2){
-				if((z > 3.9 || y > 1.9)){
-					result.push([z,y,0]);
-					result.push([-z,-y,0]);
-				}
-				
-				y+=0.1;
-			}
-			z+=0.1;
-		}
-
-		this.outLine = result;
 	}
 }
