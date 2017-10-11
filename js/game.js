@@ -15,7 +15,7 @@ function CreateScene() {
 function CreateCamera() {
 	frustumSizeH = 900;
 	frustumSizeW = 1600;
-	var aspect = window.innerWidth/window.innerHeight
+	var aspect = window.innerWidth / window.innerHeight
 	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSizeW/2, /*RightPane*/frustumSizeW/2,/*TopPane*/frustumSizeW * (1/aspect)/2,/*BottomPane*/-frustumSizeW * (1/aspect)/2 ,/*Near*/0.1, /*Far*/1000);
 	camera.position.z = 250;
 	camera.zoom = 1.25;
