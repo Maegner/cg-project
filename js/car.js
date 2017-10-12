@@ -32,7 +32,7 @@ class Carro
 		STEERING
 		*/
 		//Mexer
-		this.steeringScale = 0.03;
+		this.steeringScale = 0.08;
 		//Nao mexer
 		this.steeringSensitivity = 0.8;
 		this.maxSteering = 1;
@@ -137,7 +137,7 @@ class Carro
 		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
-		this.car.rotateX(this.velocity.z * this.speedScale * this.clampVel * this.steeringScale);
+		this.car.rotateX(this.velocity.z * this.clampVel * this.steeringScale);
 	}
 
 	OnAccelerate() {
