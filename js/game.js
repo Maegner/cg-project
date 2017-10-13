@@ -50,11 +50,28 @@ function BuildObjects() {
 	gameObjects.push(carro1);
 
 	var tirePostions = TRACK_2;
-	var orangePositions = [[250,-200,50],[-450,0,50],[0,0,50]];
-	var butterPositions = [[-250,-100,5],[440,-240,5],[0,240,5],[300,90,5],[90,-100,5]]
-	var trackLine =  new Track(tirePostions,butterPositions,orangePositions);
-
+	var trackLine =  new Track(tirePostions);
 	gameObjects.push(trackLine);
+	
+	var orangePositions = [[250,-200,50],
+							[-450,0,50],
+							[0,0,50]
+							];
+	var butterPositions = [[-250,-100,5],
+							[440,-240,5],
+							[0,240,5],
+							[300,90,5],
+							[90,-100,5]
+							];
+	var i;
+	for (i=0; i < orangePositions.length; i++) {
+		var newOrange = new Orange(orangePositions[i][0], orangePositions[i][1], orangePositions[i][2]);
+		gameObjects.push(newOrange);
+	}
+	for (i=0; i < butterPositions.length; i++) {
+		var newButter = new Butter(butterPositions[i][0], butterPositions[i][1], butterPositions[i][2]);
+		gameObjects.push(newButter);
+	}
 
 }
 

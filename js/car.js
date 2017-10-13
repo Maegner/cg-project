@@ -1,9 +1,6 @@
 class Carro
 {
 	constructor() {
-		//Manel
-		this.geometry;
-
 		/*Goncalo*/
 
 		this.velocity = new THREE.Vector3(0,0,0);
