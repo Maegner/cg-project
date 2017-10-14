@@ -6,18 +6,28 @@ class Track
 		this.tirePositions = trackPath;
 		this.material;
 		this.track;
+		this.trackSizeX = 1050;
+		this.trackSizeY = 550;
+		this.tabletop;
+	}
 
+	getTrackSize() {
+		return new THREE.Vector3(this.trackSizeX,this.trackSizeY);
+	}
+
+	getTrackPosition() {
+		return this.tabletop.position;
 	}
 
 	//--------------------------------------------------TABLETOP CREATION START---------------------------------------
 
 	addTabletop(){
-		var geometry = new THREE.BoxGeometry(1050,550,2);
-		var material = new THREE.MeshBasicMaterial({color: 0x808080, wireframe:true })
-		var tabletop = new THREE.Mesh(geometry,material);
-		tabletop.position.set(0,0,-1);
+		var geometry = new THREE.BoxGeometry(this.trackSizeX,this.trackSizeY,2);
+		var material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe:true })
+		this.tabletop = new THREE.Mesh(geometry,material);
+		this.tabletop.position.set(0,0,-1);
 
-		this.track.add(tabletop)
+		this.track.add(this.tabletop)
 	}
 
 	//--------------------------------------------------TABLETOP CREATION END---------------------------------------
@@ -27,7 +37,7 @@ class Track
 	addTire(x,y,z){
 		'use strict'
 
-		var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 50 );
+		var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 10);
 		var tire = new THREE.Mesh(geometry,this.material);
 		tire.position.set(x,y,z);
 

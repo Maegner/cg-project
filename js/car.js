@@ -29,7 +29,7 @@ class Carro
 		STEERING
 		*/
 		//Mexer
-		this.steeringScale = 0.08;
+		this.steeringScale = 0.07;
 		//Nao mexer
 		this.steeringSensitivity = 0.8;
 		this.maxSteering = 1;
@@ -287,7 +287,7 @@ class Carro
 		this.car.add(mesh);
 	}
 	CreateWheel(x,y,z){
-		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 10, 20 );
+		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 8, 10 );
 		var mesh = new THREE.Mesh(wheel, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		wheel.rotateX(Math.PI / 2); 
