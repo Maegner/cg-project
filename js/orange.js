@@ -9,17 +9,21 @@ class Orange
 		this.minBounds = new THREE.Vector3(-1000, -1000, -1000);
 
 		this.speedCounter = 0;
-		this.speedScale = 50;
+		this.speedScale = 10;
+		this.radius = 30;
 
-		this.radius = 50;
 		this.speedMin = 50;
 		this.speedMax = 150;
-		this.speed = Math.floor(Math.random() * (this.speedMax - this.speedMin + 1)) + this.speedMin;;
-		this.turning = 0.5;
+		this.speed = Math.floor(Math.random() * (this.speedMax - this.speedMin + 1)) + this.speedMin;
+		this.turningMin = 0.2;
+		this.turningMax = 2;
+		this.turning = Math.floor(Math.random() * (this.turningMax - this.turningMin + 1)) + this.turningMin;
 
 		this.outOfBounds = false;
-		this.respawnTimer = 0;
-		this.respawnTime = 5;
+		this.respawnCounter = 0;
+		this.respawnTimeMin = 2;
+		this.respawnTimeMax = 5;
+		this.respawnTime = Math.random() * (this.respawnTimeMax - this.respawnTimeMin + 1) + this.respawnTimeMin;
 	}
 
 	Start() {
@@ -43,16 +47,37 @@ class Orange
 	}
 
 	Update(delta) {
-		var forward = this.orange.getWorldDirection();
-		this.orange.position.x += (this.speed + this.speedCounter*this.speedScale) * delta*1000 * forward.x;
-		this.orange.position.y += (this.speed + this.speedCounter*this.speedScale) * delta*1000 * forward.y;
 
-		this.speedCounter += delta;
+		if (!this.outOfBounds) {
+			var forward = this.orange.getWorldDirection();
+			this.orange.position.x += (this.speed + this.speedCounter*this.speedScale) * delta*1000 * forward.x;
+			this.orange.position.y += (this.speed + this.speedCounter*this.speedScale) * delta*1000 * forward.y;
 
-		this.orange.rotateY(this.turning * delta*1000);
+			this.speedCounter += delta;
 
-		if (!this.outOfBounds && this.CheckIfOutsideTrack()) {
-			this.outOfBounds = true;
+			this.orange.rotateY(this.turning * delta*1000);
+
+			//If orange is out of bounds, hide it and start "respawn" countdown
+			if (this.CheckIfOutsideTrack()) {
+				this.outOfBounds = true;
+				//this.orange.visible = false;
+			}
+		}
+		else {
+			this.respawnCounter += delta;
+			//alert(this.respawnCounter.toString() + "  " + this.respawnTime.toString());
+			if (this.respawnCounter > 1) {
+				alert("Now");
+			}
+			if (this.respawnCounter >= this.respawnTime) {
+				alert(this.respawnTime);
+				this.respawnCounter = 0;
+				this.orange.position.x = this.location.x;
+				this.orange.position.y = this.location.y;
+				this.orange.position.z = this.location.z;
+				this.outOfBounds = false;
+				//this.orange.visible = true;
+			}
 		}
 	}
 

@@ -29,7 +29,7 @@ class Carro
 		STEERING
 		*/
 		//Mexer
-		this.steeringScale = 0.07;
+		this.steeringScale = 0.06;
 		//Nao mexer
 		this.steeringSensitivity = 0.8;
 		this.maxSteering = 1;

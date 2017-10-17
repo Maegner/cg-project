@@ -12,7 +12,7 @@ class Track
 	}
 
 	getTrackSize() {
-		return new THREE.Vector3(this.trackSizeX,this.trackSizeY);
+		return new THREE.Vector3(this.trackSizeX,this.trackSizeY, 0);
 	}
 
 	getTrackPosition() {
