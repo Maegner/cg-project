@@ -87,9 +87,10 @@ function StartObjects() {
 
 function Update() {
 	var i;
+	var delta = time.getDelta();
 	for (i=0; i < gameObjects.length; i++) {
 		//Calls Update on each object, and passes the DeltaTime
-		gameObjects[i].Update(time.getDelta());
+		gameObjects[i].Update(delta);
 	}
 }
 
