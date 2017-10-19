@@ -13,12 +13,7 @@ function CreateScene() {
 }
 
 function CreateCamera() {
-	frustumSize = track1.getTrackSize();
-	//frustumSize = new THREE.Vector3(1000, 500, 2);
-	var aspect = window.innerWidth / window.innerHeight
-	camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize.x/2, /*RightPane*/frustumSize.x/2,/*TopPane*/frustumSize.x * (1/aspect)/2,/*BottomPane*/-frustumSize.x * (1/aspect)/2 ,/*Near*/0.1, /*Far*/1000);
-	camera.position.z = 250;
-	camera.updateProjectionMatrix();
+	new Camera().OrthographicCamera();
 }
 
 function OnResize() {
@@ -98,6 +93,21 @@ function onKeyDown(e) {
 
 	switch (e.keyCode)
 	{
+		// Tecla 1
+		case 49:
+			new Camera().OrthographicCamera();
+			break;
+
+		// Tecla 2
+		case 50:
+			new Camera().PerspectiveCamera();
+			break;
+
+		// Tecla 3
+		case 51:
+			new Camera().PerspectiveCameraCar();
+			break;
+
 		// Up
 		case 38:
 			carro1.OnAccelerate();
@@ -118,6 +128,7 @@ function onKeyDown(e) {
 			carro1.OnRight();
 			break;
 
+
 		// A, a
 		case 65:
 		case 97:
@@ -126,15 +137,6 @@ function onKeyDown(e) {
 					node.material.wireframe = !node.material.wireframe;
 				}
 			});
-			break;
-		case 112:
-		case 80:
-			camera = new THREE.PerspectiveCamera(80, aspect, 0.1, 1000);
-			camera.position.z = 250;
-			camera.position.x = 400;
-			camera.rotation.z = Math.PI/2;
-			camera.rotation.y = Math.PI/5;
-			camera.updateProjectionMatrix();
 			break;
 	}
 }
