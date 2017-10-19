@@ -34,7 +34,7 @@ class Track
 
 	// -----------------------------------TRACK PATH CREATION START---------------------------------------------------
 	
-	addTire(x,y,z){
+	/*addTire(x,y,z){
 		'use strict'
 
 		var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 10);
@@ -42,7 +42,7 @@ class Track
 		tire.position.set(x,y,z);
 
 		this.track.add(tire);
-	}
+	}*/
 
 
 	createTrack(){
@@ -50,9 +50,12 @@ class Track
 		var nmber = 0;
 		this.addTabletop();
 		
-		while(nmber < this.tirePositions.length){ //adding the tires
-			this.addTire(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
+		while(nmber < this.tirePositions.length){ //adding the cheerios
+
+			var newCheerio = new Cheerio(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
+			this.track.add(newCheerio.createCheerio())
 			nmber++;
+
 		}
 	}
 
