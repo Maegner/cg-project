@@ -3,6 +3,7 @@
 */
 
 var camera, scene, renderer, time, carro1, track1, frustumSize;
+var orangeNum = 4;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
@@ -49,25 +50,19 @@ function BuildObjects() {
 	var tirePostions = TRACK_2;
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
-	
-	var orangePositions = [[250,-200,50],
-						   [-450,0,50],
-						   [0,0,50]
-						   ];
+
 	var butterPositions = [[-250,-100,5],
 						   [440,-240,5],
 						   [0,240,5],
 						   [300,90,5],
-						   [90,-100,5]
-							];
+						   [90,-100,5]];
+
 	var i;
-	for (i=0; i < orangePositions.length; i++) {
-		var newOrange = new Orange(orangePositions[i][0], orangePositions[i][1], orangePositions[i][2]);
-		gameObjects.push(newOrange);
+	for (i=0; i < orangeNum; i++) {
+		gameObjects.push(new Orange());
 	}
 	for (i=0; i < butterPositions.length; i++) {
-		var newButter = new Butter(butterPositions[i][0], butterPositions[i][1], butterPositions[i][2]);
-		gameObjects.push(newButter);
+		gameObjects.push(new Butter(butterPositions[i][0], butterPositions[i][1], butterPositions[i][2]));
 	}
 
 }

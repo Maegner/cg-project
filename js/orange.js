@@ -1,10 +1,13 @@
 class Orange
 {
-	constructor(x, y, z) {
+	constructor() {
 		this.locX = 0;
 		this.locY = 0;
 		this.orange;
 		this.velocity = new THREE.Vector3(0,0,0);
+		this.forwardVector = new THREE.Vector3(0, 0, 0);
+		//Used to not spawn the orange at the edge of the track
+		this.spawnSafeSpace = new THREE.Vector3(100, 100, 0);
 
 		this.maxBounds = new THREE.Vector3(1000, 1000, 1000);
 		this.minBounds = new THREE.Vector3(-1000, -1000, -1000);
@@ -29,14 +32,13 @@ class Orange
 		var geometry = new THREE.SphereGeometry(this.radius,8,6);
 		var material = new THREE.MeshBasicMaterial({color: 0xFFA500, wireframe: true});
 		this.orange = new THREE.Mesh(geometry,material);
-		this.orange.rotation.y = Math.PI/2;
 		this.orange.rotation.x = Math.PI/2;
 		scene.add(this.orange);
 
 		//Fetch track bounds
 		var tempBounds = track1.getTrackSize();
 		var tempPos = track1.getTrackPosition();
-		this.maxBounds.x = tempBounds.x/2 + tempPos.x;
+		this.maxBounds.x = tempBounds.x/2 + tempPos.x ;
 		this.minBounds.x = -tempBounds.x/2 + tempPos.x;
 		this.maxBounds.y = tempBounds.y/2 + tempPos.y;
 		this.minBounds.y = -tempBounds.y/2 + tempPos.y;
@@ -48,9 +50,8 @@ class Orange
 
 		//If orange isn't out of bounds, update its movement
 		if (!this.outOfBounds) {
-			var forward = this.orange.getWorldDirection();
-			this.orange.position.x += (this.speed + this.speedCounter * this.speedScale) * delta * 10 *  forward.x;
-			this.orange.position.y += (this.speed + this.speedCounter * this.speedScale) * delta * 10 * forward.y;
+			this.orange.position.x += (this.speed + this.speedCounter * this.speedScale) * delta * 10 *  this.forwardVector.x;
+			this.orange.position.y += (this.speed + this.speedCounter * this.speedScale) * delta * 10 * this.forwardVector.y;
 
 			this.speedCounter += delta;
 
@@ -91,9 +92,10 @@ class Orange
 		this.respawnTime = Math.random() * (this.respawnTimeMax - this.respawnTimeMin) + this.respawnTimeMin;
 		this.respawnCounter = 0;
 		//Generate location and rotation
-		this.orange.position.x = Math.random() * (this.maxBounds.x - this.minBounds.x) + this.minBounds.x;
-		this.orange.position.y = Math.random() * (this.maxBounds.y - this.minBounds.y) + this.minBounds.y;
+		this.orange.position.x = Math.random() * (this.maxBounds.x - this.minBounds.x - 2*this.spawnSafeSpace.x) + this.minBounds.x + this.spawnSafeSpace.x;
+		this.orange.position.y = Math.random() * (this.maxBounds.y - this.minBounds.y - 2*this.spawnSafeSpace.y) + this.minBounds.y + this.spawnSafeSpace.y;
 		this.orange.position.z = this.height;
 		this.orange.rotation.y = Math.random() * (Math.PI*2);
+		this.forwardVector = this.orange.getWorldDirection();
 	}
 }
