@@ -137,7 +137,18 @@ class Carro
 		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * forward.y;
 
 		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;		
+		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;	
+		
+		//Checking for colisions with cheerios
+		var i=0;
+		while(i< track1.cheerios.length){
+			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
+				console.log("colision");
+				track1.cheerios[i].velocityX = (this.velocity.x /2) * forward.x;
+				track1.cheerios[i].velocityY = (this.velocity.x /2) * forward.y;
+			}	
+			i++;
+		}
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(this.velocity.z * this.clampVel * this.steeringScale);

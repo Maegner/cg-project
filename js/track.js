@@ -3,6 +3,7 @@ class Track
 	//recieves int with number of tires and an array of vectors with the tirePostitions
 	constructor(trackPath){ 
 
+		this.cheerios = [];
 		this.tirePositions = trackPath;
 		this.material;
 		this.track;
@@ -46,13 +47,15 @@ class Track
 
 
 	createTrack(){
-		
+
 		var nmber = 0;
 		this.addTabletop();
 		
 		while(nmber < this.tirePositions.length){ //adding the cheerios
-
 			var newCheerio = new Cheerio(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
+			
+			this.cheerios.push(newCheerio);
+
 			this.track.add(newCheerio.createCheerio())
 			nmber++;
 
@@ -71,7 +74,11 @@ class Track
 		scene.add(this.track);
 	}
 
-	Update(){
-
+	Update(delta){
+		var i = 0;
+		while (i < this.cheerios.length){
+			this.cheerios[i].Update(delta);
+			i++;
+		}
 	}
 }
