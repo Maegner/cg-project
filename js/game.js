@@ -2,7 +2,7 @@
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 */
 
-var camera, scene, renderer, time, carro1, track1, frustumSize;
+var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
 var orangeNum = 4;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
@@ -61,8 +61,11 @@ function BuildObjects() {
 	for (i=0; i < orangeNum; i++) {
 		gameObjects.push(new Orange());
 	}
+	butters = [];
 	for (i=0; i < butterPositions.length; i++) {
-		gameObjects.push(new Butter(butterPositions[i][0], butterPositions[i][1], butterPositions[i][2]));
+		butter = new Butter(butterPositions[i][0], butterPositions[i][1], butterPositions[i][2]);
+		butters.push(butter);
+		gameObjects.push(butter);
 	}
 
 }

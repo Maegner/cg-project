@@ -12,20 +12,16 @@ class AABB
        if(this.maxPosition.x > otherBox.minPosition.x &&
        this.minPosition.x < otherBox.maxPosition.x &&
        this.maxPosition.y > otherBox.minPosition.y &&
-       this.minPosition.y < otherBox.maxPosition.y &&
-       this.maxPosition.z > otherBox.minPosition.z &&
-       this.minPosition.z < otherBox.maxPosition.z) return true
+       this.minPosition.y < otherBox.maxPosition.y) return true
 
        else return false
     }
 
     IscolidingWithSphere(otherSphere){
-        if(this.maxPosition.x > otherBox.center.x - otherBox.radius &&
-        this.minPosition.x < otherBox.center.x + otherBox.radius &&
-        this.maxPosition.y > otherBox.center.y - otherBox.radius &&
-        this.minPosition.y < otherBox.center.y + otherBox.radius &&
-        this.maxPosition.z > otherBox.center.z - otherBox.radius&&
-        this.minPosition.z < otherBox.center.z + otherBox.radius) return true
+        if(this.maxPosition.x > otherSphere.center.x - otherSphere.radius &&
+        this.minPosition.x < otherSphere.center.x + otherSphere.radius &&
+        this.maxPosition.y > otherSphere.center.y - otherSphere.radius &&
+        this.minPosition.y < otherSphere.center.y + otherSphere.radius) return true
  
         else return false
      }
