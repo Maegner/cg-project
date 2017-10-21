@@ -9,8 +9,8 @@ class Cheerio{
         this.velocityX = 0;
         this.velocityY = 0;
 
-        this.acelerationX = 5;
-        this.acelerationY = 5;
+        this.acelerationX = 0.1;
+        this.acelerationY = 0.1;
 
         this.cheerioObject;
         
@@ -30,7 +30,49 @@ class Cheerio{
         return cheerio;
     }
 
+
+    calcVelocityX(delta){
+        if(this.velocityX < 0){
+            
+            this.velocityX += this.acelerationX * delta;
+
+            if(this.velocityX >= 0){
+                this.velocityX = 0
+            }
+        }
+        if(this.velocityX > 0){
+            
+            this.velocityX -= this.acelerationX * delta;
+
+            if(this.velocityX <= 0){
+                this.velocityX = 0
+            }
+        }
+    }
+
+    calcVelocityY(delta){
+        if(this.velocityY < 0){
+            
+            this.velocityY += this.acelerationY * delta;
+
+            if(this.velocityY >= 0){
+                this.velocityY = 0
+            }
+        }
+        if(this.velocityY > 0){
+            
+            this.velocityY -= this.acelerationY * delta;
+
+            if(this.velocityY <= 0){
+                this.velocityY = 0
+            }
+        }
+    }
+
     move(delta){
+
+        this.calcVelocityX(delta);
+        this.calcVelocityY(delta);
 
         //UPDATE colision Sphere
         this.colisionSphere.center.x += this.velocityX;
