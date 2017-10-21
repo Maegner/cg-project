@@ -11,7 +11,7 @@ class Sphere{
 
     isColidingWithSphere(otherSphere){
         
-        distance = this.center.distanceTo(otherSphere.center);
+        var distance = this.center.distanceTo(otherSphere.center);
 
         if(this.radius + otherSphere.radius >= distance ) return true
         else return false

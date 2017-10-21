@@ -3,7 +3,7 @@ class Carro
 	constructor() {
 		/*Goncalo*/
 
-		this.colisionSphere = new Sphere(new THREE.Vector3(50,150,-350),10)
+		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),10)
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
@@ -137,7 +137,7 @@ class Carro
 		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * forward.y;
 
 		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;
+		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;		
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(this.velocity.z * this.clampVel * this.steeringScale);
