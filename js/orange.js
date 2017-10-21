@@ -12,8 +12,6 @@ class Orange
 		//Used to check whether the orange went out of bounds
 		this.maxBounds = new THREE.Vector3(1000, 1000, 1000);
 		this.minBounds = new THREE.Vector3(-1000, -1000, -1000);
-		//Used to not spawn the orange at the edge of the track
-		this.spawnSafeSpace = new THREE.Vector3(100, 100, 0);
 
 		this.speedCounter = 0;
 		//Dictates how fast the orange's speed scales over time
@@ -104,8 +102,8 @@ class Orange
 		this.respawnTime = Math.random() * (this.respawnTimeMax - this.respawnTimeMin) + this.respawnTimeMin;
 		this.respawnCounter = 0;
 		//Generate location and rotation
-		this.orange.position.x = Math.random() * (this.maxBounds.x - this.minBounds.x - 2*this.spawnSafeSpace.x) + this.minBounds.x + this.spawnSafeSpace.x;
-		this.orange.position.y = Math.random() * (this.maxBounds.y - this.minBounds.y - 2*this.spawnSafeSpace.y) + this.minBounds.y + this.spawnSafeSpace.y;
+		this.orange.position.x = 0;
+		this.orange.position.y = 0;
 		this.orange.position.z = this.height;
 		this.orange.rotation.x = Math.PI/2;
 		this.orange.rotation.y = Math.random() * (Math.PI*2);
