@@ -3,6 +3,8 @@ class Carro
 	constructor() {
 		/*Goncalo*/
 
+		this.colisionSphere = new Sphere(new THREE.Vector3(50,150,-350),10)
+
 		this.velocity = new THREE.Vector3(0,0,0);
 
 		this.Yoffset = -0.75;
@@ -130,6 +132,10 @@ class Carro
 
 	ApplyVelocity() {
 		var forward = this.car.getWorldDirection();
+		
+		this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * forward.x;
+		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * forward.y;
+
 		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
 		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;
 
