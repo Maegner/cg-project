@@ -143,7 +143,6 @@ class Carro
 		var i=0;
 		while(i< track1.cheerios.length){
 			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
-				console.log("colision");
 				track1.cheerios[i].velocityX = (this.velocity.x /2) * forward.x;
 				track1.cheerios[i].velocityY = (this.velocity.x /2) * forward.y;
 			}	

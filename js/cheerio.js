@@ -33,8 +33,17 @@ class Cheerio{
     move(delta){
 
         //UPDATE colision Sphere
-        this.colisionSphere.x += this.velocityX;
-        this.colisionSphere.y += this.velocityY;
+        this.colisionSphere.center.x += this.velocityX;
+        this.colisionSphere.center.y += this.velocityY;
+
+        var i=0;
+		while(i< track1.cheerios.length){
+			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
+				track1.cheerios[i].velocityX = this.velocityX;
+				track1.cheerios[i].velocityY = this.velocityY;
+			}	
+			i++;
+		}
 
         //UPDATE cheerio Position
         this.cheerioObject.position.x += this.velocityX;
