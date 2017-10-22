@@ -34,7 +34,6 @@ class Camera
 		camera.lookAt(scene.position);
 		camera.position.set(0,-1000,600);
 		camera.updateProjectionMatrix();
-		camera.updateProjectionMatrix();
 	}
 
 	PerspectiveCameraCar(){
@@ -42,15 +41,15 @@ class Camera
 		//camera.updateProjectionMatrix();
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 2000);
-		camera.position.z = 100;
-		camera.position.y = -200;
-		camera.lookAt(scene.position);
-		camera.position.set(0,-1000,600);
+		camera.position.set(10, 5, 30);
+		camera.position.x =-500;
+		camera.position.y =150;
+		camera.rotation.y = -Math.PI/2;
+		camera.rotation.z = -Math.PI/2;
 		camera.updateProjectionMatrix();
 	}
 
 	Update(delta) {
-		alert(carro1.position.x);
-		camera.lookAt(carro1.position);
+		alert(1);
 	}
 }
