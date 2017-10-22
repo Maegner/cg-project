@@ -15,6 +15,7 @@ function CreateScene() {
 
 function CreateCamera() {
 	new Camera().OrthographicCamera();
+	//new Camera().PerspectiveCameraCenter();
 }
 
 function OnResize() {
@@ -98,12 +99,16 @@ function onKeyDown(e) {
 
 		// Tecla 2
 		case 50:
-			new Camera().PerspectiveCamera();
+			new Camera().PerspectiveCameraMiddle();
 			break;
 
 		// Tecla 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
+			break;
+		// Tecla 4
+		case 52:
+			new Camera().PerspectiveCameraSouth();
 			break;
 
 		// Up
