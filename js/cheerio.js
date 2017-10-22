@@ -80,15 +80,15 @@ class Cheerio{
 
         var i=0;
 		while(i< track1.cheerios.length){
-			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)&& (this.velocityX != 0 || this.velocityY != 0) && (this.colisionSphere.center.x != track1.cheerios[i].colisionSphere.center.x)){
+			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere) && (this.colisionSphere.center.x != track1.cheerios[i].colisionSphere.center.x)){
 				track1.cheerios[i].velocityX = this.velocityX;
                 track1.cheerios[i].velocityY = this.velocityY;
 
                 this.colisionSphere.center.x -= this.velocityX;
                 this.colisionSphere.center.y -= this.velocityY;
 
-                this.velocityX = this.velocityX * 0.99;
-                this.velocityY = this.velocityY * 0.99;
+                this.velocityX = this.velocityX * 0.2;
+                this.velocityY = this.velocityY  * 0.2;
 
                 console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
 
