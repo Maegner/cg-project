@@ -145,8 +145,8 @@ class Carro
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
 				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * forward.x;
 				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * forward.y;
-				this.velocity.x = 0;
-				this.velocity.y = 0;
+				this.velocity.x = this.velocity.x * 0.5;
+				this.velocity.y = this.velocity.y * 0.5;
 			}
 			i++;
 		}

@@ -14,7 +14,7 @@ class Cheerio{
 
         this.cheerioObject;
         
-        this.colisionSphere = new Sphere( new THREE.Vector2(x,y),5);
+        this.colisionSphere = new Sphere( new THREE.Vector2(x,y),5.5);
     }
 
     createCheerio(){
@@ -80,9 +80,22 @@ class Cheerio{
 
         var i=0;
 		while(i< track1.cheerios.length){
-			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)&& (this.velocityX != 0 || this.velocityY != 0)){
+			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)&& (this.velocityX != 0 || this.velocityY != 0) && (this.colisionSphere.center.x != track1.cheerios[i].colisionSphere.center.x)){
 				track1.cheerios[i].velocityX = this.velocityX;
                 track1.cheerios[i].velocityY = this.velocityY;
+
+                this.colisionSphere.center.x -= this.velocityX;
+                this.colisionSphere.center.y -= this.velocityY;
+
+                this.velocityX = this.velocityX * 0.99;
+                this.velocityY = this.velocityY * 0.99;
+
+                console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
+
+
+                this.colisionSphere.center.x += this.velocityX;
+                this.colisionSphere.center.y += this.velocityY;
+                
 			}	
 			i++;
 		}
