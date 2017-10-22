@@ -15,7 +15,7 @@ function CreateScene() {
 
 function CreateCamera() {
 	new Camera().OrthographicCamera();
-	//new Camera().PerspectiveCameraCenter();
+	//new Camera().PerspectiveCameraCar();
 }
 
 function OnResize() {
@@ -42,6 +42,8 @@ function CreateRenderer() {
 
 function Render() {
 	renderer.render(scene, camera);
+	//camera.position = carro1.get();
+	//camera.lookAt(carro1.get());
 }
 
 function BuildObjects() {
@@ -99,7 +101,7 @@ function onKeyDown(e) {
 
 		// Tecla 2
 		case 50:
-			new Camera().PerspectiveCameraMiddle();
+			new Camera().PerspectiveCameraCenter();
 			break;
 
 		// Tecla 3
