@@ -74,10 +74,10 @@ class Orange
 				carro1.colisionSphere.center = new THREE.Vector2(-350,150);
 				carro1.car.position.x = -350;
 				carro1.car.position.y = 150;
+				carro1.car.rotation.y = Math.PI/2;
 			}
 
 			var rollDistance = Math.sqrt(Math.pow(Math.abs(yMov),2) + Math.pow(Math.abs(xMov),2));
-			//console.log("X:" + xMov.toString() + " Y:" + yMov.toString());
 			this.orange.rotateX(rollDistance/this.radius);
 
 			this.speedCounter += delta;
