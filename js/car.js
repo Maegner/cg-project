@@ -76,7 +76,7 @@ class Carro
 
 		this.car.scale.set(this.carScale, this.carScale, this.carScale); // change car's scale
 		this.car.rotation.y = Math.PI/2;
-		this.car.position.z = 50;
+		this.car.position.z = -40;
 		this.car.position.y = 150;
 		this.car.position.x = -350;
 	}
