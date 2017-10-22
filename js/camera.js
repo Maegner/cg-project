@@ -2,6 +2,11 @@ class Camera
 {
 	constructor() {
 	}
+	Start() {}
+
+	Update(delta) {
+		alert(1);
+	}
 
 	OrthographicCamera() {
 		frustumSize = track1.getTrackSize();
@@ -47,9 +52,5 @@ class Camera
 		camera.rotation.y = -Math.PI/2;
 		camera.rotation.z = -Math.PI/2;
 		camera.updateProjectionMatrix();
-	}
-
-	Update(delta) {
-		alert(1);
 	}
 }
