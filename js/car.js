@@ -3,7 +3,7 @@ class Carro
 	constructor() {
 		/*Goncalo*/
 
-		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),10)
+		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),8)
 
 		this.velocity = new THREE.Vector3(0,0,0);
 
@@ -154,8 +154,8 @@ class Carro
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
 				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * forward.x;
 				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * forward.y;
-				this.velocity.x = this.velocity.x * 0.5;
-				this.velocity.y = this.velocity.y * 0.5;
+				this.velocity.x = 0;
+				this.velocity.y = 0;
 			}
 			i++;
 		}
