@@ -14,8 +14,8 @@ function CreateScene() {
 }
 
 function CreateCamera() {
-	//new Camera().OrthographicCamera();
-	new Camera().PerspectiveCameraCar();
+	new Camera().OrthographicCamera();
+	//new Camera().PerspectiveCameraCar();
 }
 
 function OnResize() {
