@@ -71,6 +71,7 @@ class Carro
 		//eixo.rotation.x = .5;
 		//eixo.scale.set(10, 10, 10);
 		//scene.add(eixo);
+		//this.car.add(camera);
 		scene.add(this.car);
 		//eixo.rotateX(1);
 
@@ -87,6 +88,14 @@ class Carro
 	}
 
 	Update(delta) {
+		//var dist = new THREE.Vector3(10,10,0);
+		//var newCam = dist.applyMatrix4(this.car.matrixWorld);
+
+		//camera.positon.x = newCam.x;
+		//camera.position.y = newCam.y;
+		//camera.position.z = newCam.z;
+		//camera.lookAt(this.car.position);
+
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
@@ -364,7 +373,6 @@ class Carro
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
-
 		this.car.add(mesh);
 	}
 	CreateFrontWheelSupportLeft(x,y,z){
@@ -407,6 +415,7 @@ class Carro
 		mesh.position.set(x,y,z);
 		this.car.add(mesh);
 	}
+
 	CreateBackWheelSupport(x,y,z){
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));

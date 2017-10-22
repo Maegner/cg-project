@@ -1,11 +1,7 @@
 class Camera
 {
 	constructor() {
-	}
-	Start() {}
 
-	Update(delta) {
-		alert(1);
 	}
 
 	OrthographicCamera() {
