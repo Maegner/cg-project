@@ -80,9 +80,9 @@ class Cheerio{
 
         var i=0;
 		while(i< track1.cheerios.length){
-			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
+			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)&& (this.velocityX != 0 || this.velocityY != 0)){
 				track1.cheerios[i].velocityX = this.velocityX;
-				track1.cheerios[i].velocityY = this.velocityY;
+                track1.cheerios[i].velocityY = this.velocityY;
 			}	
 			i++;
 		}
