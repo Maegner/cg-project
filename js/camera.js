@@ -45,8 +45,8 @@ class Camera
 		camera.position.set(10, 5, 30);
 		camera.position.x =-500;
 		camera.position.y =150;
-		camera.rotation.y = -Math.PI/2;
-		camera.rotation.z = -Math.PI/2;
+		camera.rotation.y = 0;
+		camera.rotation.z = 0;
 		camera.updateProjectionMatrix();
 	}
 }
