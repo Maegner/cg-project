@@ -145,9 +145,6 @@ class Carro
 			}
 			i++;
 		}
-
-		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;	
 		
 		//Checking for colisions with cheerios
 		i=0
@@ -155,9 +152,17 @@ class Carro
 			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
 				track1.cheerios[i].velocityX = (this.velocity.x) * forward.x;
 				track1.cheerios[i].velocityY = (this.velocity.x) * forward.y;
+
+				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * forward.x;
+				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * forward.y;
+				this.velocity.x = 0;
+				this.velocity.y = 0;
 			}	
 			i++;
 		}
+
+		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
+		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;	
 
 
 
