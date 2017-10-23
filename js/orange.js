@@ -7,7 +7,7 @@ class Orange
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forwardVector = new THREE.Vector3(0, 0, 0);
 		this.radius = 30;
-		this.height = 50;
+		this.height = 28;
 
 		this.colisionSphere = new Sphere(new THREE.Vector2(0,0),30);
 

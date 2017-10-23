@@ -90,7 +90,7 @@ class Cheerio{
                 this.velocityX = this.velocityX * 0.2;
                 this.velocityY = this.velocityY  * 0.2;
 
-                console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
+                //console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
 
 
                 this.colisionSphere.center.x += this.velocityX;

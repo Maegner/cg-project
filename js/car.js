@@ -6,6 +6,7 @@ class Carro
 		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),8)
 
 		this.velocity = new THREE.Vector3(0,0,0);
+		this.forward = new THREE.Vector3(0,0,0);
 
 		this.Xoffset = -9;
 		this.Yoffset = -0.75;
@@ -85,8 +86,14 @@ class Carro
 		this.car.position.z = 46;
 		this.car.position.y = 150;
 		this.car.position.x = -350;
-
 	}
+
+	SetupCamera() {
+		camera.rotation.order = "ZXY";
+		camera.rotation.y = -Math.PI/2;
+		camera.rotation.x = Math.PI/2;
+	}
+
 	get(){
 		return this.car.position;
 	}
@@ -96,10 +103,16 @@ class Carro
 		var newCam = dist.applyMatrix4(this.car.matrixWorld);
 		var carLocation = this.car.position;
 
-		camera.position.x = newCam.x;
-		//camera.position.y = newCam.y;
-		camera.position.z = newCam.z;
-		camera.lookAt(new THREE.Vector3(carLocation.x, carLocation.y, carLocation.z-40));
+		var camOffset = new THREE.Vector3(-40, -40, 10);
+
+		camera.position.x = carLocation.x + camOffset.x * this.forward.x;
+		camera.position.y = carLocation.y + camOffset.y * this.forward.y;
+		camera.position.z = camOffset.z;
+		var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
+		camera.rotation.z = Math.PI/2 - Math.PI * (cameraYaw);
+		console.log(cameraYaw);
+		//console.log((Math.PI/2 + Math.PI * (1 + cameraYaw)) / (2*Math.PI));
+		//camera.lookAt(new THREE.Vector3(carLocation.x, carLocation.y, carLocation.z-40));
 
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
@@ -149,16 +162,16 @@ class Carro
 	}
 
 	ApplyVelocity() {
-		var forward = this.car.getWorldDirection();
+		this.forward = this.car.getWorldDirection();
 		
-		this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * forward.x;
-		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * forward.y;
+		this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * this.forward.x;
+		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * this.forward.y;
 
 		var i = 0
 		while(i<butters.length){
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
-				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * forward.x;
-				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * forward.y;
+				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
+				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}
@@ -169,19 +182,19 @@ class Carro
 		i=0
 		while(i< track1.cheerios.length){
 			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
-				track1.cheerios[i].velocityX = ((this.velocity.x) * forward.x)* 0.80;
-				track1.cheerios[i].velocityY = ((this.velocity.x) * forward.y)*0.80;
+				track1.cheerios[i].velocityX = ((this.velocity.x) * this.forward.x)* 0.80;
+				track1.cheerios[i].velocityY = ((this.velocity.x) * this.forward.y)*0.80;
 
-				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * forward.x;
-				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * forward.y;
+				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
+				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}	
 			i++;
 		}
 
-		this.car.position.x += (this.velocity.x * this.speedScale) * forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * forward.y;	
+		this.car.position.x += (this.velocity.x * this.speedScale) * this.forward.x;
+		this.car.position.y += (this.velocity.x * this.speedScale) * this.forward.y;	
 
 
 

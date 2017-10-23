@@ -48,5 +48,6 @@ class Camera
 		camera.rotation.y = 0;
 		camera.rotation.z = 0;
 		camera.updateProjectionMatrix();
+		carro1.SetupCamera();
 	}
 }
