@@ -87,8 +87,8 @@ class Cheerio{
                 this.colisionSphere.center.x -= this.velocityX;
                 this.colisionSphere.center.y -= this.velocityY;
 
-                this.velocityX = this.velocityX * 0.2;
-                this.velocityY = this.velocityY  * 0.2;
+                this.velocityX = this.velocityX * 0.10;
+                this.velocityY = this.velocityY  * 0.10;
 
                 //console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
 
@@ -97,6 +97,17 @@ class Cheerio{
                 this.colisionSphere.center.y += this.velocityY;
                 
 			}	
+			i++;
+        }
+        
+        i=0;
+        while(i<butters.length){
+			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
+				this.colisionSphere.center.x -= this.velocityX;
+				this.colisionSphere.center.y -= this.velocityY;
+				this.velocityX = 0;
+				this.velocityY = 0;
+			}
 			i++;
 		}
 

@@ -53,11 +53,11 @@ function BuildObjects() {
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
 
-	var butterPositions = [[-250,-100,5],
-						   [440,-240,5],
-						   [0,240,5],
-						   [300,90,5],
-						   [90,-100,5]];
+	var butterPositions = [[-250,-100,15],
+						   [440,-240,15],
+						   [0,240,15],
+						   [300,90,15],
+						   [90,-100,15]];
 
 	var i;
 	for (i=0; i < orangeNum; i++) {

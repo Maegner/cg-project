@@ -3,7 +3,7 @@ class Carro
 	constructor() {
 		/*Goncalo*/
 
-		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),8)
+		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7)
 
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
