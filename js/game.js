@@ -97,12 +97,10 @@ function onKeyDown(e) {
 		case 49:
 			new Camera().OrthographicCamera();
 			break;
-
 		// Tecla 2
 		case 50:
 			new Camera().PerspectiveCameraCenter();
 			break;
-
 		// Tecla 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
@@ -116,22 +114,18 @@ function onKeyDown(e) {
 		case 38:
 			carro1.OnAccelerate();
 			break;
-
 		//Down
 		case 40:
 			carro1.OnBrake();
 			break;
-
 		// Left
 		case 37:
 			carro1.OnLeft();
 			break;
-
 		// Right
 		case 39:
 			carro1.OnRight();
 			break;
-
 
 		// A, a
 		case 65:
@@ -141,6 +135,11 @@ function onKeyDown(e) {
 					node.material.wireframe = !node.material.wireframe;
 				}
 			});
+			break;
+
+		// Spacebar
+		case 32:
+			carro1.ActivateRearView();
 			break;
 	}
 }
@@ -152,20 +151,22 @@ function onKeyUp(e) {
 		case 38:
 			carro1.OnUnaccelerate();
 			break;
-
 		//Down
 		case 40:
 			carro1.OnUnbrake();
 			break;
-
 		//Left
 		case 37:
 			carro1.OnUnleft();
 			break;
-
 		// Right
 		case 39:
 			carro1.OnUnright();
+			break;
+
+		// Spacebar
+		case 32:
+			carro1.DeactivateRearView();
 			break;
 	}
 }

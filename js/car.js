@@ -12,11 +12,15 @@ class Carro
 		this.Yoffset = -0.75;
 
 		this.carScale = 5;
+		this.frontLeftWheel;
+		this.frontRightWheel;
+
+		this.cameraOffsetSign = 1;
 		/*
 		ACCELERATION
 		*/
 		//Mexer
-		this.speedScale = 2.4;
+		this.speedScale = 1.8;
 		this.maxVelocity = 1;
 		this.acceleration = 5;
 		//Makes the car slow to a halt
@@ -32,7 +36,7 @@ class Carro
 		STEERING
 		*/
 		//Mexer
-		this.steeringScale = 0.06;
+		this.steeringScale = 0.04;
 		//Nao mexer
 		this.steeringSensitivity = 0.8;
 		this.maxSteering = 1;
@@ -65,8 +69,8 @@ class Carro
 		this.CreateWheel(0.35, 1.625, -1);
 		this.CreateWheel(0.35, 0.375, -1);
 		this.CreateTip(0.55, 1, 1.6);
-		this.CreateWheel(0.35, 1.625, 0.9);
-		this.CreateWheel(0.35, 0.375, 0.9);
+		this.frontRightWheel = this.CreateWheel(0.35, 1.625, 0.9);
+		this.frontLeftWheel = this.CreateWheel(0.35, 0.375, 0.9);
 		this.CreateRoof(0.75, 1, -0.25);
 		this.carOffset.position.x = this.Xoffset;
 		this.carOffset.position.y = this.Yoffset;
@@ -99,26 +103,25 @@ class Carro
 	}
 
 	Update(delta) {
-		if(cameraStatus){
-			var dist = new THREE.Vector3(10,0,-20);
-			var newCam = dist.applyMatrix4(this.car.matrixWorld);
-			var carLocation = this.car.position;
 
-			var camOffset = new THREE.Vector3(-40, -40, 10);
-
-			camera.position.x = carLocation.x + camOffset.x * this.forward.x;
-			camera.position.y = carLocation.y + camOffset.y * this.forward.y;
-			camera.position.z = camOffset.z;
-			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
-			camera.rotation.z = Math.PI/2 - Math.PI * (cameraYaw);
-			console.log(cameraYaw);
-		}
-		//console.log((Math.PI/2 + Math.PI * (1 + cameraYaw)) / (2*Math.PI));
-		//camera.lookAt(new THREE.Vector3(carLocation.x, carLocation.y, carLocation.z-40));
-
+		this.HandleCamera(delta);
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
+	}
+
+	HandleCamera(delta) {
+		if(cameraStatus){
+			var carLocation = this.car.position;
+			var camOffset = new THREE.Vector3(-40, -40, 10);
+
+			camera.position.x = carLocation.x + camOffset.x * this.forward.x * this.cameraOffsetSign;
+			camera.position.y = carLocation.y + camOffset.y * this.forward.y * this.cameraOffsetSign - 1;
+			camera.position.z = camOffset.z;
+			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
+			camera.rotation.z = Math.PI/2 * this.cameraOffsetSign - Math.PI * (cameraYaw) - this.velocity.z*Math.PI/50;
+			console.log(cameraYaw);
+		}
 	}
 
 	HandleAcceleration(delta) {
@@ -161,6 +164,10 @@ class Carro
 			this.velocity.z = 0;
 			this.turn = 0;
 		}
+
+		//Rotate wheels
+		this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
+		this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
 	ApplyVelocity() {
@@ -196,12 +203,18 @@ class Carro
 		}
 
 		this.car.position.x += (this.velocity.x * this.speedScale) * this.forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * this.forward.y;	
-
-
+		this.car.position.y += (this.velocity.x * this.speedScale) * this.forward.y;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(-this.velocity.z * this.clampVel * this.steeringScale);
+	}
+
+	ActivateRearView() {
+		this.cameraOffsetSign = -1;
+	}
+
+	DeactivateRearView() {
+		this.cameraOffsetSign = 1;
 	}
 
 	OnAccelerate() {
@@ -323,13 +336,13 @@ class Carro
 
 	CreateMiddlePart(x,y,z){
 		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
 	CreateTip(x,y,z){
 		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
-		var mesh = new THREE.Mesh(bico, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(bico, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
 		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
@@ -337,7 +350,7 @@ class Carro
 	}
 	CreateFrontWing(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .02, 1.25);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
@@ -347,7 +360,7 @@ class Carro
 	CreateFrontPart(x,y,z){
 		var cubo = new THREE.BoxGeometry( 1.25, .4, .4);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateY(2*Math.PI/4); 
 
@@ -355,15 +368,16 @@ class Carro
 	}
 	CreateWheel(x,y,z){
 		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 8, 10 );
-		var mesh = new THREE.Mesh(wheel, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(wheel, new THREE.MeshBasicMaterial( {color: 0x000000, wireframe: true}));
 		mesh.position.set(x,y,z);
-		wheel.rotateX(Math.PI / 2); 
+		wheel.rotateX(Math.PI / 2);
 		this.carOffset.add(mesh);
+		return mesh;
 	}
 
 	CreateRoof(x,y,z){
 		var ball = new THREE.SphereGeometry( 0.2, 5, 5,0, Math.PI);
-		var mesh = new THREE.Mesh( ball, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh( ball, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		ball.rotateY(Math.PI / 2);
 		this.carOffset.add(mesh);
@@ -411,7 +425,7 @@ class Carro
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2); 
 
-		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}) );
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}) );
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
@@ -431,14 +445,14 @@ class Carro
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2);
 		triangle.rotateZ(Math.PI); 
-		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
 
 	CreateBackWheelSupport(x,y,z){
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshBasicMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
 		cubo.rotateX(Math.PI); 
