@@ -4,7 +4,7 @@
 
 var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
 var orangeNum = 4;
-var asdd=0;
+var cameraStatus = false;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];

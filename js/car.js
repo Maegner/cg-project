@@ -99,18 +99,20 @@ class Carro
 	}
 
 	Update(delta) {
-		var dist = new THREE.Vector3(10,0,-20);
-		var newCam = dist.applyMatrix4(this.car.matrixWorld);
-		var carLocation = this.car.position;
+		if(cameraStatus){
+			var dist = new THREE.Vector3(10,0,-20);
+			var newCam = dist.applyMatrix4(this.car.matrixWorld);
+			var carLocation = this.car.position;
 
-		var camOffset = new THREE.Vector3(-40, -40, 10);
+			var camOffset = new THREE.Vector3(-40, -40, 10);
 
-		camera.position.x = carLocation.x + camOffset.x * this.forward.x;
-		camera.position.y = carLocation.y + camOffset.y * this.forward.y;
-		camera.position.z = camOffset.z;
-		var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
-		camera.rotation.z = Math.PI/2 - Math.PI * (cameraYaw);
-		console.log(cameraYaw);
+			camera.position.x = carLocation.x + camOffset.x * this.forward.x;
+			camera.position.y = carLocation.y + camOffset.y * this.forward.y;
+			camera.position.z = camOffset.z;
+			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
+			camera.rotation.z = Math.PI/2 - Math.PI * (cameraYaw);
+			console.log(cameraYaw);
+		}
 		//console.log((Math.PI/2 + Math.PI * (1 + cameraYaw)) / (2*Math.PI));
 		//camera.lookAt(new THREE.Vector3(carLocation.x, carLocation.y, carLocation.z-40));
 
