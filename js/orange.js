@@ -122,7 +122,6 @@ class Orange
 		this.colisionSphere.center.x = 0;
 		this.colisionSphere.center.y = 0;
 
-		this.orange.position.z = this.height;
 		this.orange.rotation.x = Math.PI/2;
 		this.orange.rotation.y = Math.random() * (Math.PI*2);
 		this.orange.rotation.z = 0;

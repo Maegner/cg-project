@@ -1,8 +1,6 @@
 class Carro
 {
 	constructor() {
-		/*Goncalo*/
-
 		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7)
 
 		this.velocity = new THREE.Vector3(0,0,0);
@@ -15,16 +13,19 @@ class Carro
 		this.frontLeftWheel;
 		this.frontRightWheel;
 
+		//Indicates whether the player is looking forward or back
 		this.cameraOffsetSign = 1;
 		/*
 		ACCELERATION
 		*/
+
 		//Mexer
 		this.speedScale = 1.8;
 		this.maxVelocity = 1;
 		this.acceleration = 5;
 		//Makes the car slow to a halt
 		this.speedDrag = 0.3;
+
 		//Nao mexer
 		this.speed = 0.02;
 		//Translates player's throttle input (1 = accelerate, -1 = brake)
@@ -35,8 +36,10 @@ class Carro
 		/*
 		STEERING
 		*/
+
 		//Mexer
 		this.steeringScale = 0.04;
+		
 		//Nao mexer
 		this.steeringSensitivity = 0.8;
 		this.maxSteering = 1;
@@ -119,6 +122,7 @@ class Carro
 			camera.position.y = carLocation.y + camOffset.y * this.forward.y * this.cameraOffsetSign;
 			camera.position.z = camOffset.z;
 			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
+			//														| from 0 to 2PI		|	|			smooth offset when turning				|
 			camera.rotation.z = Math.PI/2 * this.cameraOffsetSign - Math.PI * (cameraYaw) - this.velocity.z*Math.PI/50 * Math.abs(this.clampVel);
 			console.log(cameraYaw);
 		}
@@ -172,38 +176,42 @@ class Carro
 
 	ApplyVelocity() {
 		this.forward = this.car.getWorldDirection();
-		
-		this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * this.forward.x;
-		this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * this.forward.y;
 
+		var xMov = (this.velocity.x * this.speedScale) * this.forward.x;
+		var yMov = (this.velocity.x * this.speedScale) * this.forward.y;
+		
+		this.colisionSphere.center.x += xMov;
+		this.colisionSphere.center.y += yMov;
+
+		//Check collision with butters
 		var i = 0
 		while(i<butters.length){
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
-				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
-				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
+				this.colisionSphere.center.x -= xMov;
+				this.colisionSphere.center.y -= yMov;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}
 			i++;
 		}
 		
-		//Checking for colisions with cheerios
+		//Checking colision with cheerios
 		i=0
 		while(i< track1.cheerios.length){
 			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
 				track1.cheerios[i].velocityX = ((this.velocity.x) * this.forward.x)* 0.80;
 				track1.cheerios[i].velocityY = ((this.velocity.x) * this.forward.y)*0.80;
 
-				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
-				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
+				this.colisionSphere.center.x -= xMov;
+				this.colisionSphere.center.y -= yMov;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}	
 			i++;
 		}
 
-		this.car.position.x += (this.velocity.x * this.speedScale) * this.forward.x;
-		this.car.position.y += (this.velocity.x * this.speedScale) * this.forward.y;
+		this.car.position.x += xMov;
+		this.car.position.y += yMov;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(-this.velocity.z * this.clampVel * this.steeringScale);
