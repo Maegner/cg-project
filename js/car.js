@@ -350,7 +350,7 @@ class Carro
 	}
 	CreateTip(x,y,z){
 		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
-		var mesh = new THREE.Mesh(bico, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh(bico, new THREE.MeshPhongMaterial( {color: 0xFFF600, wireframe: true}));
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
 		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
@@ -385,7 +385,7 @@ class Carro
 
 	CreateRoof(x,y,z){
 		var ball = new THREE.SphereGeometry( 0.2, 5, 5,0, Math.PI);
-		var mesh = new THREE.Mesh( ball, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh( ball, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		ball.rotateY(Math.PI / 2);
 		this.carOffset.add(mesh);
@@ -460,7 +460,7 @@ class Carro
 
 	CreateBackWheelSupport(x,y,z){
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: false}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
 		cubo.rotateX(Math.PI); 
