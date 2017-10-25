@@ -5,7 +5,7 @@ class Camera
 	}
 
 	OrthographicCamera() {
-		cameraStatus = false;
+		cameraStatus = 1;
 		frustumSize = track1.getTrackSize();
 		var aspect = window.innerWidth / window.innerHeight
 		camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize.x/2, /*RightPane*/frustumSize.x/2,/*TopPane*/frustumSize.x * (1/aspect)/2,/*BottomPane*/-frustumSize.x * (1/aspect)/2 ,/*Near*/0.1, /*Far*/1000);
@@ -14,7 +14,7 @@ class Camera
 	}
 
 	PerspectiveCameraSouth() {
-		cameraStatus = false;
+		cameraStatus = 4;
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(80, aspect, 0.1, 1500);
 		camera.position.z = 500;
@@ -25,7 +25,7 @@ class Camera
 	}
 
 	PerspectiveCameraCenter() {
-		cameraStatus = false;
+		cameraStatus = 2;
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 2000);
 		camera.position.z = 0;
@@ -36,7 +36,7 @@ class Camera
 	}
 
 	PerspectiveCameraCar(){
-		cameraStatus = true;
+		cameraStatus = 3;
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 2000);
 		camera.position.set(10, 5, 30);

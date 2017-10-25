@@ -114,7 +114,7 @@ class Carro
 	}
 
 	HandleCamera(delta) {
-		if(cameraStatus){
+		if(cameraStatus == 3){
 			var carLocation = this.car.position;
 			var camOffset = new THREE.Vector3(-40, -40, 10);
 

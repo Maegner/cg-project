@@ -6,7 +6,7 @@ var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
 var skyLight, trackLights;
 var skyLightIntensity = 2;
 var orangeNum = 4;
-var cameraStatus = false;
+var cameraStatus = -1;
 
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
@@ -22,19 +22,24 @@ function CreateCamera() {
 }
 
 function OnResize() {
+		if(cameraStatus > 1){
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight);
+		} else { 
+			var aspect = window.innerWidth / window.innerHeight;
 
-		var aspect = window.innerWidth / window.innerHeight;
+			var hor = Math.min(-frustumSize.x /2, -frustumSize.y * aspect /2);
+			var ver = Math.min(-frustumSize.x * (1/aspect) /2, -frustumSize.y /2);
 
-		var hor = Math.min(-frustumSize.x /2, -frustumSize.y * aspect /2);
-		var ver = Math.min(-frustumSize.x * (1/aspect) /2, -frustumSize.y /2);
+			camera.left = hor;
+			camera.right = Math.abs(hor);
+			camera.top = Math.abs(ver);
+			camera.bottom = ver;
 
-		camera.left = hor;
-		camera.right = Math.abs(hor);
-		camera.top = Math.abs(ver);
-		camera.bottom = ver;
-
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight);
+			camera.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight);
+		}
 }
 
 function CreateRenderer() {
