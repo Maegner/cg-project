@@ -3,6 +3,8 @@
 */
 
 var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
+var skyLight, trackLights;
+var skyLightIntensity = 2;
 var orangeNum = 4;
 var cameraStatus = false;
 
@@ -70,6 +72,12 @@ function BuildObjects() {
 		gameObjects.push(butter);
 	}
 
+	//global light
+	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
+	skyLight.position = new THREE.Vector3(0, 100, 0);
+	scene.add(skyLight);
+
+
 }
 
 function StartObjects() {
@@ -93,19 +101,19 @@ function onKeyDown(e) {
 
 	switch (e.keyCode)
 	{
-		// Tecla 1
+		// 1
 		case 49:
 			new Camera().OrthographicCamera();
 			break;
-		// Tecla 2
+		// 2
 		case 50:
 			new Camera().PerspectiveCameraCenter();
 			break;
-		// Tecla 3
+		// 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
 			break;
-		// Tecla 4
+		// 4
 		case 52:
 			new Camera().PerspectiveCameraSouth();
 			break;
@@ -140,6 +148,22 @@ function onKeyDown(e) {
 		// Spacebar
 		case 32:
 			carro1.ActivateRearView();
+			break;
+
+		// N,n
+		case 78:
+		case 110:
+			skyLight.intensity = skyLight.intensity == 0 ? skyLightIntensity : 0;
+			break;
+
+		// L,l
+		case 76:
+		case 108:
+			break;
+			
+		// G,g
+		case 71:
+		case 103:
 			break;
 	}
 }

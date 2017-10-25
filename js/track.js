@@ -24,11 +24,12 @@ class Track
 
 	addTabletop(){
 		var geometry = new THREE.BoxGeometry(this.trackSizeX,this.trackSizeY,2);
-		var material = new THREE.MeshBasicMaterial({color: 0x0000FF, wireframe:true })
+		var material = new THREE.MeshPhongMaterial({color: 0x0000FF, wireframe:true })
 		this.tabletop = new THREE.Mesh(geometry,material);
 		this.tabletop.position.set(0,0,-1);
 
 		this.track.add(this.tabletop)
+		skyLight.target = this.tabletop;		
 	}
 
 	//--------------------------------------------------TABLETOP CREATION END---------------------------------------

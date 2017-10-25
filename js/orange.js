@@ -33,11 +33,11 @@ class Orange
 
 	Start() {
 		var geometry = new THREE.SphereGeometry(this.radius,8,6);
-		var material = new THREE.MeshBasicMaterial({color: 0xFFA500, wireframe: true});
+		var material = new THREE.MeshPhongMaterial({color: 0xFFA500, wireframe: true});
 		var sphere = new THREE.Mesh(geometry,material);
 		this.orange.add(sphere);
 		var geometry2 = new THREE.BoxGeometry(4, 4, 12);
-		var material2 = new THREE.MeshBasicMaterial({color: 0x00FF00, wireframe: true});
+		var material2 = new THREE.MeshPhongMaterial({color: 0x00FF00, wireframe: true});
 		var tip = new THREE.Mesh(geometry2,material2);
 		tip.position.z = 30;
 		this.orange.add(tip);
