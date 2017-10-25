@@ -9,7 +9,7 @@ class Carro
 		this.forward = new THREE.Vector3(0,0,0);
 
 		this.Xoffset = -9;
-		this.Yoffset = -0.75;
+		this.Yoffset = -1;
 
 		this.carScale = 5;
 		this.frontLeftWheel;
@@ -116,7 +116,7 @@ class Carro
 			var camOffset = new THREE.Vector3(-40, -40, 10);
 
 			camera.position.x = carLocation.x + camOffset.x * this.forward.x * this.cameraOffsetSign;
-			camera.position.y = carLocation.y + camOffset.y * this.forward.y * this.cameraOffsetSign - 1;
+			camera.position.y = carLocation.y + camOffset.y * this.forward.y * this.cameraOffsetSign;
 			camera.position.z = camOffset.z;
 			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
 			camera.rotation.z = Math.PI/2 * this.cameraOffsetSign - Math.PI * (cameraYaw) - this.velocity.z*Math.PI/50;
