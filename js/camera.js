@@ -21,7 +21,6 @@ class Camera
 		camera.position.x = 500;
 		camera.rotation.z = Math.PI/2;
 		camera.rotation.y = Math.PI/5;
-		//camera.lookAt(carro1.position);
 		camera.updateProjectionMatrix();
 	}
 
@@ -29,17 +28,15 @@ class Camera
 		cameraStatus = false;
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 2000);
-		camera.position.z = 100;
-		camera.position.y = -200;
+		camera.position.z = 0;
+		camera.position.y = -600;
+		camera.position.z = 600;
 		camera.lookAt(scene.position);
-		camera.position.set(0,-1000,600);
 		camera.updateProjectionMatrix();
 	}
 
 	PerspectiveCameraCar(){
 		cameraStatus = true;
-		//camera = new THREE.PerspectiveCamera(45, 10, 0, 12);
-		//camera.updateProjectionMatrix();
 		var aspect = window.innerWidth / window.innerHeight;
 		camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 2000);
 		camera.position.set(10, 5, 30);
