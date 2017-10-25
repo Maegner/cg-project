@@ -8,7 +8,7 @@ class Butter
 	Start() {
 		var CompleteButter = new THREE.Object3D();
 		var plateGeometry = new THREE.BoxGeometry(120,50,30);
-		var plateMaterial = new THREE.MeshBasicMaterial({color:0xFFFFFF,wireframe: true});
+		var plateMaterial = new THREE.MeshPhongMaterial({color:0xFFFFFF,wireframe: true});
 		var plate = new THREE.Mesh(plateGeometry,plateMaterial);
 		plate.position.set(this.location.x, this.location.y, this.location.z);
 		

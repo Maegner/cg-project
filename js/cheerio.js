@@ -19,7 +19,7 @@ class Cheerio{
 
     createCheerio(){
 
-        var material = new THREE.MeshBasicMaterial( {color: 0xFFFFFF, wireframe: true} );
+        var material = new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true} );
         var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 10);
 
 		var cheerio = new THREE.Mesh(geometry,material);
