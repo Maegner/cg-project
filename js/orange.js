@@ -41,6 +41,7 @@ class Orange
 		var tip = new THREE.Mesh(geometry2,material2);
 		tip.position.z = 30;
 		this.orange.add(tip);
+		this.orange.position.z = this.height;
 		scene.add(this.orange);
 
 		this.orange.visible = true;
