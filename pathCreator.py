@@ -162,7 +162,7 @@ def curvesOnYY(trackWidth,bottomBoundary,topBoundary,spacing,curvatureHeight,cur
 		
 		x = (math.cos(curvePeriod*y)*curvatureHeight) - ofset
 
-		if y >= topBoundary - trackWidth or y<= bottomBoundary + trackWidth:
+		if y >= topBoundary - trackWidth +10 or y<= bottomBoundary + trackWidth-10:
 			leftPoint =  "[{},{},0],".format(x,y)
 			rightPoint = ""
 		else:
@@ -179,25 +179,21 @@ def main():
 	start = "["
 	end = "]"
 
-	bottomBottomHorizontalLine = HorizontalStraightLine(-370,0,-200)
-	topBottomHorizontalLine = HorizontalStraightLine(-370,0,-200)
-	s = lineOnXX(50,bottomBottomHorizontalLine,topBottomHorizontalLine,15)
+	bottomBottomHorizontalLine = HorizontalStraightLine(-370,145,-200)
+	topBottomHorizontalLine = HorizontalStraightLine(-350,145,-200)
+	s = lineOnXX(75,bottomBottomHorizontalLine,topBottomHorizontalLine,15)
 
-	bBottomHorizontalLine = HorizontalStraightLine(100,145,-200)
-	tBottomHorizontalLine = HorizontalStraightLine(100,145,-200)
-	s += lineOnXX(50,bBottomHorizontalLine,tBottomHorizontalLine,15)
-
-	t,leftBottom,rightBottom,x,distance = curvesOnXX(50,150,420,15,40,1/40,160,30)
+	t,leftBottom,rightBottom,x,distance = curvesOnXX(75,150,450,15,40,1/40,160,55)
 	s += t
 
-	s += lineOnYY(distance,math.floor(leftBottom),math.floor(rightBottom),180,15,x,0)
+	s += lineOnYY(distance,math.floor(leftBottom)+15,math.floor(rightBottom),190,15,x,0)
 
-	topTopHorizontalLine = HorizontalStraightLine(-400,425,130)
-	bottomTopHorizontalLine = HorizontalStraightLine(-390,385,130)
-	topHorizontalLine = lineOnXX(50,bottomTopHorizontalLine,topTopHorizontalLine,15)
+	topTopHorizontalLine = HorizontalStraightLine(-390,445,130)
+	bottomTopHorizontalLine = HorizontalStraightLine(-350,375,130)
+	topHorizontalLine = lineOnXX(75,bottomTopHorizontalLine,topTopHorizontalLine,15)
 	s+=topHorizontalLine
 
-	leftCurves = curvesOnYY(50,-200,180,15,40,1/40,400,30)
+	leftCurves = curvesOnYY(90,-200,200,15,40,1/40,400,5)
 	s+= leftCurves
 
 	s = s[:-1]

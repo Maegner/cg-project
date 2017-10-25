@@ -51,15 +51,16 @@ function BuildObjects() {
 	carro1 = new Carro();
 	gameObjects.push(carro1);
 
-	var tirePostions = TRACK_2;
+	//var tirePostions = TRACK_2;
+	var tirePostions = TRACK_TEST
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
 
-	var butterPositions = [[-250,-100,15],
+	var butterPositions = [[-200,-80,15],
 						   [440,-240,15],
 						   [0,240,15],
 						   [300,90,15],
-						   [90,-100,15]];
+						   [90,-80,15]];
 
 	var i;
 	for (i=0; i < orangeNum; i++) {
