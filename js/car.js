@@ -187,8 +187,8 @@ class Carro
 		var i = 0
 		while(i<butters.length){
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
-				this.colisionSphere.center.x -= xMov;
-				this.colisionSphere.center.y -= yMov;
+				this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * this.forward.x;
+				this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * this.forward.y;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}
@@ -201,17 +201,17 @@ class Carro
 			if(track1.cheerios[i].colisionSphere.isColidingWithSphere(this.colisionSphere)){
 				track1.cheerios[i].velocityX = ((this.velocity.x) * this.forward.x)* 0.80;
 				track1.cheerios[i].velocityY = ((this.velocity.x) * this.forward.y)*0.80;
-
-				this.colisionSphere.center.x -= xMov;
-				this.colisionSphere.center.y -= yMov;
+				
+				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
+				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}	
 			i++;
 		}
 
-		this.car.position.x += xMov;
-		this.car.position.y += yMov;
+		this.car.position.x += (this.velocity.x * this.speedScale) * this.forward.x;
+		this.car.position.y += (this.velocity.x * this.speedScale) * this.forward.y;
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(-this.velocity.z * this.clampVel * this.steeringScale);
