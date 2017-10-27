@@ -20,7 +20,7 @@ class Cheerio{
     createCheerio(){
 
         var material = new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true} );
-        var geometry = new THREE.TorusGeometry( 5, 0.5, 8, 10);
+        var geometry = new THREE.TorusGeometry( 5, 1, 8);
 
 		var cheerio = new THREE.Mesh(geometry,material);
         cheerio.position.set(this.centerX,this.centerY,this.centerZ);

@@ -45,6 +45,14 @@ function OnResize() {
 function CreateRenderer() {
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.shadowCameraNear = 3;
+	renderer.shadowCameraFar = 5000;
+	renderer.shadowCameraFov = 50;
+	renderer.shadowMapDarkness = 0.5;
+	renderer.shadowMapWidth = 1024;
+	renderer.shadowMapHeight = 1024;
+	renderer.shadowMap.enabled = true;	
+	renderer.shadowMapDebug = true;
 	document.body.appendChild(renderer.domElement);
 }
 
@@ -78,12 +86,47 @@ function BuildObjects() {
 		gameObjects.push(butter);
 	}
 
-	//global light
+	/*
+	//Global light
 	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
-	skyLight.position = new THREE.Vector3(0, 100, 0);
+	skyLight.position = new THREE.Vector3(0, 1, 0);
+	skyLight.castShadow = true;
+	skyLight.shadow.camera.near = 1;
+	skyLight.shadow.camera.far = 50000;
+	skyLight.shadow.mapSize.width  = 1024;
+	skyLight.shadow.mapSize.height = 1024;
+	skyLight.shadow.camera.cov = 45;
+	//Create a helper for the shadow camera (optional)
+	var helper = new THREE.CameraHelper( skyLight.shadow.camera );
+	scene.add( helper );
+	scene.add(skyLight);
+	*/
+
+	//Test light
+	skyLight = new THREE.SpotLight(0xffffff, 10);
+	skyLight.position = new THREE.Vector3(100, 1000, 100 );
+	skyLight.rotation.x = Math.PI;
+	skyLight.rotation.y = Math.PI;
+	skyLight.castShadow = true;
+	skyLight.shadow.camera.near = 1;
+	skyLight.shadow.camera.far = 50000;
+	skyLight.shadow.mapSize.width  = 1024;
+	skyLight.shadow.mapSize.height = 1024;
+	skyLight.shadow.camera.cov = 90;
+
+	//Create a helper for the shadow camera (optional)
+	var helper = new THREE.CameraHelper( skyLight.shadow.camera );
+	scene.add( helper );
 	scene.add(skyLight);
 
+	var trackLightPositions = [
 
+	]
+
+	//Track lights
+	for (i=0; i < trackLightPositions.length; i++) {
+		//Criar luzes da pista
+	}
 }
 
 function StartObjects() {
@@ -165,11 +208,21 @@ function onKeyDown(e) {
 		// L,l
 		case 76:
 		case 108:
+			skyLight.castShadow = !skyLight.castShadow;
 			break;
 			
 		// G,g
 		case 71:
 		case 103:
+			scene.traverse(function(node) {
+				if(node instanceof THREE.Mesh){
+					var col = node.material.color;
+					var wire = node.material.wireframe;
+					node.material = node.material.isMeshPhongMaterial ? 
+									new THREE.MeshLambertMaterial({color: col, wireframe:wire }) :
+									new THREE.MeshPhongMaterial({color: col, wireframe:wire });
+				}
+			});
 			break;
 	}
 }

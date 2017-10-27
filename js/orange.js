@@ -41,10 +41,12 @@ class Orange
 		var tip = new THREE.Mesh(geometry2,material2);
 		tip.position.z = 30;
 		this.orange.add(tip);
+		this.orange.shading = THREE.FlatShading;
 		this.orange.position.z = this.height;
+		this.orange.castShadow = true;
+		this.orange.receiveShadow = true;
+		
 		scene.add(this.orange);
-
-		this.orange.visible = true;
 
 		//Fetch track bounds
 		var tempBounds = track1.getTrackSize();

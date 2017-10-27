@@ -20,7 +20,7 @@ class Carro
 		*/
 
 		//Mexer
-		this.speedScale = 1.8;
+		this.speedScale = 2;
 		this.maxVelocity = 1;
 		this.acceleration = 5;
 		//Makes the car slow to a halt
@@ -124,7 +124,6 @@ class Carro
 			var cameraYaw = Math.atan2(this.forward.x, this.forward.y) / Math.PI;
 			//														| from 0 to 2PI		|	|			smooth offset when turning				|
 			camera.rotation.z = Math.PI/2 * this.cameraOffsetSign - Math.PI * (cameraYaw) - this.velocity.z*Math.PI/50 * Math.abs(this.clampVel);
-			console.log(cameraYaw);
 		}
 	}
 

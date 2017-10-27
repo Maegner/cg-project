@@ -10,6 +10,8 @@ class Camera
 		var aspect = window.innerWidth / window.innerHeight
 		camera = new THREE.OrthographicCamera(/*LeftPane*/-frustumSize.x/2, /*RightPane*/frustumSize.x/2,/*TopPane*/frustumSize.x * (1/aspect)/2,/*BottomPane*/-frustumSize.x * (1/aspect)/2 ,/*Near*/0.1, /*Far*/1000);
 		camera.position.z = 250;
+		camera.recieveShadow = true;
+		camera.castShadow = true;
 		camera.updateProjectionMatrix();
 	}
 
@@ -21,6 +23,8 @@ class Camera
 		camera.position.x = 500;
 		camera.rotation.z = Math.PI/2;
 		camera.rotation.y = Math.PI/5;
+		camera.recieveShadow = true;
+		camera.castShadow = true;
 		camera.updateProjectionMatrix();
 	}
 
@@ -31,6 +35,8 @@ class Camera
 		camera.position.z = 0;
 		camera.position.y = -600;
 		camera.position.z = 600;
+		camera.recieveShadow = true;
+		camera.castShadow = true;
 		camera.lookAt(scene.position);
 		camera.updateProjectionMatrix();
 	}
