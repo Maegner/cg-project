@@ -27,10 +27,9 @@ class Track
 		var material = new THREE.MeshPhongMaterial({color: 0x0000FF, wireframe:true })
 		this.tabletop = new THREE.Mesh(geometry,material);
 		this.tabletop.position.set(0,0,-1);
-		this.tabletop.castShadow = true;
 		this.tabletop.receiveShadow = true;
 		this.track.add(this.tabletop)
-		//skyLight.target = this.tabletop;		
+		skyLight.target = this.tabletop;		
 	}
 
 	//--------------------------------------------------TABLETOP CREATION END---------------------------------------

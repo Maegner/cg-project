@@ -22,7 +22,9 @@ class Cheerio{
         var material = new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true} );
         var geometry = new THREE.TorusGeometry( 5, 1, 8);
 
-		var cheerio = new THREE.Mesh(geometry,material);
+        var cheerio = new THREE.Mesh(geometry,material);
+        cheerio.receiveShadows = true;
+        cheerio.castShadow = true;
         cheerio.position.set(this.centerX,this.centerY,this.centerZ);
 
         this.cheerioObject = cheerio;
@@ -89,9 +91,6 @@ class Cheerio{
 
                 this.velocityX = this.velocityX * 0.10;
                 this.velocityY = this.velocityY  * 0.10;
-
-                //console.log( this.colisionSphere.center.x == track1.cheerios[i].colisionSphere.center.x);
-
 
                 this.colisionSphere.center.x += this.velocityX;
                 this.colisionSphere.center.y += this.velocityY;

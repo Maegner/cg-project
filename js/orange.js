@@ -35,16 +35,15 @@ class Orange
 		var geometry = new THREE.SphereGeometry(this.radius,8,6);
 		var material = new THREE.MeshPhongMaterial({color: 0xFFA500, wireframe: true});
 		var sphere = new THREE.Mesh(geometry,material);
+		sphere.castShadow = true;
 		this.orange.add(sphere);
 		var geometry2 = new THREE.BoxGeometry(4, 4, 12);
 		var material2 = new THREE.MeshPhongMaterial({color: 0x00FF00, wireframe: true});
 		var tip = new THREE.Mesh(geometry2,material2);
+		tip.castShadow = true;
 		tip.position.z = 30;
 		this.orange.add(tip);
-		this.orange.shading = THREE.FlatShading;
 		this.orange.position.z = this.height;
-		this.orange.castShadow = true;
-		this.orange.receiveShadow = true;
 		
 		scene.add(this.orange);
 

@@ -43,17 +43,19 @@ function OnResize() {
 }
 
 function CreateRenderer() {
-	renderer = new THREE.WebGLRenderer();
+	renderer = new THREE.WebGLRenderer({ antialias: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.shadowCameraNear = 3;
-	renderer.shadowCameraFar = 5000;
+	
+	document.body.appendChild(renderer.domElement);
+
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMapSoft = true;
+	renderer.shadowCameraNear = 1;
+	renderer.shadowCameraFar = 100000;
 	renderer.shadowCameraFov = 50;
-	renderer.shadowMapDarkness = 0.5;
+	renderer.shadowMapBias = 0.0039;
 	renderer.shadowMapWidth = 1024;
 	renderer.shadowMapHeight = 1024;
-	renderer.shadowMap.enabled = true;	
-	renderer.shadowMapDebug = true;
-	document.body.appendChild(renderer.domElement);
 }
 
 function Render() {
@@ -86,37 +88,17 @@ function BuildObjects() {
 		gameObjects.push(butter);
 	}
 
-	/*
 	//Global light
 	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
-	skyLight.position = new THREE.Vector3(0, 1, 0);
-	skyLight.castShadow = true;
-	skyLight.shadow.camera.near = 1;
-	skyLight.shadow.camera.far = 50000;
-	skyLight.shadow.mapSize.width  = 1024;
-	skyLight.shadow.mapSize.height = 1024;
-	skyLight.shadow.camera.cov = 45;
-	//Create a helper for the shadow camera (optional)
-	var helper = new THREE.CameraHelper( skyLight.shadow.camera );
-	scene.add( helper );
-	scene.add(skyLight);
-	*/
+	skyLight.position.set(0, 0, 10);
+	skyLight.shadow.camera.left = -5;
+	skyLight.shadow.camera.right = 5;
+	skyLight.shadow.camera.bottom = -5;
+	skyLight.shadow.camera.top = 5;
+	skyLight.shadow.camera.near = 0.5;
+	skyLight.shadow.camera.far = 10000;
 
-	//Test light
-	skyLight = new THREE.SpotLight(0xffffff, 10);
-	skyLight.position = new THREE.Vector3(100, 1000, 100 );
-	skyLight.rotation.x = Math.PI;
-	skyLight.rotation.y = Math.PI;
 	skyLight.castShadow = true;
-	skyLight.shadow.camera.near = 1;
-	skyLight.shadow.camera.far = 50000;
-	skyLight.shadow.mapSize.width  = 1024;
-	skyLight.shadow.mapSize.height = 1024;
-	skyLight.shadow.camera.cov = 90;
-
-	//Create a helper for the shadow camera (optional)
-	var helper = new THREE.CameraHelper( skyLight.shadow.camera );
-	scene.add( helper );
 	scene.add(skyLight);
 
 	var trackLightPositions = [
@@ -144,6 +126,7 @@ function Update() {
 		//Calls Update on each object, and passes the DeltaTime
 		gameObjects[i].Update(delta);
 	}
+	skyLight.needsUpdate = true;
 }
 
 function onKeyDown(e) {
