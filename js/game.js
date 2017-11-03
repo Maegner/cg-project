@@ -45,17 +45,11 @@ function OnResize() {
 function CreateRenderer() {
 	renderer = new THREE.WebGLRenderer({ antialias: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	
 	document.body.appendChild(renderer.domElement);
-
 	renderer.shadowMap.enabled = true;
-	renderer.shadowMapSoft = true;
-	renderer.shadowCameraNear = 1;
-	renderer.shadowCameraFar = 100000;
-	renderer.shadowCameraFov = 50;
-	renderer.shadowMapBias = 0.0039;
-	renderer.shadowMapWidth = 1024;
-	renderer.shadowMapHeight = 1024;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	renderer.gammaInput = true;
+	renderer.gammaOutput = true;
 }
 
 function Render() {
@@ -90,16 +84,24 @@ function BuildObjects() {
 
 	//Global light
 	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
-	skyLight.position.set(0, 0, 10);
-	skyLight.shadow.camera.left = -5;
-	skyLight.shadow.camera.right = 5;
-	skyLight.shadow.camera.bottom = -5;
-	skyLight.shadow.camera.top = 5;
-	skyLight.shadow.camera.near = 0.5;
-	skyLight.shadow.camera.far = 10000;
-
+	skyLight.position.set(0, 0, 100);
 	skyLight.castShadow = true;
 	scene.add(skyLight);
+	//Set up shadow properties for the light
+	skyLight.shadow.mapSize.width = 512;  // default
+	skyLight.shadow.mapSize.height = 512; // default
+	skyLight.shadow.camera.near = 0.01;    // default
+	skyLight.shadow.camera.far = 50000;     // default
+	var d = 5000;
+	skyLight.shadow.camera.left = -d;
+	skyLight.shadow.camera.right = d;
+	skyLight.shadow.camera.top = d;
+	skyLight.shadow.camera.bottom = -d;
+
+	//Create a helper for the shadow camera (optional)
+	var helper = new THREE.DirectionalLightHelper(skyLight);
+	scene.add( helper );
+
 
 	var trackLightPositions = [
 
