@@ -5,6 +5,7 @@
 var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
 var skyLight, trackLights;
 var skyLightIntensity = 2;
+var trackLightIntensity = 0.5;
 var orangeNum = 4;
 var cameraStatus = -1;
 
@@ -104,12 +105,20 @@ function BuildObjects() {
 
 
 	var trackLightPositions = [
-
+		[0, 550/4, 40],
+		[0, -550/4, 40],
+		[1050/4, 550/4, 40],
+		[1050/4, -550/4, 40],
+		[-1050/4, 550/4, 40],
+		[-1050/4, -550/4, 40],
 	]
 
 	//Track lights
 	for (i=0; i < trackLightPositions.length; i++) {
-		//Criar luzes da pista
+		trackLight = new THREE.PointLight(0xffffff, trackLightIntensity, 250);
+		trackLight.position.set(trackLightPositions[i][0], trackLightPositions[i][1], trackLightPositions[i][2]);
+		trackLight.castShadow = true;
+		scene.add(trackLight);
 	}
 }
 
