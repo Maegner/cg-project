@@ -69,8 +69,10 @@ class Carro
 		this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
 		this.CreateBackWheelSupport(0.35, 1.625, -1);
 		this.CreateBackWheelSupport(0.35, 0.375, -1);
-		this.CreateWheel(0.35, 1.625, -1);
-		this.CreateWheel(0.35, 0.375, -1);
+		this.CreateHexWheel(0.35, 1.525, -1);//direita
+		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
+		//this.CreateWheel(0.35, 1.625, -1); direita
+		//this.CreateWheel(0.35, 0.375, -1); esquerda
 		this.CreateTip(0.55, 1, 1.6);
 		this.frontRightWheel = this.CreateWheel(0.35, 1.625, 0.9);
 		this.frontLeftWheel = this.CreateWheel(0.35, 0.375, 0.9);
@@ -373,6 +375,16 @@ class Carro
 
 		this.carOffset.add(mesh);
 	}
+
+	CreateHexWheel(x,y,z){
+		var hex = new THREE.Object3D();
+		buildHex(hex);
+		hex.position.set(x,y,z);
+		hex.rotateX(Math.PI / 2);
+		this.carOffset.add(hex);
+		return hex;
+	}
+
 	CreateWheel(x,y,z){
 		var wheel = new THREE.TorusGeometry( 0.2, 0.15, 8, 10 );
 		var mesh = new THREE.Mesh(wheel, new THREE.MeshPhongMaterial( {color: 0x000000, wireframe: true}));
