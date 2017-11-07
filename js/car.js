@@ -471,7 +471,7 @@ class Carro
 
 	CreateBackWheelSupport(x,y,z){
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: false}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
 		cubo.rotateX(Math.PI); 
