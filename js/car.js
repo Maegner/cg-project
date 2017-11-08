@@ -74,7 +74,8 @@ class Carro
 		//this.CreateWheel(0.35, 1.625, -1); direita
 		//this.CreateWheel(0.35, 0.375, -1); esquerda
 		this.CreateTip(0.55, 1, 1.6);
-		this.frontRightWheel = this.CreateWheel(0.35, 1.625, 0.9);
+		this.CreateHexWheel(0.35, 1.625, 0.9);//esquerda
+		//this.frontRightWheel = this.CreateWheel(0.35, 1.625, 0.9);
 		this.frontLeftWheel = this.CreateWheel(0.35, 0.375, 0.9);
 		this.CreateRoof(0.75, 1, -0.25);
 		this.carOffset.position.x = this.Xoffset;
@@ -172,7 +173,7 @@ class Carro
 
 		//Rotate wheels
 		this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
-		this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
+		//this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
 	ApplyVelocity() {
