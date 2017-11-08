@@ -2,14 +2,135 @@ var rotWorldMatrix;
 
  var facingCamera = true;
 
-// Rotate an object around an arbitrary axis in world space       
-function rotateAroundWorldAxis(object, axis, radians) {
-    rotWorldMatrix = new THREE.Matrix4();
-    rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-    rotWorldMatrix.multiply(object.matrix);        // pre-multiply
-    object.matrix = rotWorldMatrix;
-    object.rotation.setFromRotationMatrix(object.matrix);
+
+function buildRightBorder(geometry,currentIndex){
+	if (facingCamera){
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+	}
+
+	else{
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+	}
 }
+
+function buildLeftBorder(geometry,currentIndex){
+	if(facingCamera){
+
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face)
+
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,-0.10));
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face)
+
+	}
+	else{
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+			
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face)
+
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face)
+
+
+	}
+}
+
+function buildBottomBorders(geometry,currentIndex){
+
+
+	if(facingCamera){
+		
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+		
+
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+	}
+	else{
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,-0.10));
+		
+		var color = new THREE.Color( 0x000000 );
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+
+		
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
+		currentIndex += 3;
+		geometry.faces.push(face);
+	}
+
+}
+
 
 function createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex) {
 
@@ -21,7 +142,7 @@ function createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex) {
 	else{
 		geometry.vertices.push(topPoint);
 		geometry.vertices.push(rightPoint);
-		geometry.vertices.push(leftPoint);		
+		geometry.vertices.push(leftPoint);
 	}
 	
 	
@@ -38,7 +159,7 @@ function createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex) {
 //startPoint e o ponto mais a esquerda da linha
 function buildTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNumber,startPoint,startIndex){
 
-	var startOfNext = null
+	var startOfNext = null;
 	var currentIndex = startIndex;
 
 
@@ -47,7 +168,7 @@ function buildTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNu
 		var leftPoint = startPoint;
 		var rightPoint = new THREE.Vector3(leftPoint.x +triangleBaseLenght, leftPoint.y,leftPoint.z);
 		var topPoint = new THREE.Vector3(leftPoint.x + (triangleBaseLenght/2),leftPoint.y + triangleHeight,leftPoint.z);
-		
+
 		if(startOfNext == null){
 			startOfNext = topPoint;
 		}
@@ -60,16 +181,56 @@ function buildTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNu
 	return startOfNext;
 }
 
+//startPoint e o ponto mais a esquerda da linha
+function buildInvertedTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNumber,startPoint,startIndex){
+
+	var startOfNext = null;
+	var currentIndex = startIndex;
+
+
+	for (i= 0; i< triangleNumber; i++){
+		
+		var leftPoint = startPoint;
+		var rightPoint = new THREE.Vector3(leftPoint.x + (triangleBaseLenght/2),leftPoint.y - triangleHeight,leftPoint.z);
+		var topPoint = new THREE.Vector3(leftPoint.x +triangleBaseLenght, leftPoint.y,leftPoint.z);
+
+		if(startOfNext == null){
+			startOfNext = new THREE.Vector3(topPoint.x-(triangleBaseLenght/2),topPoint.y + triangleHeight,topPoint.z);
+		}
+
+		startPoint = topPoint;
+		createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex);
+		currentIndex+=3;
+
+	}
+	return startOfNext;
+}
+
 function buildFace(geometry,triangleNumber,startPoint){
-	var material = new THREE.MeshStandardMaterial( { color : 0x000000 } );
+	var material = new THREE.MeshStandardMaterial( { color : 0x000000 ,wireframe: true } );
 	var nextIndex = 0
 	for(i = triangleNumber; i>0; i--){
 		startPoint = buildTriangleLine(geometry,0.10,0.10,i,startPoint,nextIndex);
 		nextIndex += 3*i;
 	}
+
+	startPoint = new THREE.Vector3( -40, -30,startPoint.z);
+	triangleNumber--;
+	for(i = triangleNumber; i>0; i--){
+		startPoint = buildInvertedTriangleLine(geometry,0.10,0.10,i,startPoint,nextIndex);
+		nextIndex += 3*i;
+	}
+	
+	buildBottomBorders(geometry,nextIndex);
+	nextIndex += 6;
+	buildRightBorder(geometry,nextIndex);
+	nextIndex += 6;
+	buildLeftBorder(geometry,nextIndex);
+	nextIndex += 6;
 	return new THREE.Mesh( geometry, material );
 }
 
+//adicionando todas a slices do hexagono 
 function buildGroup(hex,yMov,xMov,zRot,zPos){
 
 	var geometry = new THREE.Geometry();
@@ -100,6 +261,7 @@ function buildPlane(hex,zPos,facing){
 	buildGroup(hex,0.5,-0.25,0,zPos); //face cima-esquerda
 }
 
+//Funcao que poe tudo junto
 function buildHex(hex){
 	
 	buildPlane(hex,0,true);
@@ -108,9 +270,9 @@ function buildHex(hex){
 	buildPlane(hex,-0.10,true);
 	buildPlane(hex,-0.10,false);
 
-	
 }
 
+//Apenas para display
 function build() {
 				//create a triangular geometry
 				var hex = new THREE.Object3D();

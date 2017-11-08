@@ -71,18 +71,15 @@ class Carro extends Respawnable
 		this.CreateAleronTriangle(1, 1.4, -1);
 		this.CreateAleronTriangle(1, 0.6, -1);
 		this.CreateAleronBar(1, 1, -1.25);
-		this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
-		this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
-		this.CreateBackWheelSupport(0.35, 1.625, -1);
-		this.CreateBackWheelSupport(0.35, 0.375, -1);
+		//this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
+		//this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
+		//this.CreateBackWheelSupport(0.35, 1.625, -1);
+		//this.CreateBackWheelSupport(0.35, 0.375, -1);
 		this.CreateHexWheel(0.35, 1.525, -1);//direita
 		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
-		//this.CreateWheel(0.35, 1.625, -1); direita
-		//this.CreateWheel(0.35, 0.375, -1); esquerda
 		this.CreateTip(0.55, 1, 1.6);
-		this.CreateHexWheel(0.35, 1.625, 0.9);//esquerda
-		//this.frontRightWheel = this.CreateWheel(0.35, 1.625, 0.9);
-		this.frontLeftWheel = this.CreateWheel(0.35, 0.375, 0.9);
+		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
+		this.CreateHexWheel(0.35, 0.375, 0.9);
 		this.CreateRoof(0.75, 1, -0.25);
 		this.carOffset.position.x = this.Xoffset;
 		this.carOffset.position.y = this.Yoffset;
@@ -177,7 +174,7 @@ class Carro extends Respawnable
 		}
 
 		//Rotate wheels
-		this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
+		//this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
 		//this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
