@@ -9,6 +9,8 @@ class Track
 		this.track;
 		this.trackSizeX = 1050;
 		this.trackSizeY = 550;
+		//Pixels per unit
+		this.wrappingFactor = 5;
 		this.tabletop;
 	}
 
@@ -23,6 +25,13 @@ class Track
 	//--------------------------------------------------TABLETOP CREATION START---------------------------------------
 
 	addTabletop(){
+		// var texture = new THREE.TextureLoader().load( "textures/mesa.jpg" );
+		// texture.wrapS = THREE.RepeatWrapping;
+		// texture.wrapT = THREE.RepeatWrapping;
+		// var repeatX = this.trackSizeX * (1024/this.wrappingFactor);
+		// var repeatY = this.trackSizeY * (1024/this.wrappingFactor);
+		// texture.repeat.set( repeatX, repeatY);
+
 		var geometry = new THREE.BoxGeometry(this.trackSizeX,this.trackSizeY,2);
 		var material = new THREE.MeshPhongMaterial({color: 0x0000FF, wireframe:true })
 		this.tabletop = new THREE.Mesh(geometry,material);
