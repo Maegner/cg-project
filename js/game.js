@@ -85,7 +85,7 @@ function BuildObjects() {
 
 	//Global light
 	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
-	skyLight.position.set(0, 1, 2);
+	skyLight.position.set(0, 100, 50);
 	skyLight.castShadow = true;
 	scene.add(skyLight);
 
@@ -220,6 +220,7 @@ function onKeyDown(e) {
 			});
 			break;
 
+		// S,s
 		case 83:
 		case 115:
 			isPaused = !isPaused;
