@@ -415,6 +415,7 @@ class Carro extends Respawnable
 		return hex;
 	}
 
+
 	CreateRoofWithCubes(x,y,z){
 		var mesh = buildBigPoligon(0.4,0.4,0.4,0.20,0xFFFFFF,100);
 		mesh.position.set(x,y,z);
