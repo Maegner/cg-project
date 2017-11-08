@@ -1,10 +1,12 @@
-class Carro
+class Carro extends Respawnable
 {
 	constructor() {
+		super();
 		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7)
 
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
+		this.car = new THREE.Object3D();
 
 		this.Xoffset = -9;
 		this.Yoffset = -1;
@@ -13,8 +15,13 @@ class Carro
 		this.frontLeftWheel;
 		this.frontRightWheel;
 
+		this.lives = 5;
+		this.objectSize = -10;
+		this.comparable = this.car;
+
 		//Indicates whether the player is looking forward or back
 		this.cameraOffsetSign = 1;
+
 		/*
 		ACCELERATION
 		*/
@@ -57,7 +64,6 @@ class Carro
 
 	Start() {
 
-		this.car = new THREE.Object3D();
 		this.carOffset = new THREE.Object3D();
 		this.CreateMiddlePart(0.5, 1, -0.5);
 		this.CreateFrontPart(0.55, 1, 0.875);
@@ -81,14 +87,7 @@ class Carro
 		this.carOffset.position.x = this.Xoffset;
 		this.carOffset.position.y = this.Yoffset;
 		this.car.add(this.carOffset);
-		//var eixo = new THREE.AxisHelper(3);
-		//eixo.rotation.y = -.5;
-		//eixo.rotation.x = .5;
-		//eixo.scale.set(10, 10, 10);
-		//scene.add(eixo);
-		//this.car.add(camera);
 		scene.add(this.car);
-		//eixo.rotateX(1);
 
 		this.car.scale.set(this.carScale, this.carScale, this.carScale); // change car's scale
 		this.car.rotation.y = Math.PI/2;
@@ -96,6 +95,8 @@ class Carro
 		this.car.position.z = 46;
 		this.car.position.y = 150;
 		this.car.position.x = -350;
+
+		super.Start();
 	}
 
 	SetupCamera() {
@@ -104,16 +105,20 @@ class Carro
 		camera.rotation.x = Math.PI/2;
 	}
 
+	Respawn() {
+
+	}
+
 	get(){
 		return this.car.position;
 	}
 
 	Update(delta) {
-
 		this.HandleCamera(delta);
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.ApplyVelocity();
+		super.Update(delta);
 	}
 
 	HandleCamera(delta) {
@@ -189,8 +194,8 @@ class Carro
 		var i = 0
 		while(i<butters.length){
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
-				this.colisionSphere.center.x += (this.velocity.x * this.speedScale) * this.forward.x;
-				this.colisionSphere.center.y += (this.velocity.x * this.speedScale) * this.forward.y;
+				this.colisionSphere.center.x -= xMov;
+				this.colisionSphere.center.y -= yMov;
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}
@@ -217,6 +222,17 @@ class Carro
 
 		//Multiply by clamped velocity, to invert turning when speed changes direction
 		this.car.rotateX(-this.velocity.z * this.clampVel * this.steeringScale);
+	}
+
+	Respawn() {
+		this.lives -= 1;
+		if (this.lives < 1) {
+			//Game over
+		}
+		this.colisionSphere.center = new THREE.Vector2(-350,150);
+		this.car.position.x = -350;
+		this.car.position.y = 150;
+		this.car.rotation.y = Math.PI/2;
 	}
 
 	ActivateRearView() {
@@ -472,7 +488,7 @@ class Carro
 
 	CreateBackWheelSupport(x,y,z){
 		var cubo = new THREE.CylinderGeometry( .05, .05, .2, 0 );
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: false}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI); 
 		cubo.rotateX(Math.PI); 

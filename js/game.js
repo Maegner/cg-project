@@ -6,6 +6,9 @@ var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
 var skyLight, trackLights;
 var skyLightIntensity = 2;
 var trackLightIntensity = 0.5;
+var usePhong = true;
+var useBasic = false;
+var isPaused = false;
 var orangeNum = 4;
 var cameraStatus = -1;
 
@@ -48,9 +51,6 @@ function CreateRenderer() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-	renderer.gammaInput = true;
-	renderer.gammaOutput = true;
 }
 
 function Render() {
@@ -58,20 +58,20 @@ function Render() {
 }
 
 function BuildObjects() {
-	carro1 = new Carro();
-	gameObjects.push(carro1);
-
 	//var tirePostions = TRACK_2;
 	var tirePostions = TRACK_TEST
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
-
+	
+	carro1 = new Carro();
+	gameObjects.push(carro1);
+	
 	var butterPositions = [[-200,-80,15],
-						   [440,-240,15],
-						   [0,240,15],
-						   [300,90,15],
-						   [90,-80,15]];
-
+	[440,-240,15],
+	[0,240,15],
+	[300,90,15],
+	[90,-80,15]];
+	
 	var i;
 	for (i=0; i < orangeNum; i++) {
 		gameObjects.push(new Orange());
@@ -85,24 +85,9 @@ function BuildObjects() {
 
 	//Global light
 	skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
-	skyLight.position.set(0, 0, 100);
+	skyLight.position.set(0, 1, 2);
 	skyLight.castShadow = true;
 	scene.add(skyLight);
-	//Set up shadow properties for the light
-	skyLight.shadow.mapSize.width = 512;  // default
-	skyLight.shadow.mapSize.height = 512; // default
-	skyLight.shadow.camera.near = 0.01;    // default
-	skyLight.shadow.camera.far = 50000;     // default
-	var d = 5000;
-	skyLight.shadow.camera.left = -d;
-	skyLight.shadow.camera.right = d;
-	skyLight.shadow.camera.top = d;
-	skyLight.shadow.camera.bottom = -d;
-
-	//Create a helper for the shadow camera (optional)
-	var helper = new THREE.DirectionalLightHelper(skyLight);
-	scene.add( helper );
-
 
 	var trackLightPositions = [
 		[0, 550/4, 40],
@@ -131,6 +116,7 @@ function StartObjects() {
 }
 
 function Update() {
+	if (isPaused) return;
 	var i;
 	var delta = time.getDelta();
 	for (i=0; i < gameObjects.length; i++) {
@@ -202,22 +188,47 @@ function onKeyDown(e) {
 		// L,l
 		case 76:
 		case 108:
-			skyLight.castShadow = !skyLight.castShadow;
-			break;
-			
-		// G,g
-		case 71:
-		case 103:
+			useBasic = !useBasic;
 			scene.traverse(function(node) {
 				if(node instanceof THREE.Mesh){
 					var col = node.material.color;
 					var wire = node.material.wireframe;
+					if (useBasic) {
+						node.material = new THREE.MeshPhongMaterial({color: col, wireframe:wire});
+					}
+					else {
+						node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe:wire }) : new THREE.MeshLambertMaterial({color: col, wireframe:wire });
+					}
+				}
+			});
+			
+		// G,g
+		case 71:
+		case 103:
+			usePhong = !usePhong;
+			scene.traverse(function(node) {
+				if(node instanceof THREE.Mesh){
+					var col = node.material.color;
+					var wire = node.material.wireframe;
+					if (node.material.isMeshLambertMaterial) {
+						console.log("Lamb!");
+					}
 					node.material = node.material.isMeshPhongMaterial ? 
 									new THREE.MeshLambertMaterial({color: col, wireframe:wire }) :
 									new THREE.MeshPhongMaterial({color: col, wireframe:wire });
 				}
 			});
 			break;
+
+		case 83:
+		case 115:
+			isPaused = !isPaused;
+			if (isPaused) {
+				time.stop();
+			}
+			else {
+				time.start();
+			}
 	}
 }
 

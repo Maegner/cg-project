@@ -1,19 +1,18 @@
-class Orange
+class Orange extends Respawnable
 {
 	constructor() {
+		super();
 		this.locX = 0;
 		this.locY = 0;
 		this.orange = new THREE.Object3D();
+		this.comparable = this.orange;
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forwardVector = new THREE.Vector3(0, 0, 0);
 		this.radius = 30;
 		this.height = 28;
+		this.objectSize = this.radius;		
 
 		this.colisionSphere = new Sphere(new THREE.Vector2(0,0),30);
-
-		//Used to check whether the orange went out of bounds
-		this.maxBounds = new THREE.Vector3(1000, 1000, 1000);
-		this.minBounds = new THREE.Vector3(-1000, -1000, -1000);
 
 		this.speedCounter = 0;
 		//Dictates how fast the orange's speed scales over time
@@ -27,8 +26,6 @@ class Orange
 		//Interval of time to respawn
 		this.respawnTimeMin = 2;
 		this.respawnTimeMax = 5;
-
-		this.outOfBounds = false;
 	}
 
 	Start() {
@@ -47,13 +44,7 @@ class Orange
 		
 		scene.add(this.orange);
 
-		//Fetch track bounds
-		var tempBounds = track1.getTrackSize();
-		var tempPos = track1.getTrackPosition();
-		this.maxBounds.x = tempBounds.x/2 + tempPos.x ;
-		this.minBounds.x = -tempBounds.x/2 + tempPos.x;
-		this.maxBounds.y = tempBounds.y/2 + tempPos.y;
-		this.minBounds.y = -tempBounds.y/2 + tempPos.y;
+		super.Start();
 
 		this.UpdateMovementValues();
 	}
@@ -73,10 +64,7 @@ class Orange
 			this.orange.position.y += yMov;
 
 			if(this.colisionSphere.isColidingWithSphere(carro1.colisionSphere)){
-				carro1.colisionSphere.center = new THREE.Vector2(-350,150);
-				carro1.car.position.x = -350;
-				carro1.car.position.y = 150;
-				carro1.car.rotation.y = Math.PI/2;
+				carro1.Respawn();
 			}
 
 			var rollDistance = Math.sqrt(Math.pow(Math.abs(yMov),2) + Math.pow(Math.abs(xMov),2));
@@ -84,11 +72,7 @@ class Orange
 
 			this.speedCounter += delta;
 
-			//If orange is out of bounds, hide it and start "respawn" countdown
-			if (this.CheckIfOutsideTrack()) {
-				this.outOfBounds = true;
-				this.orange.visible = false;
-			}
+			super.Update(delta);
 		}
 		else {
 			//If orange is out of bounds, wait for respawn time, then reset the orange
@@ -102,13 +86,9 @@ class Orange
 		}
 	}
 
-	CheckIfOutsideTrack() {
-		var outside = true;
-		if (this.orange.position.x < this.maxBounds.x - this.radius && this.orange.position.x > this.minBounds.x + this.radius && 
-			this.orange.position.y < this.maxBounds.y - this.radius && this.orange.position.y > this.minBounds.y + this.radius) {
-			outside = false;
-		}
-		return outside;
+	Respawn() {
+		this.outOfBounds = true;
+		this.orange.visible = false;
 	}
 
 	//RESET ORANGE
