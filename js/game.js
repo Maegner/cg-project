@@ -8,6 +8,7 @@ var skyLightIntensity = 2;
 var trackLightIntensity = 0.5;
 var usePhong = true;
 var useBasic = false;
+var isPaused = false;
 var orangeNum = 4;
 var cameraStatus = -1;
 
@@ -57,20 +58,20 @@ function Render() {
 }
 
 function BuildObjects() {
-	carro1 = new Carro();
-	gameObjects.push(carro1);
-
 	//var tirePostions = TRACK_2;
 	var tirePostions = TRACK_TEST
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
-
+	
+	carro1 = new Carro();
+	gameObjects.push(carro1);
+	
 	var butterPositions = [[-200,-80,15],
-						   [440,-240,15],
-						   [0,240,15],
-						   [300,90,15],
-						   [90,-80,15]];
-
+	[440,-240,15],
+	[0,240,15],
+	[300,90,15],
+	[90,-80,15]];
+	
 	var i;
 	for (i=0; i < orangeNum; i++) {
 		gameObjects.push(new Orange());
@@ -115,6 +116,7 @@ function StartObjects() {
 }
 
 function Update() {
+	if (isPaused) return;
 	var i;
 	var delta = time.getDelta();
 	for (i=0; i < gameObjects.length; i++) {
@@ -217,6 +219,16 @@ function onKeyDown(e) {
 				}
 			});
 			break;
+
+		case 83:
+		case 115:
+			isPaused = !isPaused;
+			if (isPaused) {
+				time.stop();
+			}
+			else {
+				time.start();
+			}
 	}
 }
 
