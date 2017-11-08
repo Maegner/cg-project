@@ -9,7 +9,7 @@ function buildRightBorder(geometry,currentIndex){
 		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
 		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
 
-		var color = new THREE.Color( 0x000000 );
+		var color = new THREE.Color( 0x0000000 );
 		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
 		currentIndex += 3;
 		geometry.faces.push(face);
@@ -271,16 +271,3 @@ function buildHex(hex){
 	buildPlane(hex,-0.10,false);
 
 }
-
-//Apenas para display
-function build() {
-				//create a triangular geometry
-				var hex = new THREE.Object3D();
-				buildHex(hex);
-				console.log(hex.position);
-
-				console.log(hex.position);
-				hex.rotation.z += (Math.PI);
-				scene.add(hex);
-
- }

@@ -65,22 +65,31 @@ class Carro extends Respawnable
 	Start() {
 
 		this.carOffset = new THREE.Object3D();
-		this.CreateMiddlePart(0.5, 1, -0.5);
-		this.CreateFrontPart(0.55, 1, 0.875);
-		this.CreateFrontWing(0.35, 1, 1.4);
-		this.CreateAleronTriangle(1, 1.4, -1);
-		this.CreateAleronTriangle(1, 0.6, -1);
-		this.CreateAleronBar(1, 1, -1.25);
-		//this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
+		//this.CreateMiddlePart(0.5, 1, -0.5);
+		//this.CreateFrontPart(0.55, 1, 0.875);//this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
 		//this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
 		//this.CreateBackWheelSupport(0.35, 1.625, -1);
 		//this.CreateBackWheelSupport(0.35, 0.375, -1);
+		//this.CreateRoof(0.75, 1, -0.25);
+		//this.CreateFrontWing(0.35, 1, 1.4);
+		//this.CreateAleronTriangle(1, 1.4, -1);
+		//this.CreateAleronTriangle(1, 0.6, -1);
+		//this.CreateAleronBar(1, 1, -1.25);
+
+		this.CreateMiddlePartUsingCubes(0.25, 1.5, 0.2);
+		this.CreateExhaustTube(0.55,1.35,-1.5);
+		this.CreateExhaustTube(0.55,0.75,-1.5);
+		this.CreateFrontPartWithCubes(0.75, 1.20, 1.5);
+		this.CreateFrontWingWithCubes(0.35, 0.35, 1.4);
+		this.CreateAleronSupport(0.6, 1.4, -1);
+		this.CreateAleronSupport(0.6, 0.7, -1);
+		this.CreateAleronBarWithCubes(1, 0.40, -1.10);
 		this.CreateHexWheel(0.35, 1.525, -1);//direita
 		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
 		this.CreateTip(0.55, 1, 1.6);
 		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
 		this.CreateHexWheel(0.35, 0.375, 0.9);
-		this.CreateRoof(0.75, 1, -0.25);
+		this.CreateRoofWithCubes(0.50, 1.20,-0.25)
 		this.carOffset.position.x = this.Xoffset;
 		this.carOffset.position.y = this.Yoffset;
 		this.car.add(this.carOffset);
@@ -357,18 +366,40 @@ class Carro extends Respawnable
 		this.turn = this.leftPressed && this.turn != -1 ? -1 : this.turn;
 	}
 
+	CreateExhaustTube(x,y,z){
+		var mesh = buildBigPoligon(0.4,0.1,0.1,0.10,0xC0C0C0,100);
+		mesh.position.set(x,y,z);
+		mesh.rotateY(2*Math.PI/4);
+		this.carOffset.add(mesh);
+
+	}
+
+	CreateMiddlePartUsingCubes(x,y,z){
+		var mesh = buildBigPoligon(0.5,1,1.5,0.25,0xFF0000,100);
+		mesh.position.set(x,y,z);
+		this.carOffset.add(mesh);
+	}
+
 	CreateMiddlePart(x,y,z){
 		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
 		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
+
 	CreateTip(x,y,z){
 		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
 		var mesh = new THREE.Mesh(bico, new THREE.MeshPhongMaterial( {color: 0xFFF600, wireframe: true}));
 		mesh.position.set(x,y,z);
 		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
 		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
+		this.carOffset.add(mesh);
+	}
+	CreateFrontWingWithCubes(x,y,z){
+		var mesh = buildBigPoligon(0.1,0.1,1.2,0.1,0xFF0000,100);
+		mesh.position.set(x,y,z); 
+		mesh.rotateX(2*Math.PI/4);
+
 		this.carOffset.add(mesh);
 	}
 	CreateFrontWing(x,y,z){
@@ -378,6 +409,12 @@ class Carro extends Respawnable
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
 
+		this.carOffset.add(mesh);
+	}
+	CreateFrontPartWithCubes(x,y,z){
+		var mesh = buildBigPoligon(1.20,0.4,0.4,0.20,0xFF0000,100);
+		mesh.position.set(x,y,z);
+		mesh.rotateY(2*Math.PI/4);
 		this.carOffset.add(mesh);
 	}
 	CreateFrontPart(x,y,z){
@@ -408,6 +445,11 @@ class Carro extends Respawnable
 		return mesh;
 	}
 
+	CreateRoofWithCubes(x,y,z){
+		var mesh = buildBigPoligon(0.4,0.4,0.4,0.20,0xFFFFFF,100);
+		mesh.position.set(x,y,z);
+		this.carOffset.add(mesh);
+	}
 	CreateRoof(x,y,z){
 		var ball = new THREE.SphereGeometry( 0.2, 5, 5,0, Math.PI);
 		var mesh = new THREE.Mesh( ball, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
@@ -415,6 +457,13 @@ class Carro extends Respawnable
 		ball.rotateY(Math.PI / 2);
 		this.carOffset.add(mesh);
 	}
+
+	CreateAleronSupport(x,y,z){
+		var mesh = buildBigPoligon(0.4,0.1,0.1,0.10,0xFFFFFF,100);
+		mesh.position.set(x,y,z);
+		this.carOffset.add(mesh);
+	}
+
 	CreateAleronTriangle(x,y,z){
 		var triangle = new THREE.Geometry();
 		var v1 = new THREE.Vector3(-0.25,0,0);
@@ -432,6 +481,13 @@ class Carro extends Respawnable
 
 		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
+		this.carOffset.add(mesh);
+	}
+	CreateAleronBarWithCubes(x,y,z){
+		var mesh = buildBigPoligon(0.1,0.1,1.2,0.1,0xFFFFFF,100);
+		mesh.position.set(x,y,z); 
+		mesh.rotateX(2*Math.PI/4);
+
 		this.carOffset.add(mesh);
 	}
 	CreateAleronBar(x,y,z){
