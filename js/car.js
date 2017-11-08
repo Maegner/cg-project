@@ -67,18 +67,6 @@ class Carro extends Respawnable
 		this.carOffset = new THREE.Object3D();
 
 		//OLD CAR OBJECTS
-
-		//this.CreateMiddlePart(0.5, 1, -0.5);
-		//this.CreateFrontPart(0.55, 1, 0.875);//this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
-		//this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
-		//this.CreateBackWheelSupport(0.35, 1.625, -1);
-		//this.CreateBackWheelSupport(0.35, 0.375, -1);
-		//this.CreateRoof(0.75, 1, -0.25);
-		//this.CreateFrontWing(0.35, 1, 1.4);
-		//this.CreateAleronTriangle(1, 1.4, -1);
-		//this.CreateAleronTriangle(1, 0.6, -1);
-		//this.CreateAleronBar(1, 1, -1.25);
-
 		this.CreateMiddlePartUsingCubes(0.25, 1.5, 0.2);
 		this.CreateExhaustTube(0.55,1.35,-1.5);
 		this.CreateExhaustTube(0.55,0.75,-1.5);
@@ -89,7 +77,7 @@ class Carro extends Respawnable
 		this.CreateAleronBarWithCubes(1, 0.40, -1.10);
 		this.CreateHexWheel(0.35, 1.525, -1);//direita
 		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
-		this.CreateTip(0.55, 1, 1.6);
+		//this.CreateTip(0.55, 1, 1.6); TODO
 		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
 		this.CreateHexWheel(0.35, 0.375, 0.9);
 		this.CreateRoofWithCubes(0.50, 1.20,-0.25)
@@ -384,12 +372,7 @@ class Carro extends Respawnable
 	}
 
 	CreateTip(x,y,z){
-		var bico = new THREE.CylinderGeometry(0,0.275,0.2,4,0,0); 
-		var mesh = new THREE.Mesh(bico, new THREE.MeshPhongMaterial( {color: 0xFFF600, wireframe: true}));
-		mesh.position.set(x,y,z);
-		bico.rotateX(Math.PI / 2); // toda para a base da piramide ficar na mesma face que 1 das bases do paralelipipedo
-		bico.rotateZ(Math.PI / 4); // roda para o bico ficar na mesma direcao que o paralelipipedo
-		this.carOffset.add(mesh);
+		//TODO
 	}
 	CreateFrontWingWithCubes(x,y,z){
 		var mesh = buildBigPoligon(0.1,0.1,1.2,0.1,0xFF0000,100);
