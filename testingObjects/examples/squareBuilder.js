@@ -102,13 +102,45 @@ function buildBigPoligon(lenght,height,depth,sideLenght,color,shininess){
 	return poligon;
 }
 
+function buildPyramid(lenght,height,minSquareLenght,color,shininess,degree){
+
+	var poligon = new THREE.Object3D();
+	var currentPoint = new THREE.Vector3(0,0,0);
+
+	var currentHeight = 0;
+	var currentLenght = 0;
+	var currentDepth = 0;
+
+	var currentLevel = 0;
+
+	while(currentHeight < height){
+		currentLenght = (degree*currentLevel*minSquareLenght);
+		while(currentLenght < lenght - (degree*currentLevel*minSquareLenght)){
+			currentDepth = (degree*currentLevel*minSquareLenght);
+			while(currentDepth < lenght - (degree*currentLevel*minSquareLenght)){
+
+				cube = buildUnitCube(currentPoint,minSquareLenght,color,shininess);
+				cube.position.z += currentDepth;
+				cube.position.x += currentLenght;
+				cube.position.y += currentHeight;
+				poligon.add(cube);
+				currentDepth += minSquareLenght;
+
+			}
+			currentLenght += minSquareLenght;
+		}
+		currentHeight += minSquareLenght;
+		currentLevel += 1;
+	}
+	return poligon;
+}
+
 function build(){
 
-	var thing = buildBigPoligon(200,200,200,200,0x000000,30);
-	var thing2 = buildBigPoligon(200,200,200,50,0x000000,30);
+	var thing = buildPyramid(100,100,10,0xFFFFFF,30,1);
+	var thing2 = buildPyramid(200,200,10,0xFFFFFF,30,1);
 
 	scene.add(thing);
 	scene.add(thing2);
-
 
 }

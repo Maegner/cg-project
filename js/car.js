@@ -77,7 +77,7 @@ class Carro extends Respawnable
 		this.CreateAleronBarWithCubes(1, 0.40, -1.10);
 		this.CreateHexWheel(0.35, 1.525, -1);//direita
 		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
-		//this.CreateTip(0.55, 1, 1.6); TODO
+		this.CreateTip(0.30, 1.18 , 1.6);
 		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
 		this.CreateHexWheel(0.35, 0.375, 0.9);
 		this.CreateRoofWithCubes(0.50, 1.20,-0.25)
@@ -371,9 +371,13 @@ class Carro extends Respawnable
 		this.carOffset.add(mesh);
 	}
 
-	CreateTip(x,y,z){
-		//TODO
+	 CreateTip(x,y,z){
+		var mesh = buildPyramidCubes(0.4,0.4,0.04,0xFFD700,100,1);
+		mesh.position.set(x,y,z);
+		mesh.rotateX(Math.PI / 2);
+		this.carOffset.add(mesh);
 	}
+
 	CreateFrontWingWithCubes(x,y,z){
 		var mesh = buildBigPoligon(0.1,0.1,1.2,0.1,0xFF0000,100);
 		mesh.position.set(x,y,z); 
