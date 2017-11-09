@@ -206,16 +206,9 @@ function onKeyDown(e) {
 					var wire = node.material.wireframe;
 					if (useBasic) {
 						node.material = new THREE.MeshBasicMaterial({color: col, wireframe:wire});
-						console.log("Basic");
 					}
 					else {
 						node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe:wire }) : new THREE.MeshLambertMaterial({color: col, wireframe:wire });
-						if (usePhong) {
-							console.log("Phong");
-						}
-						else {
-							console.log("Lambert");
-						}
 					}
 				}
 			});
@@ -229,12 +222,6 @@ function onKeyDown(e) {
 					if(node instanceof THREE.Mesh){
 						var col = node.material.color;
 						var wire = node.material.wireframe;
-						if (usePhong) {
-							console.log("Phong");
-						}
-						else {
-							console.log("Lambert");
-						}
 						node.material = usePhong ? 
 										new THREE.MeshPhongMaterial({color: col, wireframe:wire }) :
 										new THREE.MeshLambertMaterial({color: col, wireframe:wire });

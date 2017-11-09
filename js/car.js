@@ -77,7 +77,7 @@ class Carro extends Respawnable
 		this.CreateAleronBarWithCubes(1, 0.40, -1.10);
 		this.CreateHexWheel(0.35, 1.525, -1);//direita
 		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
-		this.CreateTip(0.30, 1.18 , 1.6);
+		//this.CreateTip(0.30, 1.18 , 1.6);
 		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
 		this.CreateHexWheel(0.35, 0.375, 0.9);
 		this.CreateRoofWithCubes(0.50, 1.20,-0.25)
@@ -401,7 +401,6 @@ class Carro extends Respawnable
 		this.carOffset.add(hex);
 		return hex;
 	}
-
 
 	CreateRoofWithCubes(x,y,z){
 		var mesh = buildBigPoligon(0.4,0.4,0.4,0.20,0xFFFFFF,100);

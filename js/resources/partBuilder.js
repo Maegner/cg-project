@@ -71,39 +71,6 @@ function buildUnitCube(topLeftCorner,sideLenght,color,shininess){
         return cube;
     
 }
-//quanto maior o degree menos inclinada e a piramide
-function buildPyramidCubes(lenght,height,minSquareLenght,color,shininess,degree){
-    
-        var poligon = new THREE.Object3D();
-        var currentPoint = new THREE.Vector3(0,0,0);
-    
-        var currentHeight = 0;
-        var currentLenght = 0;
-        var currentDepth = 0;
-    
-        var currentLevel = 0;
-    
-        while(currentHeight < height){
-            currentLenght = (degree*currentLevel*minSquareLenght);
-            while(currentLenght < lenght - (degree*currentLevel*minSquareLenght)){
-                currentDepth = (degree*currentLevel*minSquareLenght);
-                while(currentDepth < lenght - (degree*currentLevel*minSquareLenght)){
-    
-                    cube = buildUnitCube(currentPoint,minSquareLenght,color,shininess);
-                    cube.position.z += currentDepth;
-                    cube.position.x += currentLenght;
-                    cube.position.y += currentHeight;
-                    poligon.add(cube);
-                    currentDepth += minSquareLenght;
-    
-                }
-                currentLenght += minSquareLenght;
-            }
-            currentHeight += minSquareLenght;
-            currentLevel += 1;
-        }
-        return poligon;
-}
 
 //lenght of big object should be N*UnitCubeLenght
 function buildBigPoligon(lenght,height,depth,sideLenght,color,shininess){
