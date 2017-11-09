@@ -3,7 +3,8 @@
 */
 
 var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
-var skyLight, trackLights;
+var skyLight;
+var trackLights = [];
 var skyLightIntensity = 2;
 var trackLightIntensity = 0.5;
 var usePhong = true;
@@ -104,6 +105,7 @@ function BuildObjects() {
 		trackLight.position.set(trackLightPositions[i][0], trackLightPositions[i][1], trackLightPositions[i][2]);
 		trackLight.castShadow = true;
 		scene.add(trackLight);
+		trackLights.push(trackLight);
 	}
 }
 
@@ -183,6 +185,15 @@ function onKeyDown(e) {
 		case 78:
 		case 110:
 			skyLight.intensity = skyLight.intensity == 0 ? skyLightIntensity : 0;
+			break;
+
+		// C,c
+		case 67:
+		case 99:
+			var i;
+			for (i = 0; i < trackLights.length; i++) {
+				trackLights[i].intensity = trackLights[i].intensity == 0 ? trackLightIntensity : 0;
+			}
 			break;
 
 		// L,l
