@@ -10,7 +10,7 @@ class Track
 		this.trackSizeX = 1050;
 		this.trackSizeY = 550;
 		//Pixels per unit
-		this.wrappingFactor = 5;
+		this.wrappingFactor = 10;
 		this.tabletop;
 	}
 
@@ -25,16 +25,26 @@ class Track
 	//--------------------------------------------------TABLETOP CREATION START---------------------------------------
 
 	addTabletop(){
-		// var texture = new THREE.TextureLoader().load( "textures/mesa.jpg" );
-		// texture.wrapS = THREE.RepeatWrapping;
-		// texture.wrapT = THREE.RepeatWrapping;
-		// var repeatX = this.trackSizeX * (1024/this.wrappingFactor);
-		// var repeatY = this.trackSizeY * (1024/this.wrappingFactor);
-		// texture.repeat.set( repeatX, repeatY);
+		var texture = new THREE.TextureLoader().load( "js/textures/mesa.jpg" );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+		var repeatX = this.trackSizeX / (1024/this.wrappingFactor);
+		var repeatY = this.trackSizeY / (1024/this.wrappingFactor);
+		console.log(repeatX);
+		console.log(repeatY);
+		texture.repeat.set( repeatX, repeatY);
 
-		var geometry = new THREE.BoxGeometry(this.trackSizeX,this.trackSizeY,2);
+		var geometry = new THREE.BoxGeometry(this.trackSizeX, this.trackSizeY, 2, 20, 20);
 		var material = new THREE.MeshPhongMaterial({color: 0x0000FF, wireframe:true })
-		this.tabletop = new THREE.Mesh(geometry,material);
+		var tableMaterials = [
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Right
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Left
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Top
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Bottom
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Front
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } )  //Back
+		];
+		this.tabletop = new THREE.Mesh(geometry,tableMaterials);
 		this.tabletop.position.set(0,0,-1);
 		this.tabletop.receiveShadow = true;
 		this.track.add(this.tabletop)
