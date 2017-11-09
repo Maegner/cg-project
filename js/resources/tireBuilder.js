@@ -3,31 +3,34 @@ var rotWorldMatrix;
  var facingCamera = true;
 
 
+
+/*Esta funcao constroi as laterais do hexagono, simplesmente liga os pontos das duas faces criando 2 triangulos que juntos
+fazem a lateral que e um rectagulo*/ 
 function buildRightBorder(geometry,currentIndex){
-	if (facingCamera){
-		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
-		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
-		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+	if (facingCamera){/*Serve para construir face que pode ser vista de fora*/
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));//PONTO A
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));// PONTO B
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));// PONTO C
 
 		var color = new THREE.Color( 0x0000000 );
-		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
-		currentIndex += 3;
+		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);//Constroi um triangulo
+		currentIndex += 3;                                                           // com os ultimos 3 vertices pushed
 		geometry.faces.push(face);
 
 		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
 		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,-0.10));
 		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
 
-		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
-		currentIndex += 3;
+		face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);//Constroi um triangulo
+		currentIndex += 3;                                                      // com os ultimos 3 vertices pushed
 		geometry.faces.push(face);
 
 	}
 
-	else{
+	else{/*Serve para construir face que pode ser vista de dentro*/
 		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
-		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
-		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0));
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10)); //A DIFERENCA ESTA NA ORDEM
+		geometry.vertices.push(new THREE.Vector3(0.25,-0.25,0)); // DESTAS DUAS LINHAS QUE ESTAO TROCADAS
 
 		var color = new THREE.Color( 0x000000 );
 		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
@@ -45,12 +48,15 @@ function buildRightBorder(geometry,currentIndex){
 	}
 }
 
-function buildLeftBorder(geometry,currentIndex){
-	if(facingCamera){
 
-		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
-		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
-		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
+/*Esta funcao constroi as laterais do hexagono, simplesmente liga os pontos das duas faces criando 2 triangulos que juntos
+fazem a lateral que e um rectagulo*/ 
+function buildLeftBorder(geometry,currentIndex){
+	if(facingCamera){/*Serve para construir face que pode ser vista de fora*/
+
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));//PONTO A
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));// PONTO B
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));// PONTO C
 		
 		var color = new THREE.Color( 0x000000 );
 		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
@@ -65,10 +71,10 @@ function buildLeftBorder(geometry,currentIndex){
 		geometry.faces.push(face)
 
 	}
-	else{
-		geometry.vertices.push(new THREE.Vector3(0,0.25,0));
-		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));
-		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));
+	else{/*Serve para construir face que pode ser vista de dentro*/
+		geometry.vertices.push(new THREE.Vector3(0,0.25,0));//PONTO A
+		geometry.vertices.push(new THREE.Vector3(-0.25,-0.25,0));// PONTO C  A DIFERENCA ESTA NA ORDEM
+		geometry.vertices.push(new THREE.Vector3(0,0.25,-0.10));// PONTO B   DESTAS DUAS LINHAS QUE ESTAO TROCADAS
 			
 		var color = new THREE.Color( 0x000000 );
 		var face = new THREE.Face3(currentIndex,currentIndex+1,currentIndex+2,color);
@@ -86,6 +92,8 @@ function buildLeftBorder(geometry,currentIndex){
 	}
 }
 
+
+//O mesmo que nas anteriores mas para a face de baixo do triangulo
 function buildBottomBorders(geometry,currentIndex){
 
 
@@ -131,7 +139,7 @@ function buildBottomBorders(geometry,currentIndex){
 
 }
 
-
+//Cria triangulo usando os pontos dados, a ordem dos pontos depende da direcao para qual queremos a normal da face
 function createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex) {
 
 	if (facingCamera){//Regra da mao direita a comecar em cima
@@ -156,7 +164,8 @@ function createTriangle(geometry,topPoint,rightPoint,leftPoint,currentIndex) {
 	geometry.computeVertexNormals();
 }
 
-//startPoint e o ponto mais a esquerda da linha
+//Constroi simplesmente uma linha de n triagulos seguidos uns aos outros para depois constituir os grandes triangulos do hexagono
+//Tipo dentes de serra
 function buildTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNumber,startPoint,startIndex){
 
 	var startOfNext = null;
@@ -181,7 +190,8 @@ function buildTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNu
 	return startOfNext;
 }
 
-//startPoint e o ponto mais a esquerda da linha
+
+//Cria linha de triangulos invertida para preencher as lacunas das linhas de triangulos()
 function buildInvertedTriangleLine(geometry,triangleHeight,triangleBaseLenght,triangleNumber,startPoint,startIndex){
 
 	var startOfNext = null;
@@ -206,6 +216,7 @@ function buildInvertedTriangleLine(geometry,triangleHeight,triangleBaseLenght,tr
 	return startOfNext;
 }
 
+//Controi um dos grandes 6 triangulos do hexagono tipo fatia de pizza
 function buildFace(geometry,triangleNumber,startPoint){
 	var material = new THREE.MeshStandardMaterial( { color : 0x000000 ,wireframe: true } );
 	var nextIndex = 0
@@ -230,7 +241,7 @@ function buildFace(geometry,triangleNumber,startPoint){
 	return new THREE.Mesh( geometry, material );
 }
 
-//adicionando todas a slices do hexagono 
+//Poe cada fatia no sitio certo e com a rotacao certa pois todas as fatias sao criadas no (0,0,0)
 function buildGroup(hex,yMov,xMov,zRot,zPos){
 
 	var geometry = new THREE.Geometry();
@@ -244,6 +255,7 @@ function buildGroup(hex,yMov,xMov,zRot,zPos){
 }
 
 
+//Cria todas as fatias e agrupa-as no mesmo objecto
 function buildPlane(hex,zPos,facing){
 
 	facingCamera = facing;
@@ -261,7 +273,8 @@ function buildPlane(hex,zPos,facing){
 	buildGroup(hex,0.5,-0.25,0,zPos); //face cima-esquerda
 }
 
-//Funcao que poe tudo junto
+//Funcao que poe tudo junto de modo a que seja tudo visivel independentemente de onde se olha para o hexagono
+//dai ter uma funcao para z = 0 com o facing true e outra com facing a false pois tem a normal a apontar para outro lado
 function buildHex(hex){
 	
 	buildPlane(hex,0,true);
