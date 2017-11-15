@@ -13,6 +13,61 @@ var isPaused = false;
 var orangeNum = 4;
 var cameraStatus = -1;
 
+var views = [
+	{
+		left: 0.02,
+		top: 0.03,
+		width: 0.06,
+		height: 0.06,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -40 ],
+		up: [ 0, 1, 0 ],
+		fov: 60
+	},
+	{
+		left: 0.10,
+		top: 0.03,
+		width: 0.06,
+		height: 0.06,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -40 ],
+		up: [ 0, 1, 0 ],
+		fov: 60
+	},
+	{
+		left: 0.18,
+		top: 0.03,
+		width: 0.06,
+		height: 0.06,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -40 ],
+		up: [ 0, 1, 0 ],
+		fov: 60
+	},
+	{
+		left: 0.26,
+		top: 0.03,
+		width: 0.06,
+		height: 0.06,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -40 ],
+		up: [ 0, 1, 0 ],
+		fov: 60
+	},
+	{
+		left: 0.34,
+		top: 0.03,
+		width: 0.06,
+		height: 0.06,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -40 ],
+		up: [ 0, 1, 0 ],
+		fov: 60
+	},
+];
+
+var cameras = [];
+
 //Contains all the objects in the scene, to easily coordinate setup and update methods
 var gameObjects = [];
 
@@ -55,7 +110,46 @@ function CreateRenderer() {
 }
 
 function Render() {
-	renderer.render(scene, camera);
+
+	UpdateMainCamera(window);
+
+	for ( var i = 0; i < views.length; i++ ) {
+		
+		var view = views[i];
+		var extraCamera = cameras[i];
+		
+		var left   = Math.floor( window.innerWidth  * view.left );
+		var top    = Math.floor( window.innerHeight * view.top );
+		var width  = Math.floor( window.innerWidth  * view.width );
+		var height = Math.floor( window.innerHeight * view.height );
+		
+		renderer.setViewport( left, top, width, height );
+		renderer.setScissor( left, top, width, height );
+		renderer.setScissorTest( true );
+		renderer.setClearColor( view.background );
+		
+		extraCamera.aspect = width / height;
+		extraCamera.updateProjectionMatrix();
+		
+		renderer.render( scene, extraCamera );
+	}
+}
+
+function UpdateMainCamera(window) {
+	var mainLeft   = Math.floor( window.innerWidth  * 0 );
+	var mainTop    = Math.floor( window.innerHeight * 0 );
+	var mainWidth  = Math.floor( window.innerWidth  * 1 );
+	var mainHeight = Math.floor( window.innerHeight * 1 );
+	
+	renderer.setViewport( mainLeft, mainTop, mainWidth, mainHeight );
+	renderer.setScissor( mainLeft, mainTop, mainWidth, mainHeight );
+	renderer.setScissorTest( true );
+	renderer.setClearColor( new THREE.Color(0,0,0) );
+
+	camera.aspect = mainWidth / mainHeight;
+	camera.updateProjectionMatrix();
+
+	renderer.render( scene, camera );
 }
 
 function BuildObjects() {
@@ -68,10 +162,10 @@ function BuildObjects() {
 	gameObjects.push(carro1);
 	
 	var butterPositions = [[-200,-80,15],
-	[440,-240,15],
-	[0,240,15],
-	[300,90,15],
-	[90,-80,15]];
+							[440,-240,15],
+							[0,240,15],
+							[300,90,15],
+							[90,-80,15]];
 	
 	var i;
 	for (i=0; i < orangeNum; i++) {
@@ -107,6 +201,14 @@ function BuildObjects() {
 		scene.add(trackLight);
 		trackLights.push(trackLight);
 	}
+
+	//Extra viewports
+	for (i = 0; i < views.length; i++) {
+		var view = views[i];
+		cameras.push(new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 ));
+		cameras[i].position.fromArray( view.eye );
+		//cameras[i].up.fromArray( view.up );
+	}
 }
 
 function StartObjects() {
@@ -125,7 +227,7 @@ function Update() {
 		//Calls Update on each object, and passes the DeltaTime
 		gameObjects[i].Update(delta);
 	}
-	skyLight.needsUpdate = true;
+	//skyLight.needsUpdate = true;
 }
 
 function onKeyDown(e) {
@@ -135,18 +237,22 @@ function onKeyDown(e) {
 		// 1
 		case 49:
 			new Camera().OrthographicCamera();
+			// UpdateMainCamera();
 			break;
 		// 2
 		case 50:
 			new Camera().PerspectiveCameraCenter();
+			// UpdateMainCamera();
 			break;
 		// 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
+			// UpdateMainCamera();
 			break;
 		// 4
 		case 52:
 			new Camera().PerspectiveCameraSouth();
+			// UpdateMainCamera();
 			break;
 
 		// Up
@@ -204,11 +310,12 @@ function onKeyDown(e) {
 				if(node instanceof THREE.Mesh){
 					var col = node.material.color;
 					var wire = node.material.wireframe;
+					//var newMap = node.material.map;
 					if (useBasic) {
-						node.material = new THREE.MeshBasicMaterial({color: col, wireframe:wire});
+						node.material = new THREE.MeshBasicMaterial({color: col, wireframe:wire, /*map:newMap*/});
 					}
 					else {
-						node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe:wire }) : new THREE.MeshLambertMaterial({color: col, wireframe:wire });
+						node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe:wire, /*map:newMap*/ }) : new THREE.MeshLambertMaterial({color: col, wireframe:wire, /*map:newMap*/ });
 					}
 				}
 			});
@@ -222,9 +329,10 @@ function onKeyDown(e) {
 					if(node instanceof THREE.Mesh){
 						var col = node.material.color;
 						var wire = node.material.wireframe;
+						//var newMap = node.material.map;
 						node.material = usePhong ? 
-										new THREE.MeshPhongMaterial({color: col, wireframe:wire }) :
-										new THREE.MeshLambertMaterial({color: col, wireframe:wire });
+										new THREE.MeshPhongMaterial({color: col, wireframe:wire, /*map:newMap*/ }) :
+										new THREE.MeshLambertMaterial({color: col, wireframe:wire, /*map:newMap*/ });
 					}
 				});
 			}
