@@ -1,8 +1,9 @@
 class CarroOld extends Respawnable
 {
-	constructor() {
+	constructor(prop = false) {
 		super();
-		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7)
+		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7);
+		this.isProp = prop;
 
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
@@ -97,7 +98,10 @@ class CarroOld extends Respawnable
 		this.car.position.y = 150;
 		this.car.position.x = -350;
 
-		super.Start();
+		//Only fetch track dimensions if car isn't prop
+		if (!this.isProp) {
+			super.Start();
+		}
 	}
 
 	SetupCamera() {
@@ -106,8 +110,10 @@ class CarroOld extends Respawnable
 		camera.rotation.x = Math.PI/2;
 	}
 
-	Respawn() {
-
+	SetPosition(pos) {
+		this.car.position.z = pos.z;
+		this.car.position.y = pos.y;
+		this.car.position.x = pos.x;
 	}
 
 	get(){

@@ -102,10 +102,6 @@ class Carro extends Respawnable
 		camera.rotation.x = Math.PI/2;
 	}
 
-	Respawn() {
-
-	}
-
 	get(){
 		return this.car.position;
 	}

@@ -11,12 +11,12 @@ class Respawnable {
 
     Start() {
         //Fetch track bounds
-		var tempBounds = track1.getTrackSize();
-		var tempPos = track1.getTrackPosition();
-		this.maxBounds.x = tempBounds.x/2 + tempPos.x ;
-		this.minBounds.x = -tempBounds.x/2 + tempPos.x;
-		this.maxBounds.y = tempBounds.y/2 + tempPos.y;
-		this.minBounds.y = -tempBounds.y/2 + tempPos.y;
+        var tempBounds = track1.getTrackSize();
+        var tempPos = track1.getTrackPosition();
+        this.maxBounds.x = tempBounds.x/2 + tempPos.x ;
+        this.minBounds.x = -tempBounds.x/2 + tempPos.x;
+        this.maxBounds.y = tempBounds.y/2 + tempPos.y;
+        this.minBounds.y = -tempBounds.y/2 + tempPos.y;
     }
 
     CheckIfOutsideTrack() {

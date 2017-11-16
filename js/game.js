@@ -19,51 +19,46 @@ var views = [
 	{
 		left: 0.02,
 		top: 0.03,
-		width: 0.06,
-		height: 0.06,
+		width: 0.04,
+		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -40 ],
-		up: [ 0, 1, 0 ],
+		eye: [ 0, 0, -70 ],
 		fov: 60
 	},
 	{
-		left: 0.10,
+		left: 0.08,
 		top: 0.03,
-		width: 0.06,
-		height: 0.06,
+		width: 0.04,
+		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -40 ],
-		up: [ 0, 1, 0 ],
+		eye: [ 0, 0, -70 ],
 		fov: 60
 	},
 	{
-		left: 0.18,
+		left: 0.14,
 		top: 0.03,
-		width: 0.06,
-		height: 0.06,
+		width: 0.04,
+		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -40 ],
-		up: [ 0, 1, 0 ],
+		eye: [ 0, 0, -70 ],
+		fov: 60
+	},
+	{
+		left: 0.20,
+		top: 0.03,
+		width: 0.04,
+		height: 0.04,
+		background: new THREE.Color(1,1,1),
+		eye: [ 0, 0, -70 ],
 		fov: 60
 	},
 	{
 		left: 0.26,
 		top: 0.03,
-		width: 0.06,
-		height: 0.06,
+		width: 0.04,
+		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -40 ],
-		up: [ 0, 1, 0 ],
-		fov: 60
-	},
-	{
-		left: 0.34,
-		top: 0.03,
-		width: 0.06,
-		height: 0.06,
-		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -40 ],
-		up: [ 0, 1, 0 ],
+		eye: [ 0, 0, -70 ],
 		fov: 60
 	},
 ];
@@ -162,8 +157,9 @@ function BuildObjects() {
 	carro1 = new CarroOld();
 	gameObjects.push(carro1);
 
-	//dummyCar = new Carro();
-	//dummyCar.Start();
+	dummyCar = new CarroOld(true);
+	dummyCar.Start();
+	dummyCar.SetPosition(new THREE.Vector3(0, 0, -40));
 	
 	var butterPositions = [[-200,-80,15],
 							[440,-240,15],
