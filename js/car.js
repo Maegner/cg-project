@@ -75,11 +75,11 @@ class Carro extends Respawnable
 		this.CreateAleronSupport(0.6, 1.4, -1);
 		this.CreateAleronSupport(0.6, 0.7, -1);
 		this.CreateAleronBarWithCubes(1, 0.40, -1.10);
-		this.CreateHexWheel(0.35, 1.525, -1);//direita
-		this.CreateHexWheel(0.35, 0.375, -1);//esquerda
+		//this.CreateHexWheel(0.35, 1.525, -1);//direita
+		//this.CreateHexWheel(0.35, 0.375, -1);//esquerda
 		//this.CreateTip(0.30, 1.18 , 1.6);
-		this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
-		this.CreateHexWheel(0.35, 0.375, 0.9);
+		//this.CreateHexWheel(0.35, 1.525, 0.9);//esquerda
+		//this.CreateHexWheel(0.35, 0.375, 0.9);
 		this.CreateRoofWithCubes(0.50, 1.20,-0.25)
 		this.carOffset.position.x = this.Xoffset;
 		this.carOffset.position.y = this.Yoffset;
@@ -366,7 +366,7 @@ class Carro extends Respawnable
 	}
 
 	CreateMiddlePartUsingCubes(x,y,z){
-		var mesh = buildBigPoligon(0.5,1,1.5,0.25,0xFF0000,100);
+		var mesh = buildBigPoligon(0.5,1,1.5,0.5,0xFF0000,100);
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}

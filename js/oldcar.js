@@ -74,6 +74,10 @@ class CarroOld extends Respawnable
 		this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
 		this.CreateBackWheelSupport(0.35, 1.625, -1);
 		this.CreateBackWheelSupport(0.35, 0.375, -1);
+		this.CreateWheel(0.35,1.625,-1);
+		this.CreateWheel(0.35,0.375,-1);
+		this.frontLeftWheel = this.CreateWheel(0.35,1.625,0.9);
+		this.frontRightWheel = this.CreateWheel(0.35,0.375,0.9);
 		this.CreateRoof(0.75, 1, -0.25);
 		this.CreateFrontWing(0.35, 1, 1.4);
 		this.CreateAleronTriangle(1, 1.4, -1);
@@ -174,8 +178,8 @@ class CarroOld extends Respawnable
 		}
 
 		//Rotate wheels
-		//this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
-		//this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
+		this.frontLeftWheel.rotation.x = -this.velocity.z*Math.PI/4;
+		this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
 	ApplyVelocity() {

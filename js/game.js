@@ -3,15 +3,17 @@
 */
 
 var camera, scene, renderer, time, carro1, track1, frustumSize, butters;
+var dummyCar;
 var skyLight;
 var trackLights = [];
-var skyLightIntensity = 2;
+var skyLightIntensity = 1;
 var trackLightIntensity = 0.5;
 var usePhong = true;
 var useBasic = false;
 var isPaused = false;
 var orangeNum = 4;
 var cameraStatus = -1;
+
 
 var views = [
 	{
@@ -106,7 +108,6 @@ function CreateRenderer() {
 	renderer = new THREE.WebGLRenderer({ antialias: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
-	//renderer.shadowMap.enabled = true;
 }
 
 function Render() {
@@ -158,8 +159,11 @@ function BuildObjects() {
 	track1 =  new Track(tirePostions);
 	gameObjects.push(track1);
 	
-	carro1 = new Carro();
+	carro1 = new CarroOld();
 	gameObjects.push(carro1);
+
+	//dummyCar = new Carro();
+	//dummyCar.Start();
 	
 	var butterPositions = [[-200,-80,15],
 							[440,-240,15],
@@ -207,7 +211,6 @@ function BuildObjects() {
 		var view = views[i];
 		cameras.push(new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 ));
 		cameras[i].position.fromArray( view.eye );
-		//cameras[i].up.fromArray( view.up );
 	}
 }
 
@@ -227,7 +230,7 @@ function Update() {
 		//Calls Update on each object, and passes the DeltaTime
 		gameObjects[i].Update(delta);
 	}
-	//skyLight.needsUpdate = true;
+	skyLight.needsUpdate = true;
 }
 
 function onKeyDown(e) {
@@ -237,22 +240,18 @@ function onKeyDown(e) {
 		// 1
 		case 49:
 			new Camera().OrthographicCamera();
-			// UpdateMainCamera();
 			break;
 		// 2
 		case 50:
 			new Camera().PerspectiveCameraCenter();
-			// UpdateMainCamera();
 			break;
 		// 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
-			// UpdateMainCamera();
 			break;
 		// 4
 		case 52:
 			new Camera().PerspectiveCameraSouth();
-			// UpdateMainCamera();
 			break;
 
 		// Up
@@ -277,7 +276,15 @@ function onKeyDown(e) {
 		case 97:
 			scene.traverse(function(node) {
 				if(node instanceof THREE.Mesh){
-					node.material.wireframe = !node.material.wireframe;
+					if (node.material.length > 1) {
+						var i;
+						for (i = 0; i < node.material.length; ++i) {
+							node.material[i].wireframe = !node.material[i].wireframe;
+						}
+					}
+					else {
+						node.material.wireframe = !node.material.wireframe;
+					}
 				}
 			});
 			break;
@@ -310,12 +317,50 @@ function onKeyDown(e) {
 				if(node instanceof THREE.Mesh){
 					var col = node.material.color;
 					var wire = node.material.wireframe;
-					//var newMap = node.material.map;
+					var materials;
 					if (useBasic) {
-						node.material = new THREE.MeshBasicMaterial({color: col, wireframe:wire, /*map:newMap*/});
+						if (node.material.length > 1) {
+							materials = [
+								new THREE.MeshBasicMaterial( {map: node.material[0].map, side: THREE.DoubleSide, wireframe: node.material[0].wireframe } ), //Right
+								new THREE.MeshBasicMaterial( {map: node.material[1].map, side: THREE.DoubleSide, wireframe: node.material[1].wireframe } ), //Left
+								new THREE.MeshBasicMaterial( {map: node.material[2].map, side: THREE.DoubleSide, wireframe: node.material[2].wireframe } ), //Top
+								new THREE.MeshBasicMaterial( {map: node.material[3].map, side: THREE.DoubleSide, wireframe: node.material[3].wireframe } ), //Bottom
+								new THREE.MeshBasicMaterial( {map: node.material[4].map, side: THREE.DoubleSide, wireframe: node.material[4].wireframe } ), //Front
+								new THREE.MeshBasicMaterial( {map: node.material[5].map, side: THREE.DoubleSide, wireframe: node.material[5].wireframe } )  //Back
+							];
+							node.material = materials;
+						}
+						else {
+							node.material = new THREE.MeshBasicMaterial({color: col, wireframe:wire});
+						}
 					}
 					else {
-						node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe:wire, /*map:newMap*/ }) : new THREE.MeshLambertMaterial({color: col, wireframe:wire, /*map:newMap*/ });
+						if (node.material.length > 0) {
+							if (usePhong) {
+								materials = [
+									new THREE.MeshPhongMaterial( {map: node.material[0].map, side: THREE.DoubleSide, wireframe: node.material[0].wireframe } ), //Right
+									new THREE.MeshPhongMaterial( {map: node.material[1].map, side: THREE.DoubleSide, wireframe: node.material[1].wireframe } ), //Left
+									new THREE.MeshPhongMaterial( {map: node.material[2].map, side: THREE.DoubleSide, wireframe: node.material[2].wireframe } ), //Top
+									new THREE.MeshPhongMaterial( {map: node.material[3].map, side: THREE.DoubleSide, wireframe: node.material[3].wireframe } ), //Bottom
+									new THREE.MeshPhongMaterial( {map: node.material[4].map, side: THREE.DoubleSide, wireframe: node.material[4].wireframe } ), //Front
+									new THREE.MeshPhongMaterial( {map: node.material[5].map, side: THREE.DoubleSide, wireframe: node.material[5].wireframe } )  //Back
+								];
+							}
+							else {
+								materials = [
+									new THREE.MeshLambertMaterial( {map: node.material[0].map, side: THREE.DoubleSide, wireframe: node.material[0].wireframe } ), //Right
+									new THREE.MeshLambertMaterial( {map: node.material[1].map, side: THREE.DoubleSide, wireframe: node.material[1].wireframe } ), //Left
+									new THREE.MeshLambertMaterial( {map: node.material[2].map, side: THREE.DoubleSide, wireframe: node.material[2].wireframe } ), //Top
+									new THREE.MeshLambertMaterial( {map: node.material[3].map, side: THREE.DoubleSide, wireframe: node.material[3].wireframe } ), //Bottom
+									new THREE.MeshLambertMaterial( {map: node.material[4].map, side: THREE.DoubleSide, wireframe: node.material[4].wireframe } ), //Front
+									new THREE.MeshLambertMaterial( {map: node.material[5].map, side: THREE.DoubleSide, wireframe: node.material[5].wireframe } )  //Back
+								];
+							}
+							node.material = materials;
+						}
+						else {
+							node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe: wire}) : new THREE.MeshLambertMaterial({color: col, wireframe: wire});
+						}
 					}
 				}
 			});
@@ -329,10 +374,32 @@ function onKeyDown(e) {
 					if(node instanceof THREE.Mesh){
 						var col = node.material.color;
 						var wire = node.material.wireframe;
-						//var newMap = node.material.map;
-						node.material = usePhong ? 
-										new THREE.MeshPhongMaterial({color: col, wireframe:wire, /*map:newMap*/ }) :
-										new THREE.MeshLambertMaterial({color: col, wireframe:wire, /*map:newMap*/ });
+						if (node.material.length > 0) {
+							if (usePhong) {
+								materials = [
+									new THREE.MeshPhongMaterial( {map: node.material[0].map, side: THREE.DoubleSide, wireframe: node.material[0].wireframe } ), //Right
+									new THREE.MeshPhongMaterial( {map: node.material[1].map, side: THREE.DoubleSide, wireframe: node.material[1].wireframe } ), //Left
+									new THREE.MeshPhongMaterial( {map: node.material[2].map, side: THREE.DoubleSide, wireframe: node.material[2].wireframe } ), //Top
+									new THREE.MeshPhongMaterial( {map: node.material[3].map, side: THREE.DoubleSide, wireframe: node.material[3].wireframe } ), //Bottom
+									new THREE.MeshPhongMaterial( {map: node.material[4].map, side: THREE.DoubleSide, wireframe: node.material[4].wireframe } ), //Front
+									new THREE.MeshPhongMaterial( {map: node.material[5].map, side: THREE.DoubleSide, wireframe: node.material[5].wireframe } )  //Back
+								];
+							}
+							else {
+								materials = [
+									new THREE.MeshLambertMaterial( {map: node.material[0].map, side: THREE.DoubleSide, wireframe: node.material[0].wireframe } ), //Right
+									new THREE.MeshLambertMaterial( {map: node.material[1].map, side: THREE.DoubleSide, wireframe: node.material[1].wireframe } ), //Left
+									new THREE.MeshLambertMaterial( {map: node.material[2].map, side: THREE.DoubleSide, wireframe: node.material[2].wireframe } ), //Top
+									new THREE.MeshLambertMaterial( {map: node.material[3].map, side: THREE.DoubleSide, wireframe: node.material[3].wireframe } ), //Bottom
+									new THREE.MeshLambertMaterial( {map: node.material[4].map, side: THREE.DoubleSide, wireframe: node.material[4].wireframe } ), //Front
+									new THREE.MeshLambertMaterial( {map: node.material[5].map, side: THREE.DoubleSide, wireframe: node.material[5].wireframe } )  //Back
+								];
+							}
+							node.material = materials;
+						}
+						else {
+							node.material = usePhong ? new THREE.MeshPhongMaterial({color: col, wireframe: wire}) : new THREE.MeshLambertMaterial({color: col, wireframe: wire});
+						}
 					}
 				});
 			}

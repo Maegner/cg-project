@@ -33,18 +33,17 @@ class Track
 		console.log(repeatX);
 		console.log(repeatY);
 		texture.repeat.set( repeatX, repeatY);
-
+		
 		var geometry = new THREE.BoxGeometry(this.trackSizeX, this.trackSizeY, 2, 20, 20);
-		var material = new THREE.MeshPhongMaterial({color: 0x0000FF, wireframe:true })
-		var tableMaterials = [
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Right
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Left
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Top
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Bottom
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } ), //Front
-			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide } )  //Back
+		var phongMaterials = [
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Right
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Left
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Top
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Bottom
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Front
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } )  //Back
 		];
-		this.tabletop = new THREE.Mesh(geometry,tableMaterials);
+		this.tabletop = new THREE.Mesh(geometry, phongMaterials);
 		this.tabletop.position.set(0,0,-1);
 		this.tabletop.receiveShadow = true;
 		this.track.add(this.tabletop)
