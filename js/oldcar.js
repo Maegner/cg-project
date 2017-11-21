@@ -17,6 +17,19 @@ class CarroOld extends Respawnable
 		this.frontRightWheel;
 
 		this.lives = 5;
+
+		this.invincible = false;
+		//Tracks how much time passed since last visibility toggle
+		this.invincibleIntervalTimer = 0;
+		//Tracks how much time passed since player became invincible
+		this.invincibleTimer = 0;
+		//How much time will pass between toggling player visibility
+		this.invincibleInterval = 0.2;
+		//How many times the car will toggle visibility until it stops being invincible
+		this.invincibleToggleCount = 8;
+
+		this.invincibleTime = this.invincibleInterval*2 * this.invincibleToggleCount;
+
 		this.objectSize = -10;
 		this.comparable = this.car;
 
@@ -124,6 +137,7 @@ class CarroOld extends Respawnable
 		this.HandleCamera(delta);
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
+		this.HandleInvincibility(delta);
 		this.ApplyVelocity();
 		super.Update(delta);
 	}
@@ -188,6 +202,23 @@ class CarroOld extends Respawnable
 		this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
+	HandleInvincibility(delta) {
+		if (this.invincible) {
+			this.invincibleTimer += delta;
+			this.invincibleIntervalTimer += delta;
+
+			if (this.invincibleTimer >= this.invincibleTime) {
+				this.invincible = false;
+				this.car.visible = true;
+				return;
+			}
+			if (this.invincibleIntervalTimer >= this.invincibleInterval) {
+				this.car.visible = !this.car.visible;
+				this.invincibleIntervalTimer -= this.invincibleInterval;
+			}
+		}
+	}
+
 	ApplyVelocity() {
 		this.forward = this.car.getWorldDirection();
 
@@ -232,6 +263,8 @@ class CarroOld extends Respawnable
 	}
 
 	Respawn() {
+		if (this.invincible) return;
+		
 		this.lives -= 1;
 		if (this.lives < 1) {
 			//Game over
@@ -240,6 +273,13 @@ class CarroOld extends Respawnable
 		this.car.position.x = -350;
 		this.car.position.y = 150;
 		this.car.rotation.y = Math.PI/2;
+		this.velocity.x = 0;
+		this.velocity.z = 0;
+
+		this.invincible = true;
+		this.invincibleTimer = 0;
+		this.invincibleIntervalCount = 0;
+		this.car.visible = false;
 	}
 
 	ActivateRearView() {

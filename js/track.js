@@ -32,6 +32,7 @@ class Track
 		var repeatY = this.trackSizeY / (1024/this.wrappingFactor);
 		console.log(repeatX);
 		console.log(repeatY);
+		
 		texture.repeat.set( repeatX, repeatY);
 		
 		var geometry = new THREE.BoxGeometry(this.trackSizeX, this.trackSizeY, 2, 20, 20);

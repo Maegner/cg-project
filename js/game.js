@@ -109,7 +109,7 @@ function Render() {
 
 	UpdateMainCamera(window);
 
-	for ( var i = 0; i < views.length; i++ ) {
+	for ( var i = 0; i < carro1.lives; i++ ) {
 		
 		var view = views[i];
 		var extraCamera = cameras[i];

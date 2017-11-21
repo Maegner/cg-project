@@ -16,6 +16,7 @@ class Carro extends Respawnable
 		this.frontRightWheel;
 
 		this.lives = 5;
+
 		this.objectSize = -10;
 		this.comparable = this.car;
 
@@ -110,6 +111,7 @@ class Carro extends Respawnable
 		this.HandleCamera(delta);
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
+		this.HandleInvincibility(delta);
 		this.ApplyVelocity();
 		super.Update(delta);
 	}
@@ -174,6 +176,25 @@ class Carro extends Respawnable
 		//this.frontRightWheel.rotation.x = -this.velocity.z*Math.PI/4;
 	}
 
+	HandleInvincibility(delta) {
+		if (this.invincible) {
+			console.log("invincible");
+			this.invincibleTimer += delta;
+			this.invincibleIntervalTimer += delta;
+
+			if (this.invincibleTimer >= invincibleTime) {
+				this.invincible = false;
+				this.car.visible = true;
+				return;
+			}
+			if (this.invincibleIntervalTimer >= this.invincibleInterval) {
+				console.log("TOGGLE VIS");
+				this.car.visible = !this.car.visible;
+				this.invincibleIntervalTimer -= this.invincibleInterval;
+			}
+		}
+	}
+
 	ApplyVelocity() {
 		this.forward = this.car.getWorldDirection();
 
@@ -218,6 +239,7 @@ class Carro extends Respawnable
 	}
 
 	Respawn() {
+		console.log("Respawned");
 		this.lives -= 1;
 		if (this.lives < 1) {
 			//Game over
@@ -226,6 +248,10 @@ class Carro extends Respawnable
 		this.car.position.x = -350;
 		this.car.position.y = 150;
 		this.car.rotation.y = Math.PI/2;
+		this.invincible = true;
+		this.invincibleTimer = 0;
+		this.invincibleIntervalCount = 0;
+		this.car.visible = false;
 	}
 
 	ActivateRearView() {
