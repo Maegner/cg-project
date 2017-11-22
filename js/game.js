@@ -22,7 +22,7 @@ var views = [
 		width: 0.04,
 		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -70 ],
+		eye: [ 0, 0, 1070 ],
 		fov: 60
 	},
 	{
@@ -31,7 +31,7 @@ var views = [
 		width: 0.04,
 		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -70 ],
+		eye: [ 0, 0, 1070 ],
 		fov: 60
 	},
 	{
@@ -40,7 +40,7 @@ var views = [
 		width: 0.04,
 		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -70 ],
+		eye: [ 0, 0, 1070 ],
 		fov: 60
 	},
 	{
@@ -49,7 +49,7 @@ var views = [
 		width: 0.04,
 		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -70 ],
+		eye: [ 0, 0, 1070 ],
 		fov: 60
 	},
 	{
@@ -58,7 +58,7 @@ var views = [
 		width: 0.04,
 		height: 0.04,
 		background: new THREE.Color(1,1,1),
-		eye: [ 0, 0, -70 ],
+		eye: [ 0, 0, 1070 ],
 		fov: 60
 	},
 ];
@@ -159,7 +159,8 @@ function BuildObjects() {
 
 	dummyCar = new CarroOld(true);
 	dummyCar.Start();
-	dummyCar.SetPosition(new THREE.Vector3(0, 0, -40));
+	dummyCar.SetPosition(new THREE.Vector3(0, 0, 1040));
+	dummyCar.car.rotation.z = Math.PI;
 	
 	var butterPositions = [[-200,-80,15],
 							[440,-240,15],
@@ -191,6 +192,7 @@ function BuildObjects() {
 		[1050/4, -550/4, 40],
 		[-1050/4, 550/4, 40],
 		[-1050/4, -550/4, 40],
+		[0, 0, 1070]
 	]
 
 	//Track lights
@@ -207,6 +209,8 @@ function BuildObjects() {
 		var view = views[i];
 		cameras.push(new THREE.PerspectiveCamera( view.fov, window.innerWidth / window.innerHeight, 1, 10000 ));
 		cameras[i].position.fromArray( view.eye );
+		cameras[i].rotation.y = Math.PI;
+		cameras[i].rotation.z = Math.PI;
 	}
 }
 
