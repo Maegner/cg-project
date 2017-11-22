@@ -2,11 +2,15 @@ class CarroOld extends Respawnable
 {
 	constructor(prop = false) {
 
+		
 
 		super();
 		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7);
 		this.isProp = prop;
 		this.lives = 5;
+		this.leftLight;
+		this.rightLight;
+		this.targetObject;
 
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
@@ -87,6 +91,7 @@ class CarroOld extends Respawnable
 
 		this.CreateMiddlePart(0.5, 1, -0.5);
 		this.CreateFrontPart(0.55, 1, 0.875);
+		this.CreateLightTarget(0.55, 1, 5);
 		this.CreateFrontWheelSupportLeft(0.35, 1.7, 0.4);
 		this.CreateFrontWheelSupportRight(0.35, 0.3, 0.4);
 		this.CreateBackWheelSupport(0.35, 1.625, -1);
@@ -100,6 +105,7 @@ class CarroOld extends Respawnable
 		this.CreateAleronTriangle(1, 1.4, -1);
 		this.CreateAleronTriangle(1, 0.6, -1);
 		this.CreateAleronBar(1, 1, -1.25);
+		this.AddLights();
 
 
 		this.carOffset.position.x = this.Xoffset;
@@ -143,6 +149,30 @@ class CarroOld extends Respawnable
 		this.HandleInvincibility(delta);
 		this.ApplyVelocity();
 		super.Update(delta);
+	}
+
+	CreateLightTarget(x,y,z){
+		var cubo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+		this.targetObject = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		this.targetObject.position.set(x,y,z);
+		this.targetObject.visible = false;
+
+		this.carOffset.add(this.targetObject);
+	}
+
+	AddLights(){
+		
+		this.leftLight = new THREE.SpotLight(0xffffff,1,200,Math.PI/8,0,2);
+		this.leftLight.position.set(0.35,1.625,0);
+		this.leftLight.castShadow = true;
+		this.leftLight.target = this.targetObject;
+		this.carOffset.add(this.leftLight);
+
+		this.rightLight = new THREE.SpotLight(0xffffff,1,200,Math.PI/8,0,2);
+		this.rightLight.position.set(0.35,0.475,0);
+		this.rightLight.castShadow = true;
+		this.rightLight.target = this.targetObject;
+		this.carOffset.add(this.rightLight);
 	}
 
 	HandleCamera(delta) {
@@ -230,6 +260,9 @@ class CarroOld extends Respawnable
 		
 		this.colisionSphere.center.x += xMov;
 		this.colisionSphere.center.y += yMov;
+		
+
+		//this.leftLight.target = this.targetObject;
 
 		//Check collision with butters
 		var i = 0
@@ -237,6 +270,8 @@ class CarroOld extends Respawnable
 			if(butters[i].colidingAABB.IscolidingWithSphere(this.colisionSphere)){
 				this.colisionSphere.center.x -= xMov;
 				this.colisionSphere.center.y -= yMov;
+
+
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}
@@ -252,6 +287,7 @@ class CarroOld extends Respawnable
 				
 				this.colisionSphere.center.x -= (this.velocity.x * this.speedScale) * this.forward.x;
 				this.colisionSphere.center.y -= (this.velocity.x * this.speedScale) * this.forward.y;
+
 				this.velocity.x = 0;
 				this.velocity.y = 0;
 			}	
@@ -274,10 +310,10 @@ class CarroOld extends Respawnable
 		}
 		this.Reposition();
 
-		this.invincible = true;
+		/*this.invincible = true;
 		this.invincibleTimer = 0;
 		this.invincibleIntervalCount = 0;
-		this.car.visible = false;
+		this.car.visible = false;*/
 	}
 	reset(){
 		this.Reposition();
