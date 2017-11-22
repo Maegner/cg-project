@@ -15,7 +15,6 @@ class Carro extends Respawnable
 		this.frontLeftWheel;
 		this.frontRightWheel;
 
-		this.lives = 5;
 
 		this.objectSize = -10;
 		this.comparable = this.car;
@@ -64,6 +63,8 @@ class Carro extends Respawnable
 	}
 
 	Start() {
+
+		this.lives = 5;
 
 		this.carOffset = new THREE.Object3D();
 
@@ -260,6 +261,13 @@ class Carro extends Respawnable
 
 	DeactivateRearView() {
 		this.cameraOffsetSign = 1;
+	}
+
+	AddCarLight(){
+		skyLight = new THREE.DirectionalLight(0xffffff, skyLightIntensity);
+		skyLight.position.set(0, 50, 50);
+		skyLight.castShadow = true;
+		scene.add(skyLight);
 	}
 
 	OnAccelerate() {

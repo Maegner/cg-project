@@ -119,4 +119,18 @@ class Cheerio{
     Update(delta){
         this.move(delta);
     }
+
+    reset(){
+        return;
+    }
+
+    Reposition(x,y){
+        this.cheerioObject.position.x = x;
+        this.cheerioObject.position.y = y;
+        this.colisionSphere.center.x = x;
+        this.colisionSphere.center.y = y;
+        this.velocityX = 0;
+        this.velocityY  = 0;
+        return;
+    }
 }

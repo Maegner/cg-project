@@ -25,4 +25,7 @@ class Butter
 
 	Update(delta) {
 	}
+	reset(){
+        return;
+    }
 }
