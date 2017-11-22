@@ -222,6 +222,15 @@ function StartObjects() {
 	}
 }
 
+function RetartGame(){
+
+	for (i=0; i < gameObjects.length; i++) {
+		//Calls reset
+		gameObjects[i].reset();
+		console.log("exiting");
+	}
+}
+
 function Update() {
 	if (isPaused) return;
 	var i;
@@ -298,6 +307,14 @@ function onKeyDown(e) {
 		case 78:
 		case 110:
 			skyLight.intensity = skyLight.intensity == 0 ? skyLightIntensity : 0;
+			break;
+		
+		// R,r
+		case 82:
+		case 114:
+			if (carro1.lives >1){
+				RetartGame();
+			}
 			break;
 
 		// C,c

@@ -14,15 +14,11 @@ class Orange extends Respawnable
 
 		this.colisionSphere = new Sphere(new THREE.Vector2(0,0),30);
 
-		this.speedCounter = 0;
-		//Dictates how fast the orange's speed scales over time
-		this.speedScale = 0.5;
 
 		//Interval of speed
 		this.speedMin = 2;
 		this.speedMax = 10;
 		
-		this.respawnCounter = 0;
 		//Interval of time to respawn
 		this.respawnTimeMin = 2;
 		this.respawnTimeMax = 5;
@@ -39,10 +35,16 @@ class Orange extends Respawnable
 		var tip = new THREE.Mesh(geometry2,material2);
 		tip.castShadow = true;
 		tip.position.z = 30;
+
 		this.orange.add(tip);
 		this.orange.position.z = this.height;
 		
 		scene.add(this.orange);
+
+		this.speedCounter = 0;
+		//Dictates how fast the orange's speed scales over time
+		this.speedScale = 0.5;
+		this.respawnCounter = 0;
 
 		super.Start();
 
@@ -91,13 +93,15 @@ class Orange extends Respawnable
 		this.orange.visible = false;
 	}
 
-	//RESET ORANGE
-	UpdateMovementValues() {
-		//Generate speed, and respawn time
-		this.speed = Math.random() * (this.speedMax - this.speedMin) + this.speedMin;
-		this.respawnTime = Math.random() * (this.respawnTimeMax - this.respawnTimeMin) + this.respawnTimeMin;
+	reset(){
+		this.speedCounter = 0;
+		//Dictates how fast the orange's speed scales over time
+		this.speedScale = 0.5;
 		this.respawnCounter = 0;
-		//Generate location and rotation
+		this.UpdateMovementValues();
+	}
+	
+	Reposition(){
 		this.orange.position.x = 0;
 		this.orange.position.y = 0;
 
@@ -107,6 +111,16 @@ class Orange extends Respawnable
 		this.orange.rotation.x = Math.PI/2;
 		this.orange.rotation.y = Math.random() * (Math.PI*2);
 		this.orange.rotation.z = 0;
+	}
+
+	//RESET ORANGE
+	UpdateMovementValues() {
+		//Generate speed, and respawn time
+		this.speed = Math.random() * (this.speedMax - this.speedMin) + this.speedMin;
+		this.respawnTime = Math.random() * (this.respawnTimeMax - this.respawnTimeMin) + this.respawnTimeMin;
+		this.respawnCounter = 0;
+		this.Reposition();
+		
 		this.forwardVector = this.orange.getWorldDirection();
 	}
 }

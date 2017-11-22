@@ -1,9 +1,12 @@
 class CarroOld extends Respawnable
 {
 	constructor(prop = false) {
+
+
 		super();
 		this.colisionSphere = new Sphere(new THREE.Vector2(-350,150),7);
 		this.isProp = prop;
+		this.lives = 5;
 
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
@@ -16,7 +19,7 @@ class CarroOld extends Respawnable
 		this.frontLeftWheel;
 		this.frontRightWheel;
 
-		this.lives = 5;
+		
 
 		this.invincible = false;
 		//Tracks how much time passed since last visibility toggle
@@ -269,17 +272,25 @@ class CarroOld extends Respawnable
 		if (this.lives < 1) {
 			//Game over
 		}
+		this.Reposition();
+
+		this.invincible = true;
+		this.invincibleTimer = 0;
+		this.invincibleIntervalCount = 0;
+		this.car.visible = false;
+	}
+	reset(){
+		this.Reposition();
+		this.lives = 5;
+	}
+
+	Reposition(){
 		this.colisionSphere.center = new THREE.Vector2(-350,150);
 		this.car.position.x = -350;
 		this.car.position.y = 150;
 		this.car.rotation.y = Math.PI/2;
 		this.velocity.x = 0;
 		this.velocity.z = 0;
-
-		this.invincible = true;
-		this.invincibleTimer = 0;
-		this.invincibleIntervalCount = 0;
-		this.car.visible = false;
 	}
 
 	ActivateRearView() {

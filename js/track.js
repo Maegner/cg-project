@@ -90,4 +90,9 @@ class Track
 			i++;
 		}
 	}
+	reset(){
+        for (var a = 0; a < this.tirePositions.length; a++){
+			this.cheerios[a].Reposition(this.tirePositions[a][0],this.tirePositions[a][1]);
+		}
+    }
 }
