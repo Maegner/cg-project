@@ -137,6 +137,7 @@ class CarroOld extends Respawnable
 	}
 
 	Update(delta) {
+		if (this.lives == 0) return;
 		this.HandleCamera(delta);
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
@@ -267,17 +268,59 @@ class CarroOld extends Respawnable
 
 	Respawn() {
 		if (this.invincible) return;
-		
+
+		var texture = new THREE.TextureLoader().load( "js/textures/gameover.png" );
+		var geometry = new THREE.BoxGeometry(600, 200, 1/*, 20, 50*/);
+		var phongMaterials = [
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } ), //Right
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } ), //Left
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } ), //Top
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } ), //Bottom
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, wireframe:false } ), //Front
+			new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } )  //Back
+		];
+		var gameOver = new THREE.Mesh(geometry, phongMaterials);
+
+		//Camara 1
+		//gameOver.scale.set(1, 1, 1);
+		//scene.add(gameOver);
+		//gameOver.position.set(camera.position.x, camera.position.y, camera.position.z-5);
+
+		//Camara 2
+		//scene.add(gameOver);
+		//gameOver.rotation.x = camera.rotation.x;
+		//var forward = camera.getWorldDirection();
+		//var temp = -500;
+		//forward.x *= temp;
+		//forward.y *= temp;
+		//forward.z *= temp;
+		//var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
+		//gameOver.position.set(newPos.x, newPos.y, newPos.z);
+
+		//Camara 3
+		//gameOver.scale.set(-0.1, 0.1, 0.1);
+		//scene.add(gameOver);
+		//gameOver.rotation.x = Math.PI/2;
+		//gameOver.rotation.y = Math.PI/2 + camera.rotation.z;
+		//var temp = -50;
+		//var forward = camera.getWorldDirection();
+		//forward.x *= temp;
+		//forward.y *= temp;
+		//forward.z *= temp;
+		//var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
+		//gameOver.position.set(newPos.x, newPos.y, newPos.z);
+
 		this.lives -= 1;
 		if (this.lives < 1) {
 			//Game over
 		}
-		this.Reposition();
+		//this.Reposition();
 
 		this.invincible = true;
 		this.invincibleTimer = 0;
 		this.invincibleIntervalCount = 0;
 		this.car.visible = false;
+		this.lives = 0;
 	}
 	reset(){
 		this.Reposition();

@@ -13,6 +13,7 @@ var useBasic = false;
 var isPaused = false;
 var orangeNum = 4;
 var cameraStatus = -1;
+var inWireframe = true;
 
 
 var views = [
@@ -283,6 +284,7 @@ function onKeyDown(e) {
 		// A, a
 		case 65:
 		case 97:
+			inWireframe = !inWireframe;
 			scene.traverse(function(node) {
 				if(node instanceof THREE.Mesh){
 					if (node.material.length > 1) {
