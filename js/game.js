@@ -399,6 +399,11 @@ function onKeyDown(e) {
 			}
 			break;
 
+		case 72:
+		case 104:
+			carro1.toggleLight();
+			break;
+
 		// C,c
 		case 67:
 		case 99:
