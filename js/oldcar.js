@@ -12,6 +12,8 @@ class CarroOld extends Respawnable
 		this.rightLight;
 		this.targetObject;
 
+		this.wrappingFactor = 4096;
+
 		this.velocity = new THREE.Vector3(0,0,0);
 		this.forward = new THREE.Vector3(0,0,0);
 		this.car = new THREE.Object3D();
@@ -84,7 +86,6 @@ class CarroOld extends Respawnable
 
 
 		this.lightIntensity = 3;
-		this.tempIntensity;
 	}
 
 	Start() {
@@ -106,7 +107,7 @@ class CarroOld extends Respawnable
 		this.frontRightWheel = this.CreateWheel(0.35,0.375,0.9);
 		this.CreateRoof(0.75, 1, -0.25);
 		this.CreateFrontWing(0.35, 1, 1.4);
-		this.CreateAleronTriangle(1, 1.4, -1);
+		this.CreateAleronTriangle2(1, 1.4, -1);
 		this.CreateAleronTriangle(1, 0.6, -1);
 		this.CreateAleronBar(1, 1, -1.25);
 		this.AddLights();
@@ -248,8 +249,6 @@ class CarroOld extends Respawnable
 			if (this.invincibleTimer >= this.invincibleTime) {
 				this.invincible = false;
 				this.car.visible = true;
-				this.leftLight.visible = true;
-				this.rightLight.visible = true;
 				return;
 			}
 			if (this.invincibleIntervalTimer >= this.invincibleInterval) {
@@ -311,11 +310,7 @@ class CarroOld extends Respawnable
 	Respawn() {
 		if (this.invincible) return;
 
-		this.tempIntensity = this.leftLight.intensity;
-		this.leftLight.visible = false;
-		this.rightLight.visible = false;
-
-		this.lives = 0;
+		this.lives -= 1;
 		if (this.lives < 1) {
 				GameOver();
 				gameOver.visible=true;
@@ -338,7 +333,6 @@ class CarroOld extends Respawnable
 	}
 
 	toggleLight(){
-		if (this.invincible) return;
 			this.leftLight.intensity = this.leftLight.intensity == 0 ?   this.lightIntensity : 0;
 			this.rightLight.intensity = this.rightLight.intensity == 0 ?  this.lightIntensity : 0;
 	}
@@ -483,8 +477,24 @@ class CarroOld extends Respawnable
 
 
 	CreateMiddlePart(x,y,z){
+
+		var texture = new THREE.TextureLoader().load( "js/textures/carTexture.jpeg" );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+		var repeatX = 0.5 / (1024/this.wrappingFactor);
+		var repeatY = 1 / (1024/this.wrappingFactor);
+
+		var phongMaterials = [
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Right
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Left
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Top
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Bottom
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Front
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } )  //Back
+		];
+
 		var cubo = new THREE.BoxGeometry(0.5, 1, 1.5);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, phongMaterials);
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
@@ -500,7 +510,7 @@ class CarroOld extends Respawnable
 
 	CreateFrontWing(x,y,z){
 		var cubo = new THREE.BoxGeometry( .2, .02, 1.25);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		cubo.rotateZ(Math.PI / 2); 
 		cubo.rotateX(2*Math.PI/4); 
@@ -509,9 +519,25 @@ class CarroOld extends Respawnable
 	}
 
 	CreateFrontPart(x,y,z){
+
+		var texture = new THREE.TextureLoader().load( "js/textures/carTexture.jpeg" );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+		var repeatX = 1.25 / (1024/this.wrappingFactor);
+		var repeatY = 0.4 / (1024/this.wrappingFactor);
+
+		var phongMaterials = [
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Right
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Left
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Top
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Bottom
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Front
+			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } )  //Back
+		];
+
 		var cubo = new THREE.BoxGeometry( 1.25, .4, .4);
 		//cubo.x = (Math.PI/180);
-		var mesh = new THREE.Mesh(cubo, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh(cubo, phongMaterials);
 		mesh.position.set(x,y,z);
 		cubo.rotateY(2*Math.PI/4); 
 
@@ -554,6 +580,30 @@ class CarroOld extends Respawnable
 		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
 		triangle.computeFaceNormals();
 
+
+
+		triangle.rotateZ(Math.PI / 2); 
+		triangle.rotateX(2*Math.PI/4); 
+
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
+		mesh.position.set(x,y,z);
+		this.carOffset.add(mesh);
+	}
+
+	CreateAleronTriangle2(x,y,z){
+		var triangle = new THREE.Geometry();
+		var v1 = new THREE.Vector3(-0.25,0,0);
+		var v2 = new THREE.Vector3(-0.25,0.25,0);
+		var v3 = new THREE.Vector3(0.05,0.25,0);
+		triangle.vertices.push(v1);
+		triangle.vertices.push(v3);
+		triangle.vertices.push(v2);
+
+		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
+		triangle.computeFaceNormals();
+
+
+
 		triangle.rotateZ(Math.PI / 2); 
 		triangle.rotateX(2*Math.PI/4); 
 
@@ -577,8 +627,8 @@ class CarroOld extends Respawnable
 		var v3 = new THREE.Vector3(0,-0.5,0);
 
 		triangle.vertices.push(v1);
-		triangle.vertices.push(v2);
 		triangle.vertices.push(v3);
+		triangle.vertices.push(v2);
 
 		triangle.faces.push( new THREE.Face3( 0, 1, 2 ) );
 		triangle.computeFaceNormals();
@@ -586,7 +636,7 @@ class CarroOld extends Respawnable
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2); 
 
-		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}) );
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}) );
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}
@@ -606,7 +656,7 @@ class CarroOld extends Respawnable
 		triangle.rotateX(-Math.PI / 2);
 		triangle.rotateZ(Math.PI / 2);
 		triangle.rotateZ(Math.PI); 
-		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFF0000, wireframe: true}));
+		var mesh = new THREE.Mesh( triangle, new THREE.MeshPhongMaterial( {color: 0xFFFFFF, wireframe: true}));
 		mesh.position.set(x,y,z);
 		this.carOffset.add(mesh);
 	}

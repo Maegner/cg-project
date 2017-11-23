@@ -253,7 +253,8 @@ function RestartGame(){
 }
 
 function Update() {
-	if (isPaused) return;
+	if (isPaused) 
+		return;
 	var i;
 	var delta = time.getDelta();
 	for (i=0; i < gameObjects.length; i++) {
