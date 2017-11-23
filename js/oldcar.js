@@ -84,6 +84,7 @@ class CarroOld extends Respawnable
 
 
 		this.lightIntensity = 3;
+		this.tempIntensity;
 	}
 
 	Start() {
@@ -247,6 +248,8 @@ class CarroOld extends Respawnable
 			if (this.invincibleTimer >= this.invincibleTime) {
 				this.invincible = false;
 				this.car.visible = true;
+				this.leftLight.visible = true;
+				this.rightLight.visible = true;
 				return;
 			}
 			if (this.invincibleIntervalTimer >= this.invincibleInterval) {
@@ -308,7 +311,11 @@ class CarroOld extends Respawnable
 	Respawn() {
 		if (this.invincible) return;
 
-		this.lives -= 1;
+		this.tempIntensity = this.leftLight.intensity;
+		this.leftLight.visible = false;
+		this.rightLight.visible = false;
+
+		this.lives = 0;
 		if (this.lives < 1) {
 				GameOver();
 				gameOver.visible=true;
@@ -331,6 +338,7 @@ class CarroOld extends Respawnable
 	}
 
 	toggleLight(){
+		if (this.invincible) return;
 			this.leftLight.intensity = this.leftLight.intensity == 0 ?   this.lightIntensity : 0;
 			this.rightLight.intensity = this.rightLight.intensity == 0 ?  this.lightIntensity : 0;
 	}

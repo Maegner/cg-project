@@ -299,10 +299,10 @@ function PerspectiveCameraCarGameOver(){
 	gameOver.rotation.y = 0;
 	gameOver.rotation.z = 0;
 
-	gameOver.scale.set(-0.1, 0.1, 0.1);
+	gameOver.scale.set(-0.01, 0.01, 0.1);
 	gameOver.rotation.x = Math.PI/2;
 	gameOver.rotation.y = Math.PI/2 + camera.rotation.z;
-	var temp = -50;
+	var temp = -3;
 	var forward = camera.getWorldDirection();
 	forward.x *= temp;
 	forward.y *= temp;
