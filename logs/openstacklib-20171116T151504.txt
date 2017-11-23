@@ -1,0 +1,13 @@
+15:15:04.430 [Thread-0] DEBUG openstacklib.Abstrato - [abstractExists - projectExists] init
+15:15:04.648 [Thread-0] DEBUG openstacklib.Abstrato - [abstractExists - projectExists] project p-ist426040 exists
+15:15:04.655 [Thread-0] DEBUG openstacklib.Abstrato - [getIDs - getFloatingIPS] init
+15:15:04.656 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] init
+15:15:04.833 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] project p-ist426040 exists with id 69a253087ec84573aa35d28b065ffd79
+15:15:05.501 [Thread-0] WARN  openstacklib.Abstrato - [getIDs - getFloatingIPS] project p-ist426040 does not have any floatingips
+15:15:05.504 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] init
+15:15:05.721 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] project p-ist426040 exists with id 69a253087ec84573aa35d28b065ffd79
+15:15:06.162 [Thread-0] DEBUG openstacklib.FloatingIp - [addFloatingIp] init
+15:15:06.164 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] init
+15:15:06.364 [Thread-0] DEBUG openstacklib.Abstrato - [getID - getProjectID] project p-ist426040 exists with id 69a253087ec84573aa35d28b065ffd79
+15:15:06.364 [Thread-0] DEBUG openstacklib.FloatingIp - [getSubnetFloatingIpSubnet] init
+15:15:08.535 [Thread-0] DEBUG openstacklib.FloatingIp - [addFloatingIp] Floating IP created with dns-name ist426040, subnet-id 95909b69-e236-4c75-b039-e2a8f71a9553,dns-domain vps.tecnico.ulisboa.pt. - IP 192.92.147.99

@@ -59,7 +59,6 @@ class Track
 
 		var nmber = 0;
 		this.addTabletop();
-		
 		while(nmber < this.tirePositions.length){ //adding the cheerios
 			var newCheerio = new Cheerio(this.tirePositions[nmber][0],this.tirePositions[nmber][1],this.tirePositions[nmber][2]);
 			
