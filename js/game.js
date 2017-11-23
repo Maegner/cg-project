@@ -168,6 +168,7 @@ function BuildObjects() {
 		new THREE.MeshBasicMaterial( {map: texture, side: THREE.DoubleSide,transparent: true, opacity: 0, wireframe:false } )  //Back
 	];
 	gameOver = new THREE.Mesh(geometry, phongMaterials);
+	gameOver.name = "gameover";
 	gameOver.visible = false;
 	scene.add(gameOver);
 
@@ -241,7 +242,7 @@ function StartObjects() {
 }
 
 function RestartGame(){
-
+	gameOver.visible = false;
 	for (i=0; i < gameObjects.length; i++) {
 		//Calls reset
 		gameObjects[i].reset();
@@ -303,7 +304,7 @@ function onKeyDown(e) {
 		case 97:
 			inWireframe = !inWireframe;
 			scene.traverse(function(node) {
-				if(node instanceof THREE.Mesh){
+				if(node instanceof THREE.Mesh && node.name != "gameover"){
 					if (node.material.length > 1) {
 						var i;
 						for (i = 0; i < node.material.length; ++i) {
@@ -350,7 +351,7 @@ function onKeyDown(e) {
 		case 108:
 			useBasic = !useBasic;
 			scene.traverse(function(node) {
-				if(node instanceof THREE.Mesh){
+				if(node instanceof THREE.Mesh && node.name != "gameover"){
 					var col = node.material.color;
 					var wire = node.material.wireframe;
 					var materials;
@@ -407,7 +408,7 @@ function onKeyDown(e) {
 			if (!useBasic) {
 				usePhong = !usePhong;
 				scene.traverse(function(node) {
-					if(node instanceof THREE.Mesh){
+					if(node instanceof THREE.Mesh && node.name != "gameover"){
 						var col = node.material.color;
 						var wire = node.material.wireframe;
 						if (node.material.length > 0) {

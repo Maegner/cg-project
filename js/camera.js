@@ -13,7 +13,10 @@ class Camera
 		camera.recieveShadow = true;
 		camera.castShadow = true;
 		camera.updateProjectionMatrix();
+		this.OrthographicCameraGameOver();
+	}
 
+	OrthographicCameraGameOver(){
 		gameOver.scale.set(1, 1, 1);
 		gameOver.position.set(camera.position.x, camera.position.y, camera.position.z-5);
 		gameOver.rotation.x = 0;
@@ -34,6 +37,8 @@ class Camera
 		camera.updateProjectionMatrix();
 	}
 
+
+
 	PerspectiveCameraCenter() {
 		cameraStatus = 2;
 		var aspect = window.innerWidth / window.innerHeight;
@@ -45,6 +50,10 @@ class Camera
 		camera.castShadow = true;
 		camera.lookAt(scene.position);
 		camera.updateProjectionMatrix();
+		this.PerspectiveCameraCenterGameOver();
+	}
+
+	PerspectiveCameraCenterGameOver(){
 
 		gameOver.scale.set(1, 1, 1);
 		gameOver.rotation.x = camera.rotation.x;
@@ -74,7 +83,10 @@ class Camera
 
 		camera.updateProjectionMatrix();
 		carro1.SetupCamera();
+		this.PerspectiveCameraCarGameOver();
+	}
 
+	PerspectiveCameraCarGameOver(){
 		gameOver.rotation.x = 0;
 		gameOver.rotation.y = 0;
 		gameOver.rotation.z = 0;
@@ -90,4 +102,15 @@ class Camera
 		var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
 		gameOver.position.set(newPos.x, newPos.y, newPos.z);
 	}
+
+	GameOver(){
+		if(cameraStatus == 1){
+			this.OrthographicCameraGameOver();
+		} else if(cameraStatus == 2){
+			this.PerspectiveCameraCenterGameOver();
+		} else if(cameraStatus == 3){
+			this.PerspectiveCameraCarGameOver();
+		}
+	}
+
 }

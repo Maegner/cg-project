@@ -304,12 +304,12 @@ class CarroOld extends Respawnable
 
 	Respawn() {
 		if (this.invincible) return;
-		this.lives -= 1;
 		gameOver.visible=true;
 		isPaused = true;
-		this.reset();
+		this.lives -= 1;
 		if (this.lives < 1) {
-				gameOver.visible = true;
+				gameOver.visible=true;
+				isPaused = true;
 		}
 		this.Reposition();
 	}
