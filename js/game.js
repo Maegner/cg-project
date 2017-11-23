@@ -240,7 +240,7 @@ function StartObjects() {
 	}
 }
 
-function RetartGame(){
+function RestartGame(){
 
 	for (i=0; i < gameObjects.length; i++) {
 		//Calls reset
@@ -331,8 +331,8 @@ function onKeyDown(e) {
 		// R,r
 		case 82:
 		case 114:
-			if (carro1.lives >1){
-				RetartGame();
+			if (carro1.lives < 1) {
+				RestartGame();
 			}
 			break;
 

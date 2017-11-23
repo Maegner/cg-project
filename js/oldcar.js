@@ -312,11 +312,6 @@ class CarroOld extends Respawnable
 				gameOver.visible = true;
 		}
 		this.Reposition();
-
-		this.invincible = true;
-		this.invincibleTimer = 0;
-		this.invincibleIntervalCount = 0;
-		this.car.visible = false;
 	}
 	reset(){
 		this.Reposition();
@@ -331,6 +326,10 @@ class CarroOld extends Respawnable
 		this.car.rotation.y = Math.PI/2;
 		this.velocity.x = 0;
 		this.velocity.z = 0;
+		this.invincible = true;
+		this.invincibleTimer = 0;
+		this.invincibleIntervalCount = 0;
+		this.car.visible = false;
 	}
 
 	ActivateRearView() {
