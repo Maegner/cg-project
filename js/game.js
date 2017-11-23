@@ -243,6 +243,7 @@ function StartObjects() {
 
 function RestartGame(){
 	gameOver.visible = false;
+	isPaused = false;
 	for (i=0; i < gameObjects.length; i++) {
 		//Calls reset
 		gameObjects[i].reset();
