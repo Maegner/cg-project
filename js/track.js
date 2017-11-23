@@ -10,7 +10,7 @@ class Track
 		this.trackSizeX = 1050;
 		this.trackSizeY = 550;
 		//Pixels per unit
-		this.wrappingFactor = 10;
+		this.wrappingFactor = 128;
 		this.tabletop;
 	}
 
