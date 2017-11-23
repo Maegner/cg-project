@@ -304,6 +304,7 @@ class CarroOld extends Respawnable
 
 	Respawn() {
 		if (this.invincible) return;
+
 		this.lives -= 1;
 		if (this.lives < 1) {
 				GameOver();
