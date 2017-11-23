@@ -1,7 +1,6 @@
 class Camera
 {
 	constructor() {
-
 	}
 
 	OrthographicCamera() {
@@ -53,8 +52,7 @@ class Camera
 		this.PerspectiveCameraCenterGameOver();
 	}
 
-	PerspectiveCameraCenterGameOver(){
-
+	PerspectiveCameraCenterGameOver() {
 		gameOver.scale.set(1, 1, 1);
 		gameOver.rotation.x = camera.rotation.x;
 		gameOver.rotation.y = gameOver.rotation.z = 0;
@@ -101,16 +99,6 @@ class Camera
 		forward.z *= temp;
 		var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
 		gameOver.position.set(newPos.x, newPos.y, newPos.z);
-	}
-
-	GameOver(){
-		if(cameraStatus == 1){
-			this.OrthographicCameraGameOver();
-		} else if(cameraStatus == 2){
-			this.PerspectiveCameraCenterGameOver();
-		} else if(cameraStatus == 3){
-			this.PerspectiveCameraCarGameOver();
-		}
 	}
 
 }

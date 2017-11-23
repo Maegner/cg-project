@@ -15,6 +15,7 @@ var orangeNum = 4;
 var cameraStatus = -1;
 var inWireframe = true;
 var gameOver;
+var cameraObject = new Camera();
 
 
 var views = [
@@ -262,6 +263,54 @@ function Update() {
 	skyLight.needsUpdate = true;
 }
 
+function GameOver() {
+	if(cameraStatus == 1){
+		this.OrthographicCameraGameOver();
+	} else if(cameraStatus == 2){
+		this.PerspectiveCameraCenterGameOver();
+	} else if(cameraStatus == 3){
+		this.PerspectiveCameraCarGameOver();
+	}
+}
+
+function OrthographicCameraGameOver(){
+	gameOver.scale.set(1.57, 1.57, 1);
+	gameOver.position.set(camera.position.x, camera.position.y, camera.position.z-5);
+	gameOver.rotation.x = 0;
+	gameOver.rotation.y = 0;
+	gameOver.rotation.z = 0;
+}
+
+function PerspectiveCameraCenterGameOver() {
+	gameOver.scale.set(1, 1, 1);
+	gameOver.rotation.x = camera.rotation.x;
+	gameOver.rotation.y = gameOver.rotation.z = 0;
+	var forward = camera.getWorldDirection();
+	var temp = -500;
+	forward.x *= temp;
+	forward.y *= temp;
+	forward.z *= temp;
+	var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
+	gameOver.position.set(newPos.x, newPos.y, newPos.z);
+}
+
+function PerspectiveCameraCarGameOver(){
+	gameOver.rotation.x = 0;
+	gameOver.rotation.y = 0;
+	gameOver.rotation.z = 0;
+
+	gameOver.scale.set(-0.1, 0.1, 0.1);
+	gameOver.rotation.x = Math.PI/2;
+	gameOver.rotation.y = Math.PI/2 + camera.rotation.z;
+	var temp = -50;
+	var forward = camera.getWorldDirection();
+	forward.x *= temp;
+	forward.y *= temp;
+	forward.z *= temp;
+	var newPos = new THREE.Vector3(camera.position.x - forward.x, camera.position.y - forward.y, camera.position.z - forward.z);
+	gameOver.position.set(newPos.x, newPos.y, newPos.z);
+}
+
 function onKeyDown(e) {
 
 	switch (e.keyCode)
@@ -269,18 +318,30 @@ function onKeyDown(e) {
 		// 1
 		case 49:
 			new Camera().OrthographicCamera();
+			if (gameOver.visible) {
+				GameOver();
+			}
 			break;
 		// 2
 		case 50:
 			new Camera().PerspectiveCameraCenter();
+			if (gameOver.visible) {
+				GameOver();
+			}
 			break;
 		// 3
 		case 51:
 			new Camera().PerspectiveCameraCar();
+			if (gameOver.visible) {
+				GameOver();
+			}
 			break;
 		// 4
 		case 52:
 			new Camera().PerspectiveCameraSouth();
+			if (gameOver.visible) {
+				GameOver();
+			}
 			break;
 
 		// Up

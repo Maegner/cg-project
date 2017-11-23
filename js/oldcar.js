@@ -144,7 +144,7 @@ class CarroOld extends Respawnable
 
 	Update(delta) {
 		if (this.lives == 0) return;
-		this.HandleCamera(delta);
+		this.HandleCamera();
 		this.HandleAcceleration(delta);
 		this.HandleTurning(delta);
 		this.HandleInvincibility(delta);
@@ -163,20 +163,20 @@ class CarroOld extends Respawnable
 
 	AddLights(){
 		
-		this.leftLight = new THREE.SpotLight(0xffffff,1,200,Math.PI/8,0,2);
-		this.leftLight.position.set(0.35,1.625,0);
+		this.leftLight = new THREE.SpotLight(0xffffff,3,1000,Math.PI/8,0.5,5);
+		this.leftLight.position.set(0.35 + 5,1.625,0);
 		this.leftLight.castShadow = true;
 		this.leftLight.target = this.targetObject;
 		this.carOffset.add(this.leftLight);
 
-		this.rightLight = new THREE.SpotLight(0xffffff,1,200,Math.PI/8,0,2);
-		this.rightLight.position.set(0.35,0.475,0);
+		this.rightLight = new THREE.SpotLight(0xffffff,3,1000,Math.PI/8,0.5,5);
+		this.rightLight.position.set(0.35 + 5,0.475,0);
 		this.rightLight.castShadow = true;
 		this.rightLight.target = this.targetObject;
 		this.carOffset.add(this.rightLight);
 	}
 
-	HandleCamera(delta) {
+	HandleCamera() {
 		if(cameraStatus == 3){
 			var carLocation = this.car.position;
 			var camOffset = new THREE.Vector3(-40, -40, 10);
@@ -304,17 +304,24 @@ class CarroOld extends Respawnable
 
 	Respawn() {
 		if (this.invincible) return;
-		gameOver.visible=true;
-		isPaused = true;
 		this.lives -= 1;
 		if (this.lives < 1) {
+				GameOver();
 				gameOver.visible=true;
 				isPaused = true;
 		}
-		this.Reposition();
+		else {
+			this.Reposition();
+		}
 	}
 	reset(){
 		this.Reposition();
+		this.throttle = 0;
+		this.turn = 0;
+		this.throttlePressed = false;
+		this.brakePressed = false;
+		this.leftPressed = false;
+		this.rightPressed = false;
 		this.lives = 5;
 		
 	}
