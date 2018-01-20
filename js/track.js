@@ -35,7 +35,7 @@ class Track
 		
 		texture.repeat.set( repeatX, repeatY);
 		
-		var geometry = new THREE.BoxGeometry(this.trackSizeX, this.trackSizeY, 2, 20, 20);
+		var geometry = new THREE.BoxGeometry(this.trackSizeX, this.trackSizeY, 2);
 		var phongMaterials = [
 			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Right
 			new THREE.MeshPhongMaterial( {map: texture, side: THREE.DoubleSide, wireframe:true } ), //Left
